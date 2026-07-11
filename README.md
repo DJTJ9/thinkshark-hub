@@ -17,7 +17,8 @@ Live unter https://thinkshark.de. DNS (`thinkshark.de` + `www`) zeigt auf den He
 
 **Redeploy nach Änderung** (kein Git-Auto-Deploy):
 
-    cp index.html styles.css main.js /var/www/thinkshark-hub/
+    cp index.html styles.css main.js fonts.css /var/www/thinkshark-hub/
+    cp fonts/*.woff2 /var/www/thinkshark-hub/fonts/
 
 Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 

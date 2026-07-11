@@ -34,3 +34,11 @@ def test_mono_font_for_urls():
 
 def test_no_framework_build_artifacts():
     assert not (ROOT / "package.json").exists()
+
+def test_fonts_are_self_hosted():
+    assert "fonts.googleapis" not in HTML
+    assert "fonts.gstatic" not in HTML
+    assert 'href="fonts.css"' in HTML
+    fonts_css = (ROOT / "fonts.css").read_text(encoding="utf-8")
+    assert "https://" not in fonts_css  # all @font-face src are local
+    assert "font-display: swap" in fonts_css
