@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ThinkShark</title>
+  <meta name="description" content="ThinkShark — zentrale Anlaufstelle für Tjark Dreyers Projekte und Tools." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="sonar-grid" aria-hidden="true"></div>
+  <header class="topbar">
+    <span class="wordmark">THINKSHARK</span>
+    <span class="status"><span class="status__dot"></span>live</span>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1 class="hero__name">Tjark Dreyer</h1>
+      <p class="hero__role">Full-Stack Developer · Builder</p>
+      <div class="hero__sweep" aria-hidden="true"></div>
+    </section>
+
+    <p class="eyebrow">Enter the waters</p>
+    <nav class="hub-grid" aria-label="Projekte">
+      <a class="hub-card" data-sub="app" href="https://app.thinkshark.de" target="_blank" rel="noopener">
+        <span class="hub-card__ring" aria-hidden="true"></span>
+        <span class="hub-card__title">app</span>
+        <span class="hub-card__url">app.thinkshark.de</span>
+        <span class="hub-card__desc">Hauptanwendung</span>
+        <span class="hub-card__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="hub-card" data-sub="code" href="https://code.thinkshark.de" target="_blank" rel="noopener">
+        <span class="hub-card__ring" aria-hidden="true"></span>
+        <span class="hub-card__title">code</span>
+        <span class="hub-card__url">code.thinkshark.de</span>
+        <span class="hub-card__desc">Entwicklungsumgebung</span>
+        <span class="hub-card__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="hub-card" data-sub="job-scanner" href="https://job-scanner.thinkshark.de" target="_blank" rel="noopener">
+        <span class="hub-card__ring" aria-hidden="true"></span>
+        <span class="hub-card__title">job-scanner</span>
+        <span class="hub-card__url">job-scanner.thinkshark.de</span>
+        <span class="hub-card__desc">Job-Portal-Scanner</span>
+        <span class="hub-card__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="hub-card" data-sub="organizer" href="https://organizer.thinkshark.de" target="_blank" rel="noopener">
+        <span class="hub-card__ring" aria-hidden="true"></span>
+        <span class="hub-card__title">organizer</span>
+        <span class="hub-card__url">organizer.thinkshark.de</span>
+        <span class="hub-card__desc">Organizer</span>
+        <span class="hub-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> ThinkShark</span>
+    <span class="footer__soon">portfolio coming soon</span>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
