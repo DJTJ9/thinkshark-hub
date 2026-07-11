@@ -9,10 +9,17 @@ Beliebigen statischen Server im Repo-Root starten, z. B.:
 
 Dann `http://localhost:8000` öffnen.
 
-## Deploy (Cloudflare Pages)
-1. Cloudflare Dashboard → Workers & Pages → Create → Pages → **Connect to Git** → dieses Repo (`DJTJ9/thinkshark-hub`), Branch `main`.
-2. Build-Einstellungen: **Framework preset: None**, Build command: *(leer)*, Output directory: `/` (Root).
-3. Nach dem ersten Deploy: **Custom domains** → `thinkshark.de` und `www.thinkshark.de` hinzufügen. Cloudflare aktualisiert die DNS-Records automatisch (ersetzt die bisherigen A-Records auf `89.31.143.90`).
+## Deploy (Hetzner + Caddy)
+Live unter https://thinkshark.de. DNS (`thinkshark.de` + `www`) zeigt auf den Hetzner-Server `195.201.121.96`, dort serviert Caddy die Seite als statischen file_server.
+
+- Webroot: `/var/www/thinkshark-hub`
+- Caddy-Block in `/etc/caddy/Caddyfile`: `thinkshark.de` (file_server) + `www.thinkshark.de` (301 → apex), TLS via Cloudflare-Origin-Cert.
+
+**Redeploy nach Änderung** (kein Git-Auto-Deploy):
+
+    cp index.html styles.css main.js /var/www/thinkshark-hub/
+
+Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 
 ## Struktur
 - `index.html` — Hero + Hub-Grid + Footer
