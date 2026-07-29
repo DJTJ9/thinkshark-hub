@@ -1,4 +1,24 @@
 {
-  "generated": "2026-07-28",
-  "patches": []
+  "generated": "2026-07-29",
+  "patches": [
+    {
+      "version": "0.2.0",
+      "date": "2026-07-29",
+      "features": [
+        "Benachrichtigungen: Bob meldet Top-Treffer (Score ≥ 90) jetzt in einer eigenen In-App-Inbox in der Seitenleiste (mit Zähler) und schickt dir auf Wunsch sofort eine Mail. Wie oft du erinnert wirst, stellst du selbst ein — täglich, wöchentlich oder ganz aus.",
+        "Firmen-Watchlist: Karriereseiten kleiner Studios werden jetzt einzeln nach jeder offenen Stelle durchsucht, statt sie zu überspringen. Dazu gibt es eine kuratierte Liste empfohlener Firmen zum direkten Aufnehmen.",
+        "Eigener Firecrawl-Zugang: Du kannst in den Einstellungen deinen eigenen Firecrawl-Schlüssel hinterlegen. Bob prüft schwer erreichbare Portale und Career-Pages dann über deinen eigenen Zugang, ohne fremdes Kontingent zu verbrauchen."
+      ],
+      "fixes": [
+        "Der Standard-Scan läuft jetzt ohne externe Job-Portal-Zugänge und liefert nur noch deutsche Stellen. Adzuna und Jooble sind optional und schaltest du bei Bedarf selbst dazu."
+      ],
+      "member_notes": [
+        "Neue Benachrichtigungen: Stell deine gewünschte Frequenz (täglich/wöchentlich/aus) in den Einstellungen ein.",
+        "Wer bisher Adzuna oder Jooble genutzt hat: Diese Quellen sind jetzt standardmäßig aus — bei Bedarf in den Einstellungen wieder aktivieren.",
+        "Firecrawl-Schlüssel optional in den Einstellungen hinterlegen, wenn Bob deine eigenen Portale/Career-Pages notfalls per Firecrawl prüfen soll."
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    }
+  ]
 }
