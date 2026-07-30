@@ -1,6 +1,32 @@
 {
-  "generated": "2026-07-29",
+  "generated": "2026-07-30",
   "patches": [
+    {
+      "version": "0.3.0",
+      "date": "2026-07-30",
+      "features": [
+        "LLM-Feintuning schaltet erst nach dem ersten Lernen frei — bis dahin läuft kostenloses Regel-Scoring, ein Badge im Lernen-Bereich zeigt den Status",
+        "Matches als CSV oder PDF exportieren — neuer Export-Button auf Jobs- und Favoriten-Seite",
+        "Jobsuche und Bewertung laufen jetzt für alle über denselben Weg, Bewertung streng pro Profil getrennt",
+        "Benutzername fürs Konto: bei Registrierung Pflicht, Login per Email oder Name, in den Einstellungen änderbar",
+        "Aufgeräumte Kopfzeile: Profilauswahl unter „Meine Profile\", Abmelden unten in der Seitenleiste",
+        "Export-Button sitzt auf der Job-Seite jetzt rechts neben den Filtern",
+        "Neuer Reiter „Roadmap/Patch notes\": was zuletzt kam und was als Nächstes geplant ist",
+        "Scan-Seite als Kommandozentrale mit Auto-Scoring direkt beim Scan",
+        "Hilfe-Center neu aufgebaut: Erste Schritte, FAQ und Handbuch als Tabs, großes Handbuch als eigene Seite",
+        "Einstellungen aufgeräumt in 4 Tabs (Konto, Anbindungen, Suche, Benachrichtigung), Konto und Daten integriert",
+        "Eigene Adzuna- und Jooble-API-Keys hinterlegbar — bob-scan durchsucht sie serverseitig"
+      ],
+      "fixes": [
+        "Sicherheits-Update: Konten und Daten besser geschützt"
+      ],
+      "member_notes": [
+        "Plugin auf Version 1.3.0 updaten: `/plugin update bob`",
+        "Der Befehl `/bob:bob-score` heißt jetzt `/bob:bob-rescore`"
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
     {
       "version": "0.2.0",
       "date": "2026-07-29",
