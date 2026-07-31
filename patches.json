@@ -1,6 +1,25 @@
 {
-  "generated": "2026-07-30",
+  "generated": "2026-07-31",
   "patches": [
+    {
+      "version": "0.4.0",
+      "date": "2026-07-31",
+      "features": [
+        "Schutz vor manipulierten Stellenanzeigen: Job-Texte können der KI keine Anweisungen mehr unterschieben",
+        "Passwörter brauchen bei der Registrierung jetzt mindestens 6 Zeichen",
+        "Admins können Mitglieder sperren und Accounts endgültig löschen",
+        "Anleitungen & Datenschutz aktualisiert: Der Standard-Scan läuft gratis über deine Heim-IP, eigene API-Keys sind nur noch optional"
+      ],
+      "fixes": [
+        "Die Inbox zeigt nur noch Jobs, die zu deiner gewählten Sprache und deinem Standort passen — derselbe Rahmen wie bei den Job-Angeboten"
+      ],
+      "member_notes": [
+        "Neue Passwörter brauchen mindestens 6 Zeichen — bestehende Passwörter bleiben gültig",
+        "Schau in die aktualisierten Anleitungen: Für den Standard-Scan brauchst du keine eigenen API-Keys mehr"
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
     {
       "version": "0.3.0",
       "date": "2026-07-30",
