@@ -2,6 +2,25 @@
   "generated": "2026-08-01",
   "patches": [
     {
+      "version": "0.5.1",
+      "date": "2026-08-01",
+      "features": [
+        "Registrierung ohne Bestätigungsmail: nach dem Absenden geht es direkt aufs Dashboard.",
+        "Die ausführliche Anleitung zeigt zu jedem Bereich der Website ein Bild — auch im PDF-Download.",
+        "Deine Benachrichtigungen-Inbox ist immer an: neue Treffer landen dort in jedem Fall."
+      ],
+      "fixes": [
+        "Sprunglinks innerhalb einer Seite (etwa \"Eigenes Portal prüfen\") landen nicht mehr hinter dem Menü.",
+        "Fehlerseiten sind wieder lesbar: der Erklärtext war unsichtbar und das Bild darüber nur ein Bildschnipsel."
+      ],
+      "member_notes": [
+        "Der Schalter \"In-App-Benachrichtigungen\" ist aus den Einstellungen verschwunden — die Inbox lässt sich nicht mehr abschalten.",
+        "Neue Konten brauchen keinen Bestätigungslink mehr; der Invite-Code bleibt Voraussetzung."
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
       "version": "0.5.0",
       "date": "2026-08-01",
       "features": [
