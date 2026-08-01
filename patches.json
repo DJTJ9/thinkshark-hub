@@ -1,6 +1,30 @@
 {
-  "generated": "2026-07-31",
+  "generated": "2026-08-01",
   "patches": [
+    {
+      "version": "0.5.0",
+      "date": "2026-08-01",
+      "features": [
+        "Meine Profile als Karten: dein aktives Profil ist sichtbar markiert, Umschalten geht mit einem Klick.",
+        "Portale-Seite erklärt sich selbst — Seitenzweck, Legende (🟢/🔴/🔥) und erklärte URL-Felder. Erste Standard-Portale laufen automatisch mit.",
+        "Neue ausführliche Anleitung mit PDF-Download; das Hilfe-Center hat jetzt drei klar getrennte Reiter.",
+        "Sofort-Benachrichtigung gebündelt: Treffer aus allen deinen Profilen kommen in einer Mail, nach Profil sortiert — statt mehrerer Einzelmails.",
+        "Neue Treffer landen zuverlässig in deiner Benachrichtigungen-Inbox, unabhängig von deinen Mail-Einstellungen.",
+        "Einstellungen aufgeräumt: kurzer Erklärtext pro Tab, Bob-Befehle nur noch auf der Scan- und der Lern-Seite.",
+        "Alle Member-Seiten vor dem Onboarding auf Fehler geprüft."
+      ],
+      "fixes": [
+        "Übersichtlichere Navigation: Menü neu sortiert, neuer Startseiten-Banner.",
+        "Bestätigungsmails bei der Registrierung: Zustellfehler werden jetzt erfasst statt still zu verschwinden.",
+        "Falscher Seitentitel auf der Benachrichtigungen-Seite korrigiert."
+      ],
+      "member_notes": [
+        "\"Scan starten\" liegt jetzt nur noch auf der Übersicht — nicht mehr im Menü.",
+        "Email-Benachrichtigung ist in den Einstellungen sichtbar ausgegraut: derzeit nur für den Admin freigeschaltet."
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
     {
       "version": "0.4.0",
       "date": "2026-07-31",
