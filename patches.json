@@ -2,6 +2,23 @@
   "generated": "2026-08-02",
   "patches": [
     {
+      "version": "0.7.0",
+      "date": "2026-08-02",
+      "features": [
+        "Abgelaufene Stellen verschwinden jetzt auch bei Portalen aus deiner Liste, die den Server bisher blockiert haben (u.a. StepStone, Adzuna, Jooble) — weniger tote Links beim Durchklicken."
+      ],
+      "fixes": [
+        "„Erste Schritte\" führt dich jetzt in vier ruhigen Grundschritten durch den Einstieg — ohne dass du dafür einen eigenen Scan starten musst.",
+        "Das Tour-Fenster bleibt beim Durchklicken unten stehen und springt nicht mehr herum.",
+        "Sidebar aufgeräumt: „Meine Profile\" steht jetzt direkt oben bei den Jobs, alle Menü-Einträge und Überschriften stehen sauber untereinander."
+      ],
+      "member_notes": [
+        "Für den Einstieg brauchst du kein eigenes Claude-Abo mehr — die vier Grundschritte funktionieren ohne."
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
       "version": "0.6.0",
       "date": "2026-08-02",
       "features": [
