@@ -2,6 +2,17 @@
   "generated": "2026-08-02",
   "patches": [
     {
+      "version": "0.8.2",
+      "date": "2026-08-02",
+      "features": [],
+      "fixes": [
+        "Der Button \"Scan einrichten\" auf der Übersicht öffnet jetzt die Anleitung statt direkt die Scan-Seite — du weißt vorher, was zu tun ist."
+      ],
+      "member_notes": [],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
       "version": "0.8.1",
       "date": "2026-08-02",
       "features": [],
