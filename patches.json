@@ -2,6 +2,18 @@
   "generated": "2026-08-02",
   "patches": [
     {
+      "version": "0.8.1",
+      "date": "2026-08-02",
+      "features": [],
+      "fixes": [
+        "Die Jooble-Suche findet wieder Jobs — auch aus Österreich und den Niederlanden.",
+        "Jobs aus dem Ausland landen jetzt direkt im Ausland-Tab statt in der Warteschlange."
+      ],
+      "member_notes": [],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
       "version": "0.8.0",
       "date": "2026-08-02",
       "features": [
