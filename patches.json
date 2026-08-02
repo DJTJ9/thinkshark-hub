@@ -2,6 +2,20 @@
   "generated": "2026-08-02",
   "patches": [
     {
+      "version": "0.7.1",
+      "date": "2026-08-02",
+      "features": [
+        "Die Startseiten-Box „Was ist Bob?\" ist neu gegliedert: Was Bob kann, steht jetzt als Liste statt als Textblock, und „Wie arbeite ich?\" erklärt in normalen Worten, was zwischen Anzeige und Passung passiert. Die technischen Details sind in ein zuklappbares „Unter der Oberfläche\" gewandert — sie stehen dir nicht mehr im Weg.",
+        "Neuer Abschnitt „Wie kannst du dabei helfen?\": eigener Scan über dein Claude-Plugin, Feedback per „Sag's Bob\", vollständiges Profil. Dein Scan bringt dir bessere Treffer und füllt gleichzeitig den gemeinsamen Job-Bestand."
+      ],
+      "fixes": [],
+      "member_notes": [
+        "Ein eigener Scan holt Anzeigen von Portalen herein, die den Server aussperren — die landen im gemeinsamen Bestand und helfen allen. Einrichtung: „Scan einrichten\" in der neuen Mitmach-Box."
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
       "version": "0.7.0",
       "date": "2026-08-02",
       "features": [
