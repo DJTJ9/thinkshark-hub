@@ -1,6 +1,21 @@
 {
-  "generated": "2026-08-01",
+  "generated": "2026-08-02",
   "patches": [
+    {
+      "version": "0.6.0",
+      "date": "2026-08-02",
+      "features": [
+        "Eine geführte Tour zeigt dir beim ersten Besuch die Übersicht Schritt für Schritt — jederzeit über den ?-Knopf wiederholbar.",
+        "\"Nächste Schritte\" hat jetzt einen Fortschrittsbalken: du siehst auf einen Blick, wie weit dein Setup ist.",
+        "Updates der Website gehen nur noch komplett live — keine halb aktualisierten Seiten mehr während eines Deploys."
+      ],
+      "fixes": [],
+      "member_notes": [
+        "Die Tour startet automatisch nur einmal. Wenn du sie erneut sehen willst, klick den ?-Knopf oben auf der Übersicht."
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
     {
       "version": "0.5.1",
       "date": "2026-08-01",
