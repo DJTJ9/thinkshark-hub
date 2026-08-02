@@ -2,155 +2,311 @@
   "generated": "2026-08-02",
   "patches": [
     {
-      "version": "0.7.1",
+      "version": "0.8.0",
       "date": "2026-08-02",
       "features": [
-        "Die Startseiten-Box „Was ist Bob?\" ist neu gegliedert: Was Bob kann, steht jetzt als Liste statt als Textblock, und „Wie arbeite ich?\" erklärt in normalen Worten, was zwischen Anzeige und Passung passiert. Die technischen Details sind in ein zuklappbares „Unter der Oberfläche\" gewandert — sie stehen dir nicht mehr im Weg.",
-        "Neuer Abschnitt „Wie kannst du dabei helfen?\": eigener Scan über dein Claude-Plugin, Feedback per „Sag's Bob\", vollständiges Profil. Dein Scan bringt dir bessere Treffer und füllt gleichzeitig den gemeinsamen Job-Bestand."
+        "Geführte Tour: Beim ersten Besuch zeigt dir ein Sonar-Spotlight die Übersicht Schritt für Schritt — jederzeit über den ?-Knopf wiederholbar. Eine zweite Tour führt durch die Mitmach-Möglichkeiten.",
+        "\"Nächste Schritte\" hat einen Fortschrittsbalken: Du siehst auf einen Blick, wie weit dein Setup ist. Die vier Grundschritte funktionieren ohne eigenes Claude-Abo.",
+        "Ausführliche Anleitung in vier Kapiteln — von der Übersicht über Bobs Arbeitsweise und die Claude-Anbindung bis zur Fehlersuche, mit Screenshots zu jedem Bereich, einer mitlaufenden Kapitel-Leiste am Rand und als PDF zum Herunterladen.",
+        "Kuratierter Portal-Pool: Eine Auswahl geprüfter Standard-Portale läuft ab sofort automatisch mit. Die Portale-Seite erklärt sich selbst — Zweck, Legende und beschriftete Adressfelder.",
+        "Meine Profile als Karten-Übersicht mit Trefferzahl je Profil; das aktive Profil ist markiert, Umschalten geht mit einem Klick.",
+        "Übersichts-Banner mit Bob und ein neu gegliederter Einstiegs-Kasten: Was Bob kann, steht als Liste, die Technik ist in ein zuklappbares \"Unter der Oberfläche\" gewandert, und ein eigener Mitmach-Block erklärt, wie du beiträgst.",
+        "Aufgeräumte Einstellungen: kurzer Erklärtext pro Reiter, Bob-Befehle nur noch dort, wo sie gebraucht werden.",
+        "Hilfe-Center mit klareren Reiter-Namen und zwei Handbüchern.",
+        "Sofort-Benachrichtigung über alle deine Profile hinweg gebündelt in einer Mail, nach Profil sortiert.",
+        "Registrierung ohne Bestätigungsmail: Nach dem Absenden geht es direkt weiter. Der Einladungscode bleibt Voraussetzung.",
+        "Abgelaufene Stellen verschwinden jetzt auch bei Portalen aus deiner Liste, die den Server aussperren — die Prüfung läuft über dein Plugin statt über den Server.",
+        "Updates gehen nur noch komplett live: Während eines Updates siehst du keine halb aktualisierten Seiten mehr."
       ],
-      "fixes": [],
+      "fixes": [
+        "Seitenleiste aufgeräumt: nach Nutzungshäufigkeit sortiert, \"Meine Profile\" oben bei den Jobs, feste Icon-Spalte für saubere Bündigkeit.",
+        "Fehlerseiten sind wieder lesbar — Meldungstext sichtbar, Bild vollständig, verständlicher Text bei Serverfehlern.",
+        "Sprunglinks innerhalb einer Seite landen am Handy nicht mehr hinter dem Menü.",
+        "Das Tour-Fenster bleibt beim Durchklicken an seinem Platz.",
+        "Auslands-Stellen mit Homeoffice rutschen nicht mehr in den Aktiv-Bereich.",
+        "Die Schlagwort-Schalter in Schritt 4 des Profil-Assistenten stehen jetzt standardmäßig aus."
+      ],
       "member_notes": [
-        "Ein eigener Scan holt Anzeigen von Portalen herein, die den Server aussperren — die landen im gemeinsamen Bestand und helfen allen. Einrichtung: „Scan einrichten\" in der neuen Mitmach-Box."
+        "Die Tour startet automatisch nur einmal. Willst du sie erneut sehen, klick den ?-Knopf oben auf der Übersicht.",
+        "Für den Einstieg brauchst du kein eigenes Claude-Abo — die vier Grundschritte funktionieren ohne.",
+        "Der Schalter \"In-App-Benachrichtigungen\" ist aus den Einstellungen verschwunden: Der Posteingang lässt sich nicht mehr abschalten."
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
+      "version": "0.7.1",
+      "date": "2026-07-31",
+      "features": [
+        "Schutz vor manipulierten Stellenanzeigen: Fremde Texte aus Anzeigen und Karriereseiten werden gekapselt weitergereicht und können der Bewertung keine Anweisungen mehr unterschieben.",
+        "Passwörter brauchen bei der Registrierung mindestens 6 Zeichen.",
+        "Admins können Mitglieder sperren, wieder entsperren und endgültig löschen — mit Schutz davor, sich selbst oder den Betreiber auszusperren. Eine gesperrte Anmeldung greift sofort, auch für Plugin-Zugänge.",
+        "Die Mitglieder-Tabelle zeigt zu jedem Konto den Status und die passenden Aktionen.",
+        "Sofort-Benachrichtigung als eine gebündelte Mail statt mehrerer Einzelmails, Umlaute werden korrekt dargestellt.",
+        "Der Posteingang ist von deiner Mail-Einstellung entkoppelt: Treffer landen dort in jedem Fall.",
+        "\"Erste Schritte\" neu geschnitten — der Weg ohne eigenes Claude-Abo steht vorne, dazu neue Screenshots aus der aktuellen Oberfläche."
+      ],
+      "fixes": [
+        "Zustellfehler beim Mailversand werden jetzt protokolliert statt still verschluckt.",
+        "Interner Prüflauf über alle Mitglieder-Seiten: Alle Seiten und Links wurden systematisch auf Fehler abgeklopft, ein falscher Seitentitel korrigiert.",
+        "Die Fehlermeldung zu einem zu kurzen Passwort ist bei der Registrierung sichtbar.",
+        "Datenschutzerklärung aktualisiert: Empfänger, Cookies, Server-Protokolle, Benutzername und dein Beschwerderecht sind ergänzt."
+      ],
+      "member_notes": [
+        "Neue Passwörter brauchen mindestens 6 Zeichen — bestehende bleiben gültig.",
+        "Schau in die aktualisierten Anleitungen: Für den Standard-Scan brauchst du keine eigenen Portal-Schlüssel."
       ],
       "project": "job-scanner",
       "name": "Bob der Job-Bot"
     },
     {
       "version": "0.7.0",
-      "date": "2026-08-02",
+      "date": "2026-07-30",
       "features": [
-        "Abgelaufene Stellen verschwinden jetzt auch bei Portalen aus deiner Liste, die den Server bisher blockiert haben (u.a. StepStone, Adzuna, Jooble) — weniger tote Links beim Durchklicken."
+        "Benutzername fürs Konto: Bei der Registrierung Pflicht, beim Anmelden nutzt du wahlweise Mailadresse oder Name — änderbar in den Einstellungen.",
+        "Eigener Firecrawl-Zugang: Du kannst deinen eigenen Schlüssel hinterlegen. Bob prüft schwer erreichbare Portale und Karriereseiten dann über deinen Zugang, ohne fremdes Kontingent zu verbrauchen. Der Schlüssel liegt verschlüsselt und wird beim Speichern direkt auf Gültigkeit geprüft.",
+        "Eigene Adzuna- und Jooble-Schlüssel: ebenfalls verschlüsselt hinterlegbar, Bob durchsucht diese Quellen dann für dich mit.",
+        "Treffer exportieren: Neuer Export-Knopf auf der Job- und der Favoriten-Seite, wahlweise als Tabelle (CSV) oder als PDF mit Punktzahl-Balken. Der Dialog übernimmt deine aktuellen Filter.",
+        "Bewertung ohne Sprachmodell als Standard: Was schon aus der Anzeige selbst hervorgeht, liest Bob nach festen Regeln aus — das Sprachmodell schaltet sich erst frei, wenn du im Lernen-Bereich deine erste Erkenntnis bestätigt hast. Ein Abzeichen zeigt dir den Status.",
+        "Strikte Trennung beim Bewerten: Ein eingespielter Scan bewertet ausschließlich deine eigenen Profile.",
+        "Aufgeräumte Kopfzeile und Seitenleiste: Profilauswahl unter \"Meine Profile\", Abmelden unten in der Leiste, Export rechts neben den Filtern.",
+        "Der Profil-Assistent arbeitet mit 25 statt 9 Kriterien — feiner einstellbar, bestehende Gewichte bleiben erhalten.",
+        "Neuer Reiter \"Roadmap / Patch Notes\": Was zuletzt kam und was als Nächstes geplant ist, direkt in der App.",
+        "Scan-Seite als Kommandozentrale: Portal-Abzeichen, Befehlskarten und automatische Bewertung direkt beim Einspielen.",
+        "Einstellungen neu in vier Reitern (Konto, Anbindungen, Suche & Scoring, Benachrichtigung) — die alte Konto-Seite ist darin aufgegangen.",
+        "Hilfe-Center neu aufgebaut: Erste Schritte, FAQ und Handbuch als Reiter, dazu ein großes Handbuch als eigene Seite."
       ],
       "fixes": [
-        "„Erste Schritte\" führt dich jetzt in vier ruhigen Grundschritten durch den Einstieg — ohne dass du dafür einen eigenen Scan starten musst.",
-        "Das Tour-Fenster bleibt beim Durchklicken unten stehen und springt nicht mehr herum.",
-        "Sidebar aufgeräumt: „Meine Profile\" steht jetzt direkt oben bei den Jobs, alle Menü-Einträge und Überschriften stehen sauber untereinander."
+        "Der Standard-Scan läuft ohne externe Portal-Zugänge und liefert nur noch deutsche Stellen. Adzuna und Jooble sind optional und schaltest du bei Bedarf selbst dazu.",
+        "Mehrere Sicherheitslücken geschlossen: Fremde Portale und fremde Erkenntnisse sind nicht mehr über direkte Aufrufe erreichbar, das Anmelde-Cookie wird nur noch verschlüsselt übertragen, und selbst eingetragene Portal-Vorlagen werden gegen eine feste Liste geprüft.",
+        "Der Posteingang filtert jetzt nach denselben Regeln wie deine Job-Liste — keine Treffer mehr, die im Dashboard längst aussortiert wären.",
+        "Nach dem Speichern eines Schlüssels aktualisiert sich der Status sofort, ohne dass du die Seite verlierst."
       ],
       "member_notes": [
-        "Für den Einstieg brauchst du kein eigenes Claude-Abo mehr — die vier Grundschritte funktionieren ohne."
+        "Plugin auf Version 1.3.0 updaten: `/plugin update bob`",
+        "Der Befehl `/bob:bob-score` heißt jetzt `/bob:bob-rescore`",
+        "Wer bisher Adzuna oder Jooble genutzt hat: Diese Quellen sind jetzt standardmäßig aus — bei Bedarf in den Einstellungen wieder aktivieren.",
+        "Firecrawl-Schlüssel optional in den Einstellungen hinterlegen, wenn Bob deine eigenen Portale und Karriereseiten notfalls darüber prüfen soll."
+      ],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
+      "version": "0.6.1",
+      "date": "2026-07-28",
+      "features": [
+        "Dieselbe Stelle von zwei Portalen erscheint nur noch einmal — Bob vergleicht jetzt den Inhalt der Anzeige, nicht nur die Adresse. Bereits doppelt Gespeichertes wurde einmalig zusammengeführt.",
+        "Posteingang für Benachrichtigungen: Neue Top-Treffer sammeln sich in der Seitenleiste mit Zähler. Zusätzlich kannst du dir sofort eine Mail schicken lassen oder eine Zusammenfassung täglich bzw. wöchentlich.",
+        "Neuer Reiter \"Wartet\": Stellen, die noch auf ihre Bewertung warten, stehen nicht mehr unsichtbar in der Liste.",
+        "Sortieren und Mindest-Punktzahl per Auswahlfeld — du blendest schwache Treffer einfach aus.",
+        "Jede Anzeige zeigt ihr Alter in Klartext (\"vor 3 Tagen\") statt eines nackten Datums.",
+        "Abgelaufene Favoriten bleiben sichtbar, rutschen ans Listenende und sind als nicht mehr erreichbar markiert.",
+        "Im Profil-Assistenten springst du über die Fortschrittsleiste direkt zu jedem bereits besuchten Schritt.",
+        "Karriereseiten werden gründlicher durchsucht: Bob folgt den Links einer Übersichtsseite und findet so jede einzelne offene Stelle statt nur die erste.",
+        "Empfohlene Firmen: eine gepflegte Liste interessanter Arbeitgeber, die du mit einem Klick in deine eigene Portal-Auswahl übernimmst."
+      ],
+      "fixes": [
+        "Freundliche Fehlerseiten statt technischer Meldungen — bei 404, Serverfehlern, abgelaufenen Formularen und ungültigen Bestätigungslinks. Schnittstellen-Aufrufe bekommen weiter maschinenlesbare Antworten.",
+        "Einstellungen, die still speicherten, bestätigen den Vorgang jetzt sichtbar mit einem Haken."
+      ],
+      "member_notes": [
+        "Deine Benachrichtigungen findest du ab jetzt im Posteingang in der Seitenleiste — die Mail ist nur noch die Zustellung obendrauf.",
+        "Ob sofort, täglich, wöchentlich oder gar keine Mail, stellst du in den Einstellungen unter \"Benachrichtigung\" ein."
       ],
       "project": "job-scanner",
       "name": "Bob der Job-Bot"
     },
     {
       "version": "0.6.0",
-      "date": "2026-08-02",
+      "date": "2026-07-27",
       "features": [
-        "Eine geführte Tour zeigt dir beim ersten Besuch die Übersicht Schritt für Schritt — jederzeit über den ?-Knopf wiederholbar.",
-        "\"Nächste Schritte\" hat jetzt einen Fortschrittsbalken: du siehst auf einen Blick, wie weit dein Setup ist.",
-        "Updates der Website gehen nur noch komplett live — keine halb aktualisierten Seiten mehr während eines Deploys."
+        "Komplett neue Navigation: Statt eines einzigen Dashboards mit Reitern hat jeder Bereich seine eigene Seite — Jobs, Favoriten, Feintuning, Lernen, Scan, Profil und Metriken, erreichbar über eine gruppierte Seitenleiste.",
+        "Neue Übersichtsseite im Sonar-Look: auf einen Blick, wie viele neue Treffer da sind, wann zuletzt gescannt wurde und was als Nächstes ansteht.",
+        "Eigene Startseite für Ausgeloggte, die erklärt, was Bob überhaupt tut.",
+        "Profil wechseln mit einem Klick direkt aus der Seitenleiste.",
+        "Passwort vergessen: Du setzt es dir selbst per Mail-Link zurück, ohne beim Betreiber anzufragen.",
+        "E-Mail-Adresse ändern — mit Bestätigung an die neue Adresse.",
+        "Alle deine Daten als Datei herunterladen und dein Konto vollständig löschen, direkt in den Einstellungen.",
+        "Eigene Portale lassen sich jetzt vorübergehend deaktivieren oder ganz löschen, statt für immer in der Liste zu stehen.",
+        "Der Profil-Assistent hat einen neuen Schritt für eigene Suchbegriffe, die du als Chips einträgst und live vorschauen kannst.",
+        "Alle Anleitungen sind zu einem Hilfe-Center zusammengezogen, und auf jeder Funktionsseite steht eine Kurzhilfe, die den Bereich in zwei Sätzen erklärt.",
+        "Admins können Mitglieder direkt unterstützen: Bestätigungsmail neu schicken, Adresse freigeben, Passwort zurücksetzen."
       ],
       "fixes": [],
       "member_notes": [
-        "Die Tour startet automatisch nur einmal. Wenn du sie erneut sehen willst, klick den ?-Knopf oben auf der Übersicht."
+        "Deine alten Lesezeichen funktionieren weiter — sie leiten automatisch auf die neue Adresse der jeweiligen Seite um.",
+        "Suchbegriffe pflegst du ab jetzt im Profil-Assistenten; sie fließen direkt in den nächsten Scan ein."
       ],
       "project": "job-scanner",
       "name": "Bob der Job-Bot"
     },
     {
       "version": "0.5.1",
-      "date": "2026-08-01",
+      "date": "2026-07-25",
       "features": [
-        "Registrierung ohne Bestätigungsmail: nach dem Absenden geht es direkt aufs Dashboard.",
-        "Die ausführliche Anleitung zeigt zu jedem Bereich der Website ein Bild — auch im PDF-Download.",
-        "Deine Benachrichtigungen-Inbox ist immer an: neue Treffer landen dort in jedem Fall."
+        "Scannen über deinen eigenen Anschluss: Die großen Portale sperren Server-Rechenzentren aus. Bob lagert das Suchen deshalb auf deinen Rechner aus — dein Anschluss holt die Anzeigen, Bob nimmt sie entgegen und bewertet sie.",
+        "Du wählst selbst, welche Portale dein Scan abklappert — inklusive der Karriereseiten, die du eingetragen hast.",
+        "Dein Plugin holt sich die Scan-Einstellungen jetzt selbst ab: Portale, Suchbegriffe und Umfang kommen automatisch aus deinem Profil, du musst nichts mehr von Hand übergeben.",
+        "Neue Startseite als Kommandozentrale: drei Karten führen dich direkt zu Scan, Treffern und Profil, statt einer bloßen Profilliste.",
+        "Alle Einstiegs-Erklärungen liegen jetzt gebündelt auf einer Seite, und ein Hilfe-Bereich fasst die Anleitungen als Karten zusammen.",
+        "Bestätigungsmail nicht angekommen? Du kannst sie dir jetzt selbst erneut schicken lassen, mit sichtbarer Wartezeit bis zum nächsten Versuch."
       ],
       "fixes": [
-        "Sprunglinks innerhalb einer Seite (etwa \"Eigenes Portal prüfen\") landen nicht mehr hinter dem Menü.",
-        "Fehlerseiten sind wieder lesbar: der Erklärtext war unsichtbar und das Bild darüber nur ein Bildschnipsel."
+        "Sicherheitsprüfung für eingetragene Portale greift jetzt auch bei Weiterleitungen — jeder einzelne Zwischenschritt wird geprüft, nicht nur die erste Adresse.",
+        "Die Anfragebremse zählt jetzt pro echtem Besucher statt pro Server-Adresse. Vorher konnte ein Einzelner alle anderen mit aussperren.",
+        "Das Feedback-Fenster lässt sich wieder schließen und läuft nicht mehr über den Rand.",
+        "Ruhigerer Hintergrund auf iPhones, dazu ein Feinschliff-Durchgang für schmale Bildschirme.",
+        "Bob läuft jetzt unter einem eigenen, eingeschränkten Systemkonto statt mit vollen Rechten."
       ],
       "member_notes": [
-        "Der Schalter \"In-App-Benachrichtigungen\" ist aus den Einstellungen verschwunden — die Inbox lässt sich nicht mehr abschalten.",
-        "Neue Konten brauchen keinen Bestätigungslink mehr; der Invite-Code bleibt Voraussetzung."
+        "Der Standard-Scan läuft über deinen eigenen Anschluss — starte ihn über das Plugin, wenn dein Rechner an ist.",
+        "Welche Portale dabei durchsucht werden, hakst du in den Einstellungen ab."
       ],
       "project": "job-scanner",
       "name": "Bob der Job-Bot"
     },
     {
       "version": "0.5.0",
-      "date": "2026-08-01",
+      "date": "2026-07-23",
       "features": [
-        "Meine Profile als Karten: dein aktives Profil ist sichtbar markiert, Umschalten geht mit einem Klick.",
-        "Portale-Seite erklärt sich selbst — Seitenzweck, Legende (🟢/🔴/🔥) und erklärte URL-Felder. Erste Standard-Portale laufen automatisch mit.",
-        "Neue ausführliche Anleitung mit PDF-Download; das Hilfe-Center hat jetzt drei klar getrennte Reiter.",
-        "Sofort-Benachrichtigung gebündelt: Treffer aus allen deinen Profilen kommen in einer Mail, nach Profil sortiert — statt mehrerer Einzelmails.",
-        "Neue Treffer landen zuverlässig in deiner Benachrichtigungen-Inbox, unabhängig von deinen Mail-Einstellungen.",
-        "Einstellungen aufgeräumt: kurzer Erklärtext pro Tab, Bob-Befehle nur noch auf der Scan- und der Lern-Seite.",
-        "Alle Member-Seiten vor dem Onboarding auf Fehler geprüft."
+        "Favoriten: Ein Stern-Knopf an jeder Anzeige merkt Stellen vor — und zählt zugleich als starkes Ja, das Bobs Bewertung für dich schärft.",
+        "Volltextsuche im Job-Bereich: Tipp einen Begriff ein, die Liste filtert sich sofort mit Trefferzahl.",
+        "Erste Benachrichtigungen: Bob schickt dir deine Top-Treffer als Mail-Zusammenfassung. Ob und wie oft, stellst du selbst ein.",
+        "Deine E-Mail-Adresse wird bei der Registrierung bestätigt, die Einwilligung sauber erfasst. Ohne bestätigte Adresse kommt man nicht rein.",
+        "Seitenweise Anzeige: Lange Trefferlisten laden nicht mehr am Stück, sondern in Seiten mit Blätter-Navigation.",
+        "Bob merkt, wenn eine Anzeige offline geht: Nach mehreren Fehlversuchen gilt sie als abgelaufen und verschwindet aus deinen Listen.",
+        "Eigene Anleitung zum Scan-Ablauf, direkt aus dem Menü erreichbar.",
+        "Admin-Übersicht über Registrierungen.",
+        "Betrieb abgesichert: tägliche Datensicherung mit automatischer Rotation, Erreichbarkeitsprüfung alle 15 Minuten, Alarm bei stillen Fehlern und ein geprüfter Weg zurück auf eine Sicherung."
       ],
       "fixes": [
-        "Übersichtlichere Navigation: Menü neu sortiert, neuer Startseiten-Banner.",
-        "Bestätigungsmails bei der Registrierung: Zustellfehler werden jetzt erfasst statt still zu verschwinden.",
-        "Falscher Seitentitel auf der Benachrichtigungen-Seite korrigiert."
+        "Schutz gegen gefälschte Formular-Abschickungen auf allen Seiten.",
+        "Bremse gegen Massenanfragen: Wer es zu oft in Folge versucht, wird vorübergehend ausgebremst.",
+        "Das Suchfeld behält am Handy den Fokus — die Tastatur klappt beim Tippen nicht mehr weg."
       ],
       "member_notes": [
-        "\"Scan starten\" liegt jetzt nur noch auf der Übersicht — nicht mehr im Menü.",
-        "Email-Benachrichtigung ist in den Einstellungen sichtbar ausgegraut: derzeit nur für den Admin freigeschaltet."
+        "Bestätige nach der Registrierung deine Mailadresse — ohne den Link im Postfach bleibt das Konto gesperrt.",
+        "Wie oft Bob dir Treffer mailt, stellst du in den Einstellungen unter \"Benachrichtigung\" ein.",
+        "Der Stern an einer Anzeige ist mehr als ein Lesezeichen: Bob wertet ihn als klares \"gefällt mir\" für künftige Bewertungen."
       ],
       "project": "job-scanner",
       "name": "Bob der Job-Bot"
     },
     {
       "version": "0.4.0",
-      "date": "2026-07-31",
+      "date": "2026-07-19",
       "features": [
-        "Schutz vor manipulierten Stellenanzeigen: Job-Texte können der KI keine Anweisungen mehr unterschieben",
-        "Passwörter brauchen bei der Registrierung jetzt mindestens 6 Zeichen",
-        "Admins können Mitglieder sperren und Accounts endgültig löschen",
-        "Anleitungen & Datenschutz aktualisiert: Der Standard-Scan läuft gratis über deine Heim-IP, eigene API-Keys sind nur noch optional"
+        "Aus dem Job-Scanner wird Bob der Job-Bot: neue Farbwelt, eigene Illustrationen, \"Bobs Pfad\" als Fortschrittsanzeige und eine andockbare Seitenleiste, die du ein- und ausklappen kannst.",
+        "Bob bekommt ein Claude-Plugin: Mit einem persönlichen Zugangsschlüssel startest du den Scan direkt aus Claude heraus — dein Rechner sucht, Bob nimmt die Ergebnisse entgegen.",
+        "Der Lernen-Bereich steht jetzt allen Mitgliedern offen (vorher nur dem Betreiber) — mit Erinnerung, wenn genug neues Feedback für eine Auswertung zusammengekommen ist.",
+        "Eigene Portale: Du kannst Karriereseiten und Portale selbst eintragen. Bob lotet vorher aus, ob die Seite überhaupt auslesbar ist, und zeigt dir das Ergebnis, bevor du sie aufnimmst.",
+        "Spar-Modus: Du legst fest, wie viele Stellen pro Durchgang bewertet werden — für alle, die kein eigenes Claude-Abo verbrauchen wollen.",
+        "Standort- und Sprachfilter: Bob sortiert Anzeigen aus, die nicht zu deiner Region oder Sprache passen, und markiert Auslandsstellen in einem eigenen Reiter.",
+        "Scan-Größen zur Auswahl (klein, mittel, groß) statt fester Vorgabe.",
+        "Bebilderte Anleitung mit echten Screenshots plus eine eigene Seite mit Einstellungen für Konto und Zugangsschlüssel.",
+        "Feedback-Knopf auf jeder Seite: Du kannst Bob jederzeit direkt sagen, was hakt.",
+        "Impressum und Datenschutz sind da, und dein Passwort änderst du selbst in den Einstellungen.",
+        "Unter der Haube arbeitet Bob jetzt mit Claude statt mit dem bisherigen Sprachmodell — bessere Bewertungen bei gleichem Ablauf.",
+        "Spürbar schneller und stabiler: mehrere Zugriffe gleichzeitig blockieren sich nicht mehr, häufige Abfragen laufen über neue Datenbank-Indizes.",
+        "Vor der Bewertung wirft ein Vorfilter offensichtlich unpassende Anzeigen raus — das spart Rechenzeit und Kosten."
       ],
       "fixes": [
-        "Die Inbox zeigt nur noch Jobs, die zu deiner gewählten Sprache und deinem Standort passen — derselbe Rahmen wie bei den Job-Angeboten"
+        "Sicherheitslücke geschlossen: Beim Prüfen selbst eingetragener Portale kann Bob nicht mehr dazu gebracht werden, interne Adressen des Servers aufzurufen.",
+        "Viele Feinschliffe an der Oberfläche: Seitenleiste in richtiger Reihenfolge, Kopfzeilen-Abstände, lesbarer Hintergrund auf der Startseite, nummerierte Schritte im Assistenten, Live-Anzeige der Regler-Werte, Handy-Ansicht auf mehreren Seiten korrigiert.",
+        "Dieselbe Stelle wird auch dann als Dublette erkannt, wenn sie über verschiedene Wege in die Warteschlange kommt."
       ],
       "member_notes": [
-        "Neue Passwörter brauchen mindestens 6 Zeichen — bestehende Passwörter bleiben gültig",
-        "Schau in die aktualisierten Anleitungen: Für den Standard-Scan brauchst du keine eigenen API-Keys mehr"
+        "Das Plugin richtest du über die Anleitung ein — danach startest du deinen Scan direkt aus Claude.",
+        "Eigene Portale trägst du unter \"Portale prüfen\" ein. Bob sagt dir vorab, ob die Seite auslesbar ist.",
+        "Wenn du sparsam mit deinem Claude-Kontingent umgehen willst, stell den Spar-Modus in den Einstellungen ein."
       ],
       "project": "job-scanner",
       "name": "Bob der Job-Bot"
     },
     {
       "version": "0.3.0",
-      "date": "2026-07-30",
+      "date": "2026-07-16",
       "features": [
-        "LLM-Feintuning schaltet erst nach dem ersten Lernen frei — bis dahin läuft kostenloses Regel-Scoring, ein Badge im Lernen-Bereich zeigt den Status",
-        "Matches als CSV oder PDF exportieren — neuer Export-Button auf Jobs- und Favoriten-Seite",
-        "Jobsuche und Bewertung laufen jetzt für alle über denselben Weg, Bewertung streng pro Profil getrennt",
-        "Benutzername fürs Konto: bei Registrierung Pflicht, Login per Email oder Name, in den Einstellungen änderbar",
-        "Aufgeräumte Kopfzeile: Profilauswahl unter „Meine Profile\", Abmelden unten in der Seitenleiste",
-        "Export-Button sitzt auf der Job-Seite jetzt rechts neben den Filtern",
-        "Neuer Reiter „Roadmap/Patch notes\": was zuletzt kam und was als Nächstes geplant ist",
-        "Scan-Seite als Kommandozentrale mit Auto-Scoring direkt beim Scan",
-        "Hilfe-Center neu aufgebaut: Erste Schritte, FAQ und Handbuch als Tabs, großes Handbuch als eigene Seite",
-        "Einstellungen aufgeräumt in 4 Tabs (Konto, Anbindungen, Suche, Benachrichtigung), Konto und Daten integriert",
-        "Eigene Adzuna- und Jooble-API-Keys hinterlegbar — bob-scan durchsucht sie serverseitig"
+        "Bob wird mehrbenutzerfähig: Es gibt jetzt echte Konten mit E-Mail und Passwort. Bis hierhin lief alles auf einem einzigen Profil.",
+        "Registrierung per Einladungscode — wer den Code hat, legt sich selbst ein Konto an.",
+        "Strikte Trennung: Dein Profil, deine Kriterien und deine Bewertungen sieht nur du. Der gefundene Job-Pool ist gemeinsam, alles Persönliche bleibt bei dir.",
+        "Bewertung ohne Sprachmodell: Aus einem Katalog fertiger Kriterien und Ausschlussgründe berechnet Bob deine Punktzahl nach festen Regeln. Das ist sofort da, kostet nichts und liefert bei gleichen Angaben immer dasselbe Ergebnis.",
+        "Der Profil-Assistent wird größer und leichter: Vorschlags-Chips für Rollen, Städte und Anstellungsarten, ein eigener Schritt für Fachbereiche und ein erweiterter Katalog an Ausschlussgründen. Du klickst zusammen, statt zu tippen.",
+        "Profile lassen sich nachträglich bearbeiten und wieder löschen — der Assistent öffnet sich mit deinen bisherigen Angaben vorbefüllt.",
+        "Neue Startseite mit aufklappbaren Panels, die dir Schritt für Schritt erklären, was Bob macht und wo du anfängst.",
+        "Metriken-Übersicht: Seitenaufrufe, Verlauf und der Weg vom ersten Besuch bis zum fertigen Profil werden ausgewertet."
       ],
       "fixes": [
-        "Sicherheits-Update: Konten und Daten besser geschützt"
+        "Beim Öffnen eines Erklär-Panels schließen sich die anderen — vorher konnten sie sich überlagern.",
+        "Erstnutzer sehen nur noch die Einstiegs-Buttons statt einer leeren Profilansicht."
       ],
       "member_notes": [
-        "Plugin auf Version 1.3.0 updaten: `/plugin update bob`",
-        "Der Befehl `/bob:bob-score` heißt jetzt `/bob:bob-rescore`"
+        "Du brauchst ab jetzt ein eigenes Konto: Mit deinem Einladungscode registrierst du dich unter \"Registrieren\" selbst.",
+        "Dein Profil legst du über den Assistenten an — er führt dich durch alle Schritte, du musst nichts frei formulieren."
       ],
       "project": "job-scanner",
       "name": "Bob der Job-Bot"
     },
     {
-      "version": "0.2.0",
-      "date": "2026-07-29",
+      "version": "0.2.1",
+      "date": "2026-07-15",
       "features": [
-        "Benachrichtigungen: Bob meldet Top-Treffer (Score ≥ 90) jetzt in einer eigenen In-App-Inbox in der Seitenleiste (mit Zähler) und schickt dir auf Wunsch sofort eine Mail. Wie oft du erinnert wirst, stellst du selbst ein — täglich, wöchentlich oder ganz aus.",
-        "Firmen-Watchlist: Karriereseiten kleiner Studios werden jetzt einzeln nach jeder offenen Stelle durchsucht, statt sie zu überspringen. Dazu gibt es eine kuratierte Liste empfohlener Firmen zum direkten Aufnehmen.",
-        "Eigener Firecrawl-Zugang: Du kannst in den Einstellungen deinen eigenen Firecrawl-Schlüssel hinterlegen. Bob prüft schwer erreichbare Portale und Career-Pages dann über deinen eigenen Zugang, ohne fremdes Kontingent zu verbrauchen."
+        "Das Dashboard sortiert nach Punktzahl statt nach Fundzeitpunkt — die besten Treffer stehen oben.",
+        "Drei Reiter trennen die Liste: Aktiv, No-Go und Bereits bewertet. Jeder Reiter zeigt an, wie viele Stellen darin liegen.",
+        "Bewerten ohne Wartezeit: Daumen hoch oder runter wird sofort gespeichert, die Seite lädt nicht mehr neu.",
+        "Jeder Job-Titel ist mit der Originalanzeige verlinkt — ein Klick bringt dich direkt zur Quelle.",
+        "Feintuning: Wenn du die Gewichte deiner Kriterien änderst, bewertet Bob alle vorhandenen Stellen sofort neu, statt auf den nächsten Lauf zu warten.",
+        "Neuer Reiter \"Lernen\": Bob wertet dein bisheriges Feedback aus und legt dir Erkenntniskarten vor (\"Du lehnst Stellen ohne Homeoffice regelmäßig ab\"). Bestätigst du eine Karte, fließt sie in künftige Bewertungen ein."
       ],
       "fixes": [
-        "Der Standard-Scan läuft jetzt ohne externe Job-Portal-Zugänge und liefert nur noch deutsche Stellen. Adzuna und Jooble sind optional und schaltest du bei Bedarf selbst dazu."
+        "Mehrere Darstellungsfehler am Handy behoben: Die Begründungstabelle läuft nicht mehr über den Kartenrand hinaus, sondern lässt sich seitlich scrollen, und das Feintuning-Panel klebt auf kleinen Bildschirmen nicht mehr am Rand.",
+        "Nach einem Update siehst du sofort die neue Version der Seite. Vorher konnte ein zwischengespeicherter Stand veraltete Ansichten zeigen.",
+        "Job-Links werden auf echte Web-Adressen geprüft, bevor sie anklickbar gemacht werden."
       ],
-      "member_notes": [
-        "Neue Benachrichtigungen: Stell deine gewünschte Frequenz (täglich/wöchentlich/aus) in den Einstellungen ein.",
-        "Wer bisher Adzuna oder Jooble genutzt hat: Diese Quellen sind jetzt standardmäßig aus — bei Bedarf in den Einstellungen wieder aktivieren.",
-        "Firecrawl-Schlüssel optional in den Einstellungen hinterlegen, wenn Bob deine eigenen Portale/Career-Pages notfalls per Firecrawl prüfen soll."
+      "member_notes": [],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
+      "version": "0.2.0",
+      "date": "2026-07-12",
+      "features": [
+        "Bob bekommt eine Weboberfläche: Login, ein Dashboard mit allen Treffern und ein Assistent in sechs Schritten, der aus deinen Angaben ein Suchprofil baut. Bis dahin lief alles über Konfigurationsdateien und Telegram.",
+        "Eigener Browser statt Fremddienst: Bob öffnet Anzeigen jetzt selbst in einem echten Browser. Dadurch liest er auch Portale, die ihre Stellen erst per JavaScript nachladen — und ist nicht mehr auf einen kostenpflichtigen Scrape-Dienst angewiesen.",
+        "Neue Quellen: eigene Portal-Anbindungen, die Arbeitsagentur sowie Adzuna und Jooble als zusätzliche Job-Datenbanken.",
+        "Nachbar-Rollen: Bob leitet aus deinen Wunschrollen verwandte Berufsbezeichnungen ab und sucht auch danach. So findest du Stellen, die inhaltlich passen, aber anders heißen.",
+        "Bewertung nach deinen Kriterien: Statt einer einzelnen Punktzahl aus dem Bauch heraus bewertet Bob jede Stelle gegen deine gewichteten Kriterien. Ein Ausschlusskriterium kann eine Stelle komplett kippen, egal wie gut der Rest passt.",
+        "Profile, Kriterien, Bewertungen und dein Feedback liegen jetzt in der Datenbank statt in Dateien — Grundlage für alles, was später an Dashboard und Lernen dazukam.",
+        "Kostenzähler mit Deckel: Bob zählt mit, was ein Lauf an externen Abfragen kostet, und stoppt automatisch, bevor ein eingestelltes Budget überschritten wird.",
+        "Der Ablauf ist in zwei Phasen geteilt: Erst sammelt Bob Anzeigen ein, danach werden sie in einem eigenen Durchgang bewertet. Ein hängendes Sprachmodell blockiert dadurch nicht mehr die ganze Suche."
       ],
+      "fixes": [
+        "Stellen von Indeed werden auf eine eindeutige Kennung zurückgeführt. Dieselbe Anzeige über zwei verschiedene Links landet nicht mehr doppelt in der Liste.",
+        "Läuft ein Portal auf sein Abfrage-Limit, startet Bob dafür gar nicht erst eine teure Suche.",
+        "Bricht ein Bewertungsdienst mit einem Fehler ab, wird der Fehler nicht mehr als Ergebnis gespeichert — die Stelle wird später erneut bewertet."
+      ],
+      "member_notes": [],
+      "project": "job-scanner",
+      "name": "Bob der Job-Bot"
+    },
+    {
+      "version": "0.1.0",
+      "date": "2026-07-10",
+      "features": [
+        "Der Anfang: Damals lief Bob noch nur für ein einzelnes Profil, hatte keine Weboberfläche und meldete sich abends per Telegram. Konten, Mitglieder und Dashboard kamen erst später.",
+        "Bob durchsucht erstmals Jobportale selbstständig: Er ruft die Trefferlisten auf, folgt jeder Anzeige und liest Titel, Firma, Ort und Beschreibung heraus.",
+        "Jede gefundene Stelle bekommt einen Fingerabdruck aus Titel, Firma und Ort. Dieselbe Anzeige auf zwei Portalen zählt dadurch nur einmal — auch wenn die Firma mal mit und mal ohne \"GmbH\" geschrieben ist.",
+        "Alle Funde landen dauerhaft in einer eigenen Datenbank. Findet Bob eine bereits bekannte Stelle erneut, merkt er sich nur, dass sie noch online ist, statt einen Doppeleintrag anzulegen.",
+        "Welche Portale mit welchen Suchbegriffen abgefragt werden, steht in einer eigenen Konfiguration — neue Quellen ließen sich hinzufügen, ohne den Suchablauf anzufassen.",
+        "Der Frischefilter sortiert alles aus, was zu lange online steht. Bob zeigt nur, was wirklich neu ist.",
+        "Zweistufige Bewertung: Erst werfen feste Regeln alles raus, was klar nicht passt, dann liest ein Sprachmodell die verbleibenden Anzeigen und vergibt eine Punktzahl mit Begründung.",
+        "Jede Stelle wird der Rolle zugeordnet, über die sie gefunden wurde — so ist auf einen Blick klar, aus welcher Suchrichtung ein Treffer kommt.",
+        "Die Treffer landen zusätzlich auf einem Board und in einem Markdown-Archiv, das den Stand jedes Laufs festhält.",
+        "Eine Marktauswertung zieht aus allen Funden die häufigsten geforderten Fähigkeiten je Rolle zusammen.",
+        "Am Ende jedes Laufs schickt Bob einen Report mit den besten Treffern per Telegram."
+      ],
+      "fixes": [],
+      "member_notes": [],
       "project": "job-scanner",
       "name": "Bob der Job-Bot"
     }
