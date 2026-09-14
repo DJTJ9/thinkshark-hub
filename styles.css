@@ -93,6 +93,11 @@ body::before {
   background: linear-gradient(90deg, var(--teal), transparent);
   box-shadow: 0 0 12px rgba(61, 225, 192, 0.5);
 }
+.portfolio .hero__sweep { transform-origin: left; animation: sweep 0.9s ease-out both; }
+@keyframes sweep {
+  from { transform: scaleX(0); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
 
 .eyebrow {
   font-family: "IBM Plex Mono", monospace;
@@ -234,7 +239,7 @@ body::before {
 @media (max-width: 640px) { .entry__date { margin-left: 0; width: 100%; } }
 @media (prefers-reduced-motion: reduce) {
   .entry--latest .entry__echo::after { animation: none; }
-  .hero__sweep { animation: none; opacity: 0; }
+  .portfolio .hero__sweep { animation: none; opacity: 0; }
   .rail__marker { transition: none; }
 }
 

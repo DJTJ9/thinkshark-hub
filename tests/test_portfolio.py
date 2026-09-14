@@ -102,10 +102,19 @@ def test_mail_is_obfuscated_in_markup():
 
 
 def test_sonar_ping_guarded_for_pages_without_cards():
-    assert ".hub-card" in JS
-    assert "prefers-reduced-motion" in JS
+    ping_block = JS[JS.index("Sonar-Ping"):]
+    assert 'if (!reduce) {' in ping_block
+    assert 'querySelectorAll(".hub-card")' in ping_block
+    assert 'if (!ring) return;' in ping_block
 
 
 def test_rail_marker_uses_intersection_observer():
     assert "IntersectionObserver" in JS
     assert "rail__marker" in JS
+
+
+def test_hero_sweep_animates_once_and_respects_reduced_motion():
+    assert "@keyframes sweep" in CSS
+    assert ".portfolio .hero__sweep { transform-origin: left; animation: sweep 0.9s ease-out both; }" in CSS
+    tail = CSS[CSS.rfind("prefers-reduced-motion"):]
+    assert ".portfolio .hero__sweep { animation: none; opacity: 0; }" in tail
