@@ -234,6 +234,8 @@ body::before {
 @media (max-width: 640px) { .entry__date { margin-left: 0; width: 100%; } }
 @media (prefers-reduced-motion: reduce) {
   .entry--latest .entry__echo::after { animation: none; }
+  .hero__sweep { animation: none; opacity: 0; }
+  .rail__marker { transition: none; }
 }
 
 .hub-title { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.75rem; }

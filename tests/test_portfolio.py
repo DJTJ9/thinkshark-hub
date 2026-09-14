@@ -4,6 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "index.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
+JS = (ROOT / "main.js").read_text(encoding="utf-8")
 
 
 def test_hero_says_games_programmer():
@@ -80,3 +81,31 @@ def test_no_generic_decorations():
 def test_focus_style_visible():
     assert ":focus-visible" in CSS
     assert "outline: 2px solid var(--teal)" in CSS
+
+
+def test_every_translatable_node_has_both_languages():
+    de = re.findall(r'data-de="', HTML)
+    en = re.findall(r'data-en="', HTML)
+    assert len(de) == len(en) and len(de) >= 12
+
+
+def test_language_choice_persists_in_localstorage():
+    assert 'localStorage' in JS
+    assert '"lang"' in JS or "'lang'" in JS
+    assert 'document.documentElement.lang' in JS
+
+
+def test_mail_is_obfuscated_in_markup():
+    assert "TjarkDreyer@gmail.com" not in HTML
+    assert 'data-user="TjarkDreyer"' in HTML
+    assert "mailto:" in JS
+
+
+def test_sonar_ping_guarded_for_pages_without_cards():
+    assert ".hub-card" in JS
+    assert "prefers-reduced-motion" in JS
+
+
+def test_rail_marker_uses_intersection_observer():
+    assert "IntersectionObserver" in JS
+    assert "rail__marker" in JS
