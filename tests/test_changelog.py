@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from html_utils import elements_by_tag
+
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "changelog.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
@@ -56,4 +58,5 @@ def test_empty_state_present():
 
 
 def test_back_link_to_index():
-    assert 'href="index.html"' in HTML
+    hrefs = {a.get("href") for a in elements_by_tag(HTML, "a")}
+    assert "index.html" in hrefs, "kein <a href=\"index.html\"> im Changelog"

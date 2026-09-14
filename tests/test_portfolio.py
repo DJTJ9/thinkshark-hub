@@ -1,6 +1,8 @@
 import re
 from pathlib import Path
 
+from html_utils import parse_elements, rules_for_selector
+
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "index.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
@@ -27,9 +29,14 @@ def test_all_sections_present_with_depth():
 
 
 def test_rail_is_present_and_static():
-    assert 'class="rail"' in HTML
-    assert "rail__marker" in HTML
-    assert "position: sticky" in CSS
+    elements = parse_elements(HTML)
+    assert any(tag == "aside" and "rail" in (attrs.get("class") or "").split() for tag, attrs in elements), \
+        "kein <aside class=\"rail\"> im Markup"
+    assert any(tag == "span" and "rail__marker" in (attrs.get("class") or "").split() for tag, attrs in elements), \
+        "kein .rail__marker-Element im Markup"
+    rules = rules_for_selector(CSS, ".rail__marker")
+    assert any("position: sticky" in r["body"] for r in rules), \
+        ".rail__marker hat keine position: sticky-Regel"
 
 
 def test_four_projects_in_strength_order():
@@ -46,14 +53,31 @@ def test_repo_links_present_except_desk_buddy():
 
 
 def test_desk_buddy_marked_in_progress():
-    assert "badge--wip" in HTML
-    assert "var(--flare)" in CSS
+    elements = parse_elements(HTML)
+    assert any("badge--wip" in (attrs.get("class") or "").split() for _, attrs in elements), \
+        "kein Element mit class badge--wip im Markup"
+    rules = rules_for_selector(CSS, ".badge--wip")
+    assert rules, "keine CSS-Regel für .badge--wip"
+    body = rules[0]["body"]
+    assert "color: var(--flare)" in body
+    assert "border" in body and "var(--flare)" in body
 
 
 def test_project_images_have_fixed_ratio():
-    assert "assets/projects/izzy.png" in HTML
-    assert "aspect-ratio" in CSS
-    assert HTML.count("<img") == HTML.count("alt=")
+    imgs = [attrs for tag, attrs in parse_elements(HTML) if tag == "img"]
+    project_imgs = [a for a in imgs if (a.get("src") or "").startswith("assets/projects/")]
+    assert len(project_imgs) == 4
+    for attrs in project_imgs:
+        alt = attrs.get("alt")
+        assert alt, f"leeres oder fehlendes alt bei {attrs.get('src')}"
+        width, height = attrs.get("width"), attrs.get("height")
+        assert width and height, f"fehlende width/height bei {attrs.get('src')}"
+        assert int(width) * 10 == int(height) * 16, (
+            f"{attrs.get('src')} hat kein 16:10-Attributverhältnis: {width}x{height}"
+        )
+    rules = rules_for_selector(CSS, ".project__shot img")
+    assert rules, "keine CSS-Regel für .project__shot img"
+    assert "aspect-ratio: 16 / 10" in rules[0]["body"]
 
 
 def test_cv_downloads_linked():
@@ -79,14 +103,19 @@ def test_no_generic_decorations():
 
 
 def test_focus_style_visible():
-    assert ":focus-visible" in CSS
-    assert "outline: 2px solid var(--teal)" in CSS
+    for selector in ("a:focus-visible", "button:focus-visible"):
+        rules = rules_for_selector(CSS, selector)
+        assert rules, f"keine Regel für {selector}"
+        assert any("outline: 2px solid var(--teal)" in r["body"] for r in rules), \
+            f"{selector} hat keinen sichtbaren teal-Outline"
 
 
 def test_every_translatable_node_has_both_languages():
-    de = re.findall(r'data-de="', HTML)
-    en = re.findall(r'data-en="', HTML)
-    assert len(de) == len(en) and len(de) >= 12
+    nodes = [attrs for _, attrs in parse_elements(HTML) if "data-de" in attrs or "data-en" in attrs]
+    assert len(nodes) >= 12
+    for attrs in nodes:
+        de, en = attrs.get("data-de"), attrs.get("data-en")
+        assert de and en, f"data-de/data-en fehlt oder leer auf einem Element: {attrs}"
 
 
 def test_language_choice_persists_in_localstorage():

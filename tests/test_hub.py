@@ -1,6 +1,8 @@
 import re
 from pathlib import Path
 
+from html_utils import elements_by_tag
+
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "hub.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
@@ -22,7 +24,8 @@ def test_external_links_are_safe():
         assert 'rel="noopener"' in a
 
 def test_hub_links_back_to_portfolio():
-    assert 'href="index.html"' in HTML
+    hrefs = {a.get("href") for a in elements_by_tag(HTML, "a")}
+    assert "index.html" in hrefs, "kein <a href=\"index.html\"> im Hub"
 
 def test_reduced_motion_guard_in_css():
     assert "prefers-reduced-motion" in CSS

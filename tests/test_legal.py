@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from html_utils import elements_by_tag
+
 ROOT = Path(__file__).resolve().parent.parent
 IMP = ROOT / "impressum.html"
 DAT = ROOT / "datenschutz.html"
@@ -32,8 +34,9 @@ def test_legal_pages_are_german_only():
 def test_all_pages_link_legal_pages():
     for name in ["index.html", "hub.html", "changelog.html", "impressum.html", "datenschutz.html"]:
         html = (ROOT / name).read_text(encoding="utf-8")
-        assert 'href="impressum.html"' in html
-        assert 'href="datenschutz.html"' in html
+        hrefs = {a.get("href") for a in elements_by_tag(html, "a")}
+        assert "impressum.html" in hrefs, f"{name}: kein <a href=\"impressum.html\">"
+        assert "datenschutz.html" in hrefs, f"{name}: kein <a href=\"datenschutz.html\">"
 
 
 def test_changelog_navigates_to_portfolio_and_hub():
