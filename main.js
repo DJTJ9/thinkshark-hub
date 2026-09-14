@@ -34,7 +34,6 @@ if (mail) {
 const marker = document.querySelector(".rail__marker");
 const sections = document.querySelectorAll("section[data-depth]");
 if (marker && sections.length) {
-  if (reduce) marker.style.transition = "none";
   const MAX_DEPTH = 180;
   const observer = new IntersectionObserver(
     (entries) => {

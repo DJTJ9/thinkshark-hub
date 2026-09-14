@@ -69,7 +69,6 @@ def main():
             page.reload(wait_until="networkidle")
             if page.evaluate("document.documentElement.lang") != "en":
                 fails.append(f"{label}: Sprachwahl überlebt Reload nicht")
-            page.click(".lang__btn[data-lang='de']")
             new_errors = errors[errors_at_load:]
             if new_errors:
                 fails.append(f"{label}: Konsolen-Fehler nach Interaktion {new_errors}")

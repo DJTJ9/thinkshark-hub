@@ -35,7 +35,7 @@ Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 - `impressum.html`, `datenschutz.html` — rechtliche Seiten, nur Deutsch
 - `changelog.html`, `changelog.js`, `patches.json` — Changelog, unverändert im Inhalt
 - `styles.css` — „Abyssal/Sonar"-Design, von allen Seiten geteilt
-- `main.js` — Sonar-Ping-Hover (respektiert reduced-motion), null-safe, auf jeder Seite eingebunden
+- `main.js` — DE/EN-Sprachumschalter mit localStorage, Depth-Rail-Marker, Mail-Deobfuskation, Footer-Jahr; Sonar-Ping-Hover nur auf hub.html (respektiert reduced-motion), null-safe, auf jeder Seite eingebunden
 - `fonts.css`, `fonts/*.woff2` — Schriften, von allen Seiten geteilt
 - `assets/projects/*.png` — Projektbilder (izzy, bullseyeq, bob, desk-buddy)
 - `assets/cv/cv-de.pdf`, `assets/cv/cv-en.pdf` — öffentliche CV-Downloads (ohne Telefonnummer)

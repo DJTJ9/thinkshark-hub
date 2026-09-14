@@ -99,15 +99,6 @@ body::before {
   to { transform: scaleX(1); opacity: 1; }
 }
 
-.eyebrow {
-  font-family: "IBM Plex Mono", monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.28em;
-  font-size: 0.72rem;
-  color: var(--teal);
-  margin-bottom: 20px;
-}
-
 .hub-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -119,8 +110,8 @@ body::before {
   position: relative;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas: "title arrow" "url arrow" "desc arrow";
+  grid-template-columns: 1fr;
+  grid-template-areas: "title" "url" "desc";
   align-items: center;
   gap: 4px 12px;
   padding: 22px 24px;
@@ -141,8 +132,6 @@ body::before {
 .hub-card__title { grid-area: title; font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.25rem; }
 .hub-card__url { grid-area: url; font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--teal); }
 .hub-card__desc { grid-area: desc; color: var(--mist); font-size: 0.85rem; }
-.hub-card__arrow { grid-area: arrow; font-size: 1.4rem; color: var(--mist); transition: color 0.25s ease, transform 0.25s ease; }
-.hub-card:hover .hub-card__arrow, .hub-card:focus-visible .hub-card__arrow { color: var(--teal); transform: translateX(4px); }
 
 .hub-card__ring {
   position: absolute;
@@ -169,8 +158,6 @@ body::before {
   color: var(--mist);
   font-size: 0.8rem;
 }
-.footer__soon { font-family: "IBM Plex Mono", monospace; }
-
 @media (prefers-reduced-motion: reduce) {
   body::before, .status__dot { animation: none; }
   .hub-card__ring.ping { animation: none; }
