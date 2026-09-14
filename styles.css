@@ -235,3 +235,11 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   .entry--latest .entry__echo::after { animation: none; }
 }
+
+.hub-title { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.75rem; }
+.hub-intro { color: var(--mist); margin: 8px 0 32px; font-size: 0.95rem; }
+.hub-intro a { color: var(--teal); }
+.footer__nav { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer__nav a { color: var(--mist); text-decoration: none; font-size: 0.85rem; }
+.footer__nav a:hover { color: var(--teal); }
+a.wordmark { color: inherit; text-decoration: none; }
