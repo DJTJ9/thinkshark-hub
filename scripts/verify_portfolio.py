@@ -46,6 +46,22 @@ def main():
             if not mail.startswith("mailto:TjarkDreyer@"):
                 fails.append(f"{label}: Mail nicht deobfuskiert ({mail})")
 
+            shots = page.evaluate(
+                """
+                Array.from(document.querySelectorAll('.project__shot img')).map((img, i) => {
+                  const r = img.getBoundingClientRect();
+                  return {i, w: r.width, h: r.height};
+                })
+                """
+            )
+            for shot in shots:
+                w, h = shot["w"], shot["h"]
+                if h <= 0 or abs(w / h - 16 / 10) > 0.05:
+                    fails.append(
+                        f"{label}: .project__shot img[{shot['i']}] falsches Seitenverhältnis "
+                        f"({w:.0f}x{h:.0f})"
+                    )
+
             page.click(".lang__btn[data-lang='en']")
             if "Who I am" not in page.content():
                 fails.append(f"{label}: EN-Umschaltung greift nicht")

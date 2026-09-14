@@ -307,7 +307,7 @@ body::before {
 .project--right .project__shot { order: 2; }
 .project__shot { margin: 0; }
 .project__shot img {
-  width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block;
+  width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; display: block;
   background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
 }
 .project__title { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.375rem; margin-bottom: 10px; }
