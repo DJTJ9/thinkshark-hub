@@ -3,62 +3,136 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ThinkShark</title>
-  <meta name="description" content="ThinkShark — zentrale Anlaufstelle für Tjark Dreyers Projekte und Tools." />
+  <title>Tjark Dreyer — Games Programmer</title>
+  <meta name="description" content="Portfolio von Tjark Dreyer, Games Programmer aus Hamburg — Unity, C#, Python." />
   <link rel="stylesheet" href="fonts.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="portfolio">
   <div class="sonar-grid" aria-hidden="true"></div>
+
   <header class="topbar">
     <span class="wordmark">THINKSHARK</span>
-    <span class="status"><span class="status__dot"></span>live</span>
+    <div class="lang" role="group" aria-label="Sprache">
+      <button type="button" class="lang__btn is-active" data-lang="de">DE</button>
+      <button type="button" class="lang__btn" data-lang="en">EN</button>
+    </div>
   </header>
 
-  <main class="wrap">
-    <section class="hero">
-      <h1 class="hero__name">Tjark Dreyer</h1>
-      <p class="hero__role">Full-Stack Developer · Builder</p>
-      <div class="hero__sweep" aria-hidden="true"></div>
-    </section>
+  <div class="layout">
+    <aside class="rail" aria-hidden="true">
+      <span class="rail__line"></span>
+      <span class="rail__marker"></span>
+      <ol class="rail__scale">
+        <li style="--at: 0">0 m</li>
+        <li style="--at: 20">20 m</li>
+        <li style="--at: 60">60 m</li>
+        <li style="--at: 90">90 m</li>
+        <li style="--at: 120">120 m</li>
+        <li style="--at: 150">150 m</li>
+        <li style="--at: 180">180 m</li>
+      </ol>
+    </aside>
 
-    <p class="eyebrow">Enter the waters</p>
-    <nav class="hub-grid" aria-label="Projekte">
-      <a class="hub-card" data-sub="app" href="https://app.thinkshark.de" target="_blank" rel="noopener">
-        <span class="hub-card__ring" aria-hidden="true"></span>
-        <span class="hub-card__title">app</span>
-        <span class="hub-card__url">app.thinkshark.de</span>
-        <span class="hub-card__desc">Hauptanwendung</span>
-        <span class="hub-card__arrow" aria-hidden="true">→</span>
-      </a>
-      <a class="hub-card" data-sub="code" href="https://code.thinkshark.de" target="_blank" rel="noopener">
-        <span class="hub-card__ring" aria-hidden="true"></span>
-        <span class="hub-card__title">code</span>
-        <span class="hub-card__url">code.thinkshark.de</span>
-        <span class="hub-card__desc">Entwicklungsumgebung</span>
-        <span class="hub-card__arrow" aria-hidden="true">→</span>
-      </a>
-      <a class="hub-card" data-sub="job-scanner" href="https://job-scanner.thinkshark.de" target="_blank" rel="noopener">
-        <span class="hub-card__ring" aria-hidden="true"></span>
-        <span class="hub-card__title">job-scanner</span>
-        <span class="hub-card__url">job-scanner.thinkshark.de</span>
-        <span class="hub-card__desc">Job-Portal-Scanner</span>
-        <span class="hub-card__arrow" aria-hidden="true">→</span>
-      </a>
-      <a class="hub-card" data-sub="organizer" href="https://organizer.thinkshark.de" target="_blank" rel="noopener">
-        <span class="hub-card__ring" aria-hidden="true"></span>
-        <span class="hub-card__title">organizer</span>
-        <span class="hub-card__url">organizer.thinkshark.de</span>
-        <span class="hub-card__desc">Organizer</span>
-        <span class="hub-card__arrow" aria-hidden="true">→</span>
-      </a>
-    </nav>
-    <p class="changelog-link"><a href="changelog.html">Changelog — Echolot der Releases →</a></p>
-  </main>
+    <main class="wrap">
+      <section class="hero" data-depth="0">
+        <h1 class="hero__name">Tjark Dreyer</h1>
+        <p class="hero__role">Games Programmer</p>
+        <div class="hero__sweep" aria-hidden="true"></div>
+      </section>
+
+      <section id="ueber" data-depth="20">
+        <h2 data-de="Wer ich bin" data-en="Who I am">Wer ich bin</h2>
+        <p data-de="Games Programmer mit Diploma des SAE Institute Hamburg (04/2026). Zwei Jahre Unity und C# in der Ausbildung, dazu eigene Projekte — vom Abschlussprojekt Izzy's Island Party über eine Dart-Trainings-App bis zu Tools mit Python und LLM-Workflows. Aus der Sportwissenschaft kommend denke ich Bewegung, Timing und Feedback als System — genau das, was Spiele gut macht."
+           data-en="Games programmer with a diploma from SAE Institute Hamburg (04/2026). Two years of Unity and C# in training, plus self-directed projects — from the final project Izzy's Island Party to a darts training app and tools built with Python and LLM workflows. Coming from sports science, I think about movement, timing and feedback as a system — exactly what makes games work.">Games Programmer mit Diploma des SAE Institute Hamburg (04/2026). Zwei Jahre Unity und C# in der Ausbildung, dazu eigene Projekte — vom Abschlussprojekt Izzy's Island Party über eine Dart-Trainings-App bis zu Tools mit Python und LLM-Workflows. Aus der Sportwissenschaft kommend denke ich Bewegung, Timing und Feedback als System — genau das, was Spiele gut macht.</p>
+        <ul class="skills">
+          <li><span class="skills__group" data-de="Engine" data-en="Engine">Engine</span>
+            <span class="chip">Unity</span><span class="chip">C#</span><span class="chip">Unreal Engine</span><span class="chip">C++</span></li>
+          <li><span class="skills__group" data-de="Tools &amp; AI" data-en="Tools &amp; AI">Tools &amp; AI</span>
+            <span class="chip">Python</span><span class="chip">Git</span><span class="chip">LLM-Workflows</span><span class="chip">MCP</span></li>
+          <li><span class="skills__group" data-de="Web" data-en="Web">Web</span>
+            <span class="chip">JavaScript</span><span class="chip">HTML/CSS</span><span class="chip">SQLite</span></li>
+        </ul>
+      </section>
+
+      <h2 id="projekte" class="sr-anchor" data-de="Projekte" data-en="Projects">Projekte</h2>
+
+      <section class="project project--left" data-depth="60">
+        <figure class="project__shot">
+          <img src="assets/projects/izzy.png" width="800" height="500" alt="Izzy's Island Party — Screenshot" loading="lazy" />
+        </figure>
+        <div class="project__body">
+          <h3 class="project__title">Izzy's Island Party</h3>
+          <p data-de="Lokale Party-Minispiel-Sammlung für 1–4 Spieler. SAE-Abschlussprojekt im 2er-Team mit 6 Minispielen; Bowling Battle, Minigolf Mayhem und Swaggy Snapshots habe ich eigenständig verantwortet."
+             data-en="Local party mini-game collection for 1–4 players. SAE final project in a two-person team with 6 mini-games; I built Bowling Battle, Minigolf Mayhem and Swaggy Snapshots on my own.">Lokale Party-Minispiel-Sammlung für 1–4 Spieler. SAE-Abschlussprojekt im 2er-Team mit 6 Minispielen; Bowling Battle, Minigolf Mayhem und Swaggy Snapshots habe ich eigenständig verantwortet.</p>
+          <p class="project__tech"><span class="chip">Unity</span><span class="chip">C#</span></p>
+          <a class="project__link" href="https://github.com/DJTJ9/IzzysIslandParty" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+        </div>
+      </section>
+
+      <section class="project project--right" data-depth="90">
+        <figure class="project__shot">
+          <img src="assets/projects/bullseyeq.png" width="800" height="500" alt="BullseyeQ — Screenshot" loading="lazy" />
+        </figure>
+        <div class="project__body">
+          <h3 class="project__title">BullseyeQ</h3>
+          <p data-de="Dart-Trainings-App mit Progress-Tracking, Trainingsspielen und deterministischer Wurfdaten-Analyse, die daraus konkrete Trainingsempfehlungen ableitet. Solo gebaut, aus eigenem Bedarf."
+             data-en="Darts training app with progress tracking, practice games and deterministic throw-data analysis that derives concrete training recommendations. Built solo, out of my own need.">Dart-Trainings-App mit Progress-Tracking, Trainingsspielen und deterministischer Wurfdaten-Analyse, die daraus konkrete Trainingsempfehlungen ableitet. Solo gebaut, aus eigenem Bedarf.</p>
+          <p class="project__tech"><span class="chip">Unity</span><span class="chip">C#</span></p>
+          <a class="project__link" href="https://github.com/DJTJ9/BullseyeQ" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+        </div>
+      </section>
+
+      <section class="project project--left" data-depth="120">
+        <figure class="project__shot">
+          <img src="assets/projects/bob.png" width="800" height="500" alt="Bob der Job-Bot — Web-Oberfläche" loading="lazy" />
+        </figure>
+        <div class="project__body">
+          <h3 class="project__title">Bob der Job-Bot</h3>
+          <p data-de="Job-Scanner mit Telegram-Bot und Web-App: sammelt Stellenanzeigen in einen geteilten Pool und filtert sie pro Nutzerprofil nach eigenen Kriterien. Scraping, Datenmodell, Bot und Oberfläche komplett selbst, bis in den laufenden Betrieb."
+             data-en="Job scanner with a Telegram bot and web app: collects listings into a shared pool and filters them per user profile against individual criteria. Scraping, data model, bot and interface built entirely by me and running in production.">Job-Scanner mit Telegram-Bot und Web-App: sammelt Stellenanzeigen in einen geteilten Pool und filtert sie pro Nutzerprofil nach eigenen Kriterien. Scraping, Datenmodell, Bot und Oberfläche komplett selbst, bis in den laufenden Betrieb.</p>
+          <p class="project__tech"><span class="chip">Python</span><span class="chip">Telegram</span><span class="chip">SQLite</span><span class="chip">MCP</span></p>
+          <a class="project__link" href="https://github.com/DJTJ9/job-scanner" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+        </div>
+      </section>
+
+      <section class="project project--right" data-depth="150">
+        <figure class="project__shot">
+          <img src="assets/projects/desk-buddy.png" width="800" height="500" alt="Desk-Buddy — Overlay-Prototyp" loading="lazy" />
+        </figure>
+        <div class="project__body">
+          <h3 class="project__title">Desk-Buddy <span class="badge badge--wip" data-de="in Arbeit" data-en="in progress">in Arbeit</span></h3>
+          <p data-de="Transparente Overlay-App in Unity: ein kleiner Helfer erinnert am Rechner ans Bewegen, erklärt Übungen und macht sie vor. Prototyp-Stand — bewusst ohne Repo-Link."
+             data-en="Transparent overlay app in Unity: a small companion reminds you to move at your desk, explains exercises and demonstrates them. Prototype stage — deliberately without a repo link.">Transparente Overlay-App in Unity: ein kleiner Helfer erinnert am Rechner ans Bewegen, erklärt Übungen und macht sie vor. Prototyp-Stand — bewusst ohne Repo-Link.</p>
+          <p class="project__tech"><span class="chip">Unity</span></p>
+        </div>
+      </section>
+
+      <section id="lebenslauf" data-depth="180">
+        <h2 data-de="Lebenslauf" data-en="CV">Lebenslauf</h2>
+        <p class="dl">
+          <a class="dl__btn" href="assets/cv/cv-de.pdf" download>CV&nbsp;DE&nbsp;(PDF)</a>
+          <a class="dl__btn" href="assets/cv/cv-en.pdf" download>CV&nbsp;EN&nbsp;(PDF)</a>
+        </p>
+
+        <h2 id="kontakt" data-de="Kontakt" data-en="Contact">Kontakt</h2>
+        <ul class="contact">
+          <li><a id="mail" href="#" data-user="TjarkDreyer" data-domain="gmail.com">E-Mail</a></li>
+          <li><a href="https://github.com/DJTJ9" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/tjark-dreyer-179a30377" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
 
   <footer class="footer">
-    <span>© <span id="year"></span> ThinkShark</span>
-    <span class="footer__soon">portfolio coming soon</span>
+    <span>© <span id="year"></span> Tjark Dreyer</span>
+    <nav class="footer__nav">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="hub.html">Tools</a>
+      <a href="changelog.html">Changelog</a>
+    </nav>
   </footer>
 
   <script src="main.js"></script>
