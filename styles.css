@@ -282,16 +282,17 @@ body::before {
 .portfolio p { max-width: 68ch; font-size: 1.0625rem; line-height: 1.7; color: var(--foam); }
 .sr-anchor { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
-.hero__name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: clamp(2.6rem, 8vw, 4.5rem); letter-spacing: -0.03em; }
-.hero__role { font-size: 1.125rem; color: var(--mist); margin-top: 8px; }
+.portfolio .hero__name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: clamp(2.6rem, 8vw, 4.5rem); letter-spacing: -0.03em; }
+.portfolio .hero__role { font-size: 1.125rem; color: var(--mist); margin-top: 8px; }
 
 /* ---------- Skills ---------- */
 .skills { list-style: none; margin-top: 24px; display: grid; gap: 12px; }
 .skills__group { font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--mist); margin-right: 12px; }
-.chip {
+.portfolio .chip {
   display: inline-block; margin: 0 6px 6px 0; padding: 3px 10px;
   border: 1px solid var(--current); border-radius: 999px;
   font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--foam);
+  cursor: default;
 }
 
 /* ---------- Projekte ---------- */

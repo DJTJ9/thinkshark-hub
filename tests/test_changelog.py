@@ -21,6 +21,15 @@ def test_flare_token_defined_and_member_scoped():
     assert ".badge--wip" in CSS
 
 
+def test_portfolio_overrides_do_not_leak_to_changelog():
+    # index.html ist die einzige Seite mit <body class="portfolio">; die Portfolio-Regeln
+    # definieren .chip/.hero__name/.hero__role neu und muessen deshalb gescoped bleiben,
+    # damit sie das gemeinsame Changelog-CSS (.chip, .hero__name, .hero__role) nicht ueberschreiben
+    for sel in [".chip", ".hero__name", ".hero__role"]:
+        assert CSS.count(f"\n{sel} {{") == 1
+        assert CSS.count(f"\n.portfolio {sel} {{") == 1
+
+
 def test_ping_animation_respects_reduced_motion():
     assert "@keyframes ping" in CSS
     tail = CSS[CSS.rfind("prefers-reduced-motion"):]
