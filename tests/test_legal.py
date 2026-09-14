@@ -39,3 +39,8 @@ def test_all_pages_link_legal_pages():
 def test_changelog_navigates_to_portfolio_and_hub():
     assert 'href="index.html"' in CHANGELOG
     assert 'href="hub.html"' in CHANGELOG
+
+
+def test_changelog_loads_main_js_for_footer_year():
+    assert 'id="year"' in CHANGELOG
+    assert 'src="main.js"' in CHANGELOG
