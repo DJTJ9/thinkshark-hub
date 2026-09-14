@@ -20,3 +20,13 @@ def test_images_are_png():
 def test_cv_pdfs_exist():
     for n in ["cv-de.pdf", "cv-en.pdf"]:
         assert (ROOT / "assets" / "cv" / n).exists()
+
+
+def test_images_are_16_by_10():
+    for n in NAMES:
+        data = (SHOTS / n).read_bytes()
+        width = int.from_bytes(data[16:20], "big")
+        height = int.from_bytes(data[20:24], "big")
+        assert width * 10 == height * 16, (
+            f"{n} ist nicht 16:10: {width}x{height}"
+        )
