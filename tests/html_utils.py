@@ -1,0 +1,84 @@
+"""Kleine, dependency-freie Helfer zum Parsen von HTML/CSS in Tests.
+
+Nutzt nur die Python-Stdlib (html.parser), damit das No-Dependencies-Prinzip
+des Repos erhalten bleibt.
+"""
+import re
+from html.parser import HTMLParser
+
+_COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
+
+
+class _ElementCollector(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.elements = []  # list of (tag, attrs_dict)
+
+    def handle_starttag(self, tag, attrs):
+        self.elements.append((tag, dict(attrs)))
+
+    def handle_startendtag(self, tag, attrs):
+        self.elements.append((tag, dict(attrs)))
+
+
+def parse_elements(html_text):
+    """Gibt eine Liste von (tagname, attrs-dict) in Dokumentreihenfolge zurück."""
+    parser = _ElementCollector()
+    parser.feed(html_text)
+    return parser.elements
+
+
+def elements_by_tag(html_text, tag):
+    return [attrs for t, attrs in parse_elements(html_text) if t == tag]
+
+
+def has_class(attrs, cls):
+    return cls in (attrs.get("class") or "").split()
+
+
+def parse_css_rules(css_text):
+    """Sehr einfacher CSS-Parser: liefert eine flache Liste von Regeln.
+
+    Jede Regel ist {"selectors": [...], "body": "...", "media": str|None}.
+    @media/@supports-Blöcke werden als Container behandelt (ein Nesting-Level,
+    ausreichend für dieses Stylesheet); alles andere mit einem Body wird als
+    Blattregel behandelt.
+    """
+    css_text = _COMMENT_RE.sub("", css_text)
+    rules = []
+    stack = []
+    i = 0
+    n = len(css_text)
+    while i < n:
+        open_idx = css_text.find("{", i)
+        close_idx = css_text.find("}", i)
+        if open_idx == -1 and close_idx == -1:
+            break
+        if close_idx != -1 and (open_idx == -1 or close_idx < open_idx):
+            if stack:
+                stack.pop()
+            i = close_idx + 1
+            continue
+        prelude = css_text[i:open_idx].strip()
+        if prelude.startswith("@"):
+            stack.append(prelude)
+            i = open_idx + 1
+            continue
+        close2 = css_text.find("}", open_idx)
+        if close2 == -1:
+            break
+        body = css_text[open_idx + 1:close2]
+        selectors = [s.strip() for s in prelude.split(",") if s.strip()]
+        rules.append({"selectors": selectors, "body": body, "media": stack[-1] if stack else None})
+        i = close2 + 1
+    return rules
+
+
+def rules_for_selector(css_text, selector, media=None):
+    """Regeln, deren Selektorliste `selector` exakt enthält (nicht Substring)."""
+    out = []
+    for rule in parse_css_rules(css_text):
+        if selector in rule["selectors"]:
+            if media is None or (rule["media"] and media in rule["media"]):
+                out.append(rule)
+    return out

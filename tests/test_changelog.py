@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from html_utils import elements_by_tag
+
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "changelog.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
@@ -16,7 +18,18 @@ def test_changelog_links_shared_assets():
 
 def test_flare_token_defined_and_member_scoped():
     assert "--flare: #FFB454" in CSS
-    assert CSS.count("var(--flare)") == 2  # nur border + Titel des Member-Blocks
+    # --flare bleibt auf Member-Block (Changelog, 2x) + WIP-Badge (Portfolio, color+border) begrenzt
+    assert CSS.count("var(--flare)") == 4
+    assert ".badge--wip" in CSS
+
+
+def test_portfolio_overrides_do_not_leak_to_changelog():
+    # index.html ist die einzige Seite mit <body class="portfolio">; die Portfolio-Regeln
+    # definieren .chip/.hero__name/.hero__role neu und muessen deshalb gescoped bleiben,
+    # damit sie das gemeinsame Changelog-CSS (.chip, .hero__name, .hero__role) nicht ueberschreiben
+    for sel in [".chip", ".hero__name", ".hero__role"]:
+        assert CSS.count(f"\n{sel} {{") == 1
+        assert CSS.count(f"\n.portfolio {sel} {{") == 1
 
 
 def test_ping_animation_respects_reduced_motion():
@@ -45,4 +58,5 @@ def test_empty_state_present():
 
 
 def test_back_link_to_index():
-    assert 'href="index.html"' in HTML
+    hrefs = {a.get("href") for a in elements_by_tag(HTML, "a")}
+    assert "index.html" in hrefs, "kein <a href=\"index.html\"> im Changelog"
