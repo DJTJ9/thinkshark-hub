@@ -40,7 +40,8 @@ def main():
             if hscroll:
                 fails.append(f"{label}: horizontales Scrollen")
             if errors:
-                fails.append(f"{label}: Konsolen-Fehler {errors}")
+                fails.append(f"{label}: Konsolen-Fehler beim Laden {errors}")
+            errors_at_load = len(errors)
 
             mail = page.evaluate("document.getElementById('mail').getAttribute('href')")
             if not mail.startswith("mailto:TjarkDreyer@"):
@@ -69,6 +70,9 @@ def main():
             if page.evaluate("document.documentElement.lang") != "en":
                 fails.append(f"{label}: Sprachwahl überlebt Reload nicht")
             page.click(".lang__btn[data-lang='de']")
+            new_errors = errors[errors_at_load:]
+            if new_errors:
+                fails.append(f"{label}: Konsolen-Fehler nach Interaktion {new_errors}")
             page.close()
 
         page = browser.new_page(viewport={"width": 1280, "height": 800})
