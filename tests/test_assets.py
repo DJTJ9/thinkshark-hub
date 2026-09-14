@@ -5,9 +5,12 @@ from pathlib import Path
 
 import pytest
 
+from html_utils import elements_by_tag
+
 ROOT = Path(__file__).resolve().parent.parent
 SHOTS = ROOT / "assets" / "projects"
 NAMES = ["izzy.png", "bullseyeq.png", "bob.png", "desk-buddy.png"]
+PAGES = ["index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html"]
 
 # Erkennt telefonnummer-artige Ziffernfolgen (Ländervorwahl/Trennzeichen erlaubt),
 # ohne auf eine konkrete Nummer zu prüfen.
@@ -40,6 +43,28 @@ def test_images_are_16_by_10():
         assert width * 10 == height * 16, (
             f"{n} ist nicht 16:10: {width}x{height}"
         )
+
+
+def test_favicon_is_local_svg_without_external_refs():
+    favicon = ROOT / "favicon.svg"
+    assert favicon.exists(), "favicon.svg fehlt"
+    text = favicon.read_text(encoding="utf-8")
+    assert text.strip().startswith("<svg") or "<svg" in text[:200]
+    assert "<image" not in text, "favicon.svg bindet ein Rasterbild ein"
+    # xmlns="http://www.w3.org/2000/svg" ist eine reine Namespace-Deklaration (kein Request);
+    # ein echter externer Verweis würde als url(http...)/xlink:href/http(s) außerhalb des xmlns stehen.
+    without_namespace_decl = text.replace('xmlns="http://www.w3.org/2000/svg"', "")
+    assert "http://" not in without_namespace_decl and "https://" not in without_namespace_decl, \
+        "favicon.svg referenziert eine externe URL"
+
+
+def test_all_pages_link_favicon():
+    for name in PAGES:
+        html = (ROOT / name).read_text(encoding="utf-8")
+        links = elements_by_tag(html, "link")
+        icons = [l for l in links if l.get("rel") == "icon" and l.get("href") == "favicon.svg"]
+        assert icons, f"{name} verlinkt favicon.svg nicht als icon"
+        assert icons[0].get("type") == "image/svg+xml", f"{name}: favicon-Link ohne image/svg+xml"
 
 
 def test_cv_pdfs_contain_no_phone_number():
