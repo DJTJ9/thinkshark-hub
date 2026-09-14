@@ -355,3 +355,10 @@ a:focus-visible, button:focus-visible {
   .project { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .project--right .project__shot { order: 0; }
 }
+
+/* ---------- Rechtsseiten (Impressum, Datenschutz) ---------- */
+.legal h1 { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 2rem; margin-bottom: 24px; }
+.legal h2 { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.125rem; margin: 28px 0 8px; }
+.legal p { max-width: 68ch; line-height: 1.7; color: var(--foam); }
+.legal a { color: var(--teal); }
+.legal code { font-family: "IBM Plex Mono", monospace; font-size: 0.9em; color: var(--mist); }
