@@ -273,3 +273,28 @@ def test_hero_photo_slot_is_square_and_shift_free():
     assert "aspect-ratio: 1 / 1" in body
     # Learning 2026-09-14: ohne height:auto gewinnt das height-Attribut gegen aspect-ratio
     assert "height: auto" in body
+
+
+DETAIL_BY_SECTION = {
+    "izzy": "projekt-izzy.html",
+    "bullseyeq": "projekt-bullseyeq.html",
+    "bob": "projekt-bob.html",
+    "desk-buddy": "projekt-desk-buddy.html",
+}
+
+
+def test_each_project_card_links_its_detail_page():
+    for section_id, page in DETAIL_BY_SECTION.items():
+        block = fragment(HTML, f'<section id="{section_id}"', "</section>")
+        hrefs = {a.get("href") for tag, a in parse_elements(block) if tag == "a"}
+        assert page in hrefs, f"Projektkarte #{section_id} verlinkt {page} nicht"
+
+
+def test_more_link_is_bilingual_and_keeps_the_repo_link():
+    for section_id, page in DETAIL_BY_SECTION.items():
+        block = fragment(HTML, f'<section id="{section_id}"', "</section>")
+        more = [a for tag, a in parse_elements(block) if tag == "a" and a.get("href") == page]
+        assert len(more) == 1
+        assert more[0].get("data-de") and more[0].get("data-en")
+    izzy = fragment(HTML, '<section id="izzy"', "</section>")
+    assert "https://github.com/DJTJ9/IzzysIslandParty" in izzy, "„Mehr dazu\" hat den Repo-Link verdrängt"

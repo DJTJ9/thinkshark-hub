@@ -386,6 +386,8 @@ body::before {
 .project__tech { margin-top: 12px; }
 .project__link { display: inline-block; margin-top: 12px; color: var(--teal); text-decoration: none; border-bottom: 1px solid transparent; }
 .project__link:hover { border-bottom-color: var(--teal); }
+.portfolio .project__links { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+.portfolio .project__links .project__link { margin-top: 0; }
 .badge {
   font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; padding: 2px 8px;
   border-radius: 999px; vertical-align: middle; margin-left: 8px;
