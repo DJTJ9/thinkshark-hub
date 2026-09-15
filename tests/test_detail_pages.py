@@ -105,3 +105,61 @@ def test_empty_clip_slot_keeps_a_16_by_9_box():
     rules = rules_for_selector(CSS, ".detail .clip--empty")
     assert rules, "keine Regel für .detail .clip--empty"
     assert "aspect-ratio: 16 / 9" in rules[0]["body"]
+
+
+LONGTEXT_HEADINGS = [
+    ('data-de="Worum es geht"', 'data-en="What it is"'),
+    ('data-de="Worauf ich stolz bin"', 'data-en="What I am proud of"'),
+    ('data-de="Woran ich hängen geblieben bin"', 'data-en="Where I got stuck"'),
+    ('data-de="Meine Rolle"', 'data-en="My role"'),
+]
+
+
+def test_every_detail_page_carries_the_four_longtext_blocks():
+    for name in DETAIL_PAGES:
+        html = _html(name)
+        for de_attr, en_attr in LONGTEXT_HEADINGS:
+            assert de_attr in html and en_attr in html, f"{name}: Block {de_attr} fehlt"
+        assert "Text folgt." not in html and "Text coming." not in html, \
+            f"{name}: Platzhaltertext steht noch drin"
+
+
+def _longtext(name):
+    html = _html(name)
+    body = html[html.index('data-de="Worum es geht"'):]
+    # der nachgestellte Repo-Link steht in einem eigenen, unuebersetzten <p>
+    if '<p><a class="project__link"' in body:
+        body = body[:body.index('<p><a class="project__link"')]
+    return body
+
+
+def test_longtexts_are_substantial_and_bilingual():
+    for name in DETAIL_PAGES:
+        paras = [a for t, a in parse_elements(_longtext(name)) if t == "p"]
+        assert len(paras) >= 6, f"{name}: nur {len(paras)} Langtext-Absätze"
+        for attrs in paras:
+            de, en = attrs.get("data-de"), attrs.get("data-en")
+            assert de and en, f"{name}: Langtext-Absatz ohne Sprachpaar"
+            assert len(de) > 120, f"{name}: Langtext-Absatz zu kurz ({len(de)} Zeichen)"
+
+
+def test_izzy_splits_the_three_games_into_expanders():
+    body = _longtext("projekt-izzy.html")
+    elements = parse_elements(body)
+    details = [a for t, a in elements if t == "details" and has_class(a, "deeper")]
+    assert len(details) == 3, f"{len(details)} Aufklapper statt einer je Spiel"
+    assert all("open" not in a for a in details), "ein Spiel-Aufklapper ist im Markup schon geöffnet"
+    summaries = [a.get("data-de") for t, a in elements if t == "summary"]
+    assert summaries == ["Minigolf Mayhem", "Swaggy Snapshots", "Bowling Battle"], \
+        f"unerwartete Spielnamen: {summaries}"
+    assert 'data-de="Die gemeinsame Basis"' in body, "der gemeinsame UI-/Event-Unterbau fehlt"
+
+
+def test_the_ai_share_is_named_on_every_project():
+    # Entscheidung 2026-09-16: Izzy ist ohne KI entstanden, die drei anderen mit.
+    izzy = _longtext("projekt-izzy.html")
+    assert "ohne Coding-Agents" in izzy, "Izzy benennt die Eigenarbeit ohne KI nicht"
+    for name in ("projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html"):
+        body = _longtext(name)
+        assert "Coding Agent" in body or "mit KI" in body or "Die KI" in body, \
+            f"{name}: der KI-Anteil wird nicht benannt"
