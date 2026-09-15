@@ -298,3 +298,19 @@ def test_more_link_is_bilingual_and_keeps_the_repo_link():
         assert more[0].get("data-de") and more[0].get("data-en")
     izzy = fragment(HTML, '<section id="izzy"', "</section>")
     assert "https://github.com/DJTJ9/IzzysIslandParty" in izzy, "„Mehr dazu\" hat den Repo-Link verdrängt"
+
+
+def test_profile_paragraph_is_the_new_short_profile():
+    block = fragment(HTML, '<section id="ueber"', "</section>")
+    paras = [a for t, a in parse_elements(block) if t == "p"]
+    assert paras, "kein Absatz in der Über-Sektion"
+    de, en = paras[0].get("data-de"), paras[0].get("data-en")
+    assert de and en, "Kurzprofil ohne vollständiges Sprachpaar"
+    assert de.startswith("Games Programmer mit fundierter Erfahrung in Unity und C#")
+    for term in ["Sportwissenschaft, Mathematik und Physik", "Lernen, Training und Wissensvermittlung",
+                 "Engine-Tools", "KI-Algorithmen", "Wave Function Collapse"]:
+        assert term in de, f"Kurzprofil (DE) ohne „{term}\""
+    for term in ["sports science, mathematics and physics", "learning, training and knowledge transfer",
+                 "engine tools", "AI algorithms", "wave function collapse"]:
+        assert term in en, f"Kurzprofil (EN) ohne „{term}\""
+    assert "SAE Institute Hamburg (04/2026)" not in de, "alter Hub-Absatz steht noch da"
