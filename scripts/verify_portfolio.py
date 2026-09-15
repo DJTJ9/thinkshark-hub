@@ -72,7 +72,73 @@ def main():
             new_errors = errors[errors_at_load:]
             if new_errors:
                 fails.append(f"{label}: Konsolen-Fehler nach Interaktion {new_errors}")
+
+            is_mobile = label == "mobile"
+            rail_visible = page.evaluate(
+                "!!document.querySelector('.rail__scale') && "
+                "getComputedStyle(document.querySelector('.rail__scale')).display !== 'none'"
+            )
+            chapters_visible = page.evaluate(
+                "!!document.querySelector('.chapters') && "
+                "getComputedStyle(document.querySelector('.chapters')).display !== 'none'"
+            )
+            if rail_visible == chapters_visible:
+                fails.append(
+                    f"{label}: nicht genau eine Navigation sichtbar "
+                    f"(rail={rail_visible}, chapters={chapters_visible})"
+                )
+            if is_mobile and not chapters_visible:
+                fails.append("mobile: Kapitelleiste fehlt")
+            if not is_mobile and not rail_visible:
+                fails.append("desktop: Rail-Navigation fehlt")
+
+            nav_sel = ".chapters" if is_mobile else ".rail__scale"
+            page.click(f'{nav_sel} a[href="#kontakt"]')
+            page.wait_for_timeout(600)
+            top = page.evaluate("document.getElementById('kontakt').getBoundingClientRect().top")
+            if top > 200:
+                fails.append(f"{label}: Sprung auf #kontakt landet nicht oben (top={top:.0f})")
+            current = page.evaluate(
+                f"""document.querySelector('{nav_sel} a[aria-current="true"]')?.getAttribute('href')"""
+            )
+            if current != "#kontakt":
+                fails.append(f"{label}: aria-current steht auf {current} statt #kontakt")
+
+            page.goto(BASE, wait_until="networkidle")
+            focus_chain = []
+            for _ in range(16):
+                page.keyboard.press("Tab")
+                focus_chain.append(page.evaluate(
+                    "document.activeElement && (document.activeElement.getAttribute('href') || document.activeElement.tagName)"
+                ))
+            if "#kontakt" not in focus_chain:
+                fails.append(f"{label}: Navigation nicht per Tab erreichbar ({focus_chain})")
+            page.screenshot(path=str(OUT / f"portfolio-{label}-focus.png"))
             page.close()
+
+        page = browser.new_page(viewport={"width": 1280, "height": 800})
+        detail_errors = []
+        page.on("console", lambda m: m.type == "error" and detail_errors.append(m.text))
+        page.on("pageerror", lambda e: detail_errors.append(str(e)))
+        page.goto(BASE.rstrip("/") + "/projekt-izzy.html", wait_until="networkidle")
+        page.screenshot(path=str(OUT / "detail-desktop.png"), full_page=True)
+        if page.locator(".clip--empty").count() != 3:
+            fails.append("detail: nicht 3 Clip-Slots")
+        if page.evaluate(
+            "document.documentElement.scrollWidth > document.documentElement.clientWidth"
+        ):
+            fails.append("detail: horizontales Scrollen")
+        if page.evaluate("document.getElementById('year').textContent") != str(
+            __import__("datetime").date.today().year
+        ):
+            fails.append("detail: Footer-Jahr nicht gesetzt — main.js läuft nicht")
+        page.click(".detail__back")
+        page.wait_for_load_state("networkidle")
+        if "projekt-izzy" in page.url:
+            fails.append("detail: Zurück-Link führt nicht zur Startseite")
+        if detail_errors:
+            fails.append(f"detail: Konsolen-Fehler {detail_errors}")
+        page.close()
 
         page = browser.new_page(viewport={"width": 1280, "height": 800})
         page.goto(HUB, wait_until="networkidle")

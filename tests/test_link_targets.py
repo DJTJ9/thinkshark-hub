@@ -9,7 +9,10 @@ from urllib.parse import urlsplit
 from html_utils import parse_elements
 
 ROOT = Path(__file__).resolve().parent.parent
-PAGES = ["index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html"]
+PAGES = [
+    "index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html",
+    "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html",
+]
 
 ATTR_BY_TAG = {"a": "href", "link": "href", "script": "src", "img": "src"}
 

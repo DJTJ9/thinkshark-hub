@@ -5,12 +5,15 @@ from pathlib import Path
 
 import pytest
 
-from html_utils import elements_by_tag
+from html_utils import elements_by_tag, jpeg_size
 
 ROOT = Path(__file__).resolve().parent.parent
 SHOTS = ROOT / "assets" / "projects"
 NAMES = ["izzy.png", "bullseyeq.png", "bob.png", "desk-buddy.png"]
-PAGES = ["index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html"]
+PAGES = [
+    "index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html",
+    "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html",
+]
 
 # Erkennt telefonnummer-artige Ziffernfolgen (Ländervorwahl/Trennzeichen erlaubt),
 # ohne auf eine konkrete Nummer zu prüfen.
@@ -82,3 +85,18 @@ def test_cv_pdfs_contain_no_phone_number():
             assert len(digits) < PHONE_DIGIT_MIN, (
                 f"{n}: telefonnummer-artige Ziffernfolge gefunden: {match!r}"
             )
+
+
+def test_portrait_placeholder_is_a_square_jpeg():
+    p = ROOT / "assets" / "me.jpg"
+    assert p.exists(), "assets/me.jpg fehlt"
+    data = p.read_bytes()
+    assert data[:3] == b"\xff\xd8\xff", "assets/me.jpg ist kein JPEG"
+    width, height = jpeg_size(data)
+    assert width == height, f"me.jpg ist nicht 1:1: {width}x{height}"
+
+
+def test_readme_deploy_copies_every_page():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    for page in sorted(p.name for p in ROOT.glob("*.html")):
+        assert page in readme, f"{page} fehlt im Redeploy-cp in README.md"

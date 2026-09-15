@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 
-from html_utils import parse_elements, rules_for_selector
+from html_utils import element_ids, fragment, has_class, parse_css_rules, parse_elements, rules_for_selector
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -22,21 +22,70 @@ def test_tool_subdomains_no_longer_on_apex():
 
 
 def test_all_sections_present_with_depth():
-    for sid in ["ueber", "projekte", "lebenslauf", "kontakt"]:
-        assert f'id="{sid}"' in HTML
+    ids = element_ids(HTML)
+    for sid in ["start", "ueber", "projekte", "izzy", "bullseyeq", "bob", "desk-buddy", "lebenslauf", "kontakt"]:
+        assert sid in ids, f"Sprungziel #{sid} fehlt im Dokument"
     depths = re.findall(r'data-depth="(\d+)"', HTML)
-    assert depths == ["0", "20", "60", "90", "120", "150", "180"]
+    assert depths == ["0", "20", "60", "90", "120", "150", "180", "200"]
 
 
-def test_rail_is_present_and_static():
+def test_lebenslauf_and_kontakt_are_separate_sections():
+    sections = [attrs for tag, attrs in parse_elements(HTML) if tag == "section"]
+    by_id = {a.get("id"): a for a in sections if a.get("id")}
+    assert by_id["lebenslauf"].get("data-depth") == "180"
+    assert by_id["kontakt"].get("data-depth") == "200"
+
+
+def test_depth_scale_matches_max_depth():
+    assert "const MAX_DEPTH = 200;" in JS
+    rules = rules_for_selector(CSS, ".rail__scale li")
+    assert rules, "keine Regel für .rail__scale li"
+    assert "var(--at) / 200" in rules[0]["body"], \
+        "CSS-Tiefenskala passt nicht zu MAX_DEPTH in main.js"
+
+
+RAIL_TARGETS = ["#start", "#ueber", "#izzy", "#bullseyeq", "#bob", "#desk-buddy", "#lebenslauf", "#kontakt"]
+
+
+def test_rail_is_a_labelled_navigation():
     elements = parse_elements(HTML)
-    assert any(tag == "aside" and "rail" in (attrs.get("class") or "").split() for tag, attrs in elements), \
-        "kein <aside class=\"rail\"> im Markup"
-    assert any(tag == "span" and "rail__marker" in (attrs.get("class") or "").split() for tag, attrs in elements), \
-        "kein .rail__marker-Element im Markup"
-    rules = rules_for_selector(CSS, ".rail__marker")
-    assert any("position: sticky" in r["body"] for r in rules), \
-        ".rail__marker hat keine position: sticky-Regel"
+    rails = [attrs for tag, attrs in elements if tag == "nav" and has_class(attrs, "rail")]
+    assert rails, 'kein <nav class="rail"> im Markup'
+    assert "aria-hidden" not in rails[0], "die Rail ist Navigation und darf nicht aria-hidden sein"
+    assert rails[0].get("aria-label"), "die Rail-Navigation hat kein aria-label"
+    assert not any(tag == "aside" and has_class(attrs, "rail") for tag, attrs in elements), \
+        "die Rail ist noch ein <aside>"
+    assert any(tag == "span" and has_class(attrs, "rail__marker") for tag, attrs in elements)
+    assert any("position: sticky" in r["body"] for r in rules_for_selector(CSS, ".rail__marker"))
+
+
+def test_every_rail_entry_links_to_an_existing_id():
+    rail = fragment(HTML, '<ol class="rail__scale"', "</ol>")
+    links = [attrs for tag, attrs in parse_elements(rail) if tag == "a"]
+    assert [a.get("href") for a in links] == RAIL_TARGETS
+    ids = element_ids(HTML)
+    for a in links:
+        assert a["href"][1:] in ids, f"Rail-Ziel {a['href']} existiert nicht im Dokument"
+
+
+def test_every_rail_entry_carries_depth_and_label():
+    rail = fragment(HTML, '<ol class="rail__scale"', "</ol>")
+    elements = parse_elements(rail)
+    assert len([a for t, a in elements if t == "span" and has_class(a, "rail__depth")]) == 8
+    assert len([a for t, a in elements if t == "span" and has_class(a, "rail__label")]) == 8
+
+
+def test_rail_column_is_wide_enough_for_labels():
+    rules = rules_for_selector(CSS, ".layout")
+    assert rules, "keine .layout-Regel"
+    assert "grid-template-columns: 168px" in rules[0]["body"]
+
+
+def test_rail_marks_the_active_entry():
+    active = rules_for_selector(CSS, '.portfolio .rail__scale a[aria-current="true"] .rail__label')
+    assert active, "kein aktiver Zustand für Rail-Labels"
+    assert "color: var(--teal)" in active[0]["body"]
+    assert "aria-current" in JS and "rail__scale" in JS
 
 
 def test_four_projects_in_strength_order():
@@ -144,6 +193,108 @@ def test_rail_marker_uses_intersection_observer():
 
 def test_hero_sweep_animates_once_and_respects_reduced_motion():
     assert "@keyframes sweep" in CSS
-    assert ".portfolio .hero__sweep { transform-origin: left; animation: sweep 0.9s ease-out both; }" in CSS
-    tail = CSS[CSS.rfind("prefers-reduced-motion"):]
-    assert ".portfolio .hero__sweep { animation: none; opacity: 0; }" in tail
+    base = rules_for_selector(CSS, ".portfolio .hero__sweep")
+    assert any("animation: sweep 0.9s ease-out both" in r["body"] for r in base if r["media"] is None)
+    reduced = rules_for_selector(CSS, ".portfolio .hero__sweep", media="prefers-reduced-motion")
+    assert reduced, "kein reduced-motion-Override für .hero__sweep"
+    assert "animation: none" in reduced[0]["body"]
+
+
+def test_chapter_bar_mirrors_the_rail_targets():
+    chapters = fragment(HTML, '<nav class="chapters"', "</nav>")
+    links = [attrs for tag, attrs in parse_elements(chapters) if tag == "a"]
+    assert [a.get("href") for a in links] == RAIL_TARGETS
+    navs = [a for tag, a in parse_elements(HTML) if tag == "nav" and has_class(a, "chapters")]
+    assert navs and navs[0].get("aria-label"), "Kapitelleiste ohne aria-label"
+
+
+def test_exactly_one_navigation_is_visible_per_viewport():
+    base = rules_for_selector(CSS, ".portfolio .chapters")
+    assert any(r["media"] is None and "display: none" in r["body"] for r in base), \
+        "Kapitelleiste ist auf dem Desktop nicht ausgeblendet"
+    mobile = rules_for_selector(CSS, ".portfolio .chapters", media="max-width: 899px")
+    assert any("display: flex" in r["body"] for r in mobile), \
+        "Kapitelleiste erscheint unter 900px nicht"
+    rail_hidden = rules_for_selector(CSS, ".rail__scale", media="max-width: 899px")
+    assert any("display: none" in r["body"] for r in rail_hidden), \
+        "Rail-Labels bleiben unter 900px sichtbar — zwei Navigationen gleichzeitig"
+
+
+def test_chapter_bar_is_sticky_and_scrolls_the_active_entry_into_view():
+    base = rules_for_selector(CSS, ".portfolio .chapters")
+    body = next(r["body"] for r in base if r["media"] is None)
+    assert "position: sticky" in body
+    assert "overflow-x: auto" in body
+    assert "scrollIntoView" in JS and "chapters" in JS
+
+
+def test_hero_has_three_sonar_rings():
+    ping = fragment(HTML, '<div class="hero__ping"', "</div>")
+    spans = [a for tag, a in parse_elements(ping) if tag == "span"]
+    assert len(spans) == 3, f"{len(spans)} Ringe statt 3"
+    assert "@keyframes ping-in" in CSS
+    base = rules_for_selector(CSS, ".portfolio .hero__ping span")
+    assert base, "keine Regel für .portfolio .hero__ping span"
+    assert "animation: ping-in" in base[0]["body"]
+    delays = []
+    for n in (1, 2, 3):
+        rules = rules_for_selector(CSS, f".portfolio .hero__ping span:nth-child({n})")
+        assert rules, f"keine Regel für Ring {n}"
+        delays.append(rules[0]["body"])
+    assert "animation-delay: 0s" in delays[0]
+    assert "animation-delay: 0.35s" in delays[1]
+    assert "animation-delay: 0.7s" in delays[2]
+
+
+def test_sonar_rings_stop_at_a_faint_resting_state():
+    tail = CSS[CSS.index("@keyframes ping-in"):]
+    end = tail[:tail.index("}\n")]
+    assert "opacity: 0.10" in tail[:tail.index("\n}")], \
+        "Ringe verschwinden am Ende statt schwach stehenzubleiben"
+
+
+def test_hero_ping_respects_reduced_motion():
+    rules = rules_for_selector(CSS, ".portfolio .hero__ping span", media="prefers-reduced-motion")
+    assert rules, "keine reduced-motion-Regel für die Sonar-Ringe"
+    assert "animation: none" in rules[0]["body"]
+    assert "opacity: 0.10" in rules[0]["body"], "Endzustand wird bei reduced motion nicht gesetzt"
+
+
+def test_hero_photo_slot_is_square_and_shift_free():
+    imgs = [a for tag, a in parse_elements(HTML) if tag == "img" and a.get("src") == "assets/me.jpg"]
+    assert len(imgs) == 1, "kein (oder mehr als ein) Foto-Slot im Hero"
+    attrs = imgs[0]
+    assert attrs.get("alt"), "Foto-Slot ohne alt"
+    assert attrs.get("width") and attrs.get("height"), "Foto-Slot ohne width/height (Layout-Shift)"
+    assert attrs["width"] == attrs["height"], "Foto-Slot ist nicht 1:1"
+    rules = rules_for_selector(CSS, ".portfolio .hero__photo img")
+    assert rules, "keine Regel für .portfolio .hero__photo img"
+    body = rules[0]["body"]
+    assert "aspect-ratio: 1 / 1" in body
+    # Learning 2026-09-14: ohne height:auto gewinnt das height-Attribut gegen aspect-ratio
+    assert "height: auto" in body
+
+
+DETAIL_BY_SECTION = {
+    "izzy": "projekt-izzy.html",
+    "bullseyeq": "projekt-bullseyeq.html",
+    "bob": "projekt-bob.html",
+    "desk-buddy": "projekt-desk-buddy.html",
+}
+
+
+def test_each_project_card_links_its_detail_page():
+    for section_id, page in DETAIL_BY_SECTION.items():
+        block = fragment(HTML, f'<section id="{section_id}"', "</section>")
+        hrefs = {a.get("href") for tag, a in parse_elements(block) if tag == "a"}
+        assert page in hrefs, f"Projektkarte #{section_id} verlinkt {page} nicht"
+
+
+def test_more_link_is_bilingual_and_keeps_the_repo_link():
+    for section_id, page in DETAIL_BY_SECTION.items():
+        block = fragment(HTML, f'<section id="{section_id}"', "</section>")
+        more = [a for tag, a in parse_elements(block) if tag == "a" and a.get("href") == page]
+        assert len(more) == 1
+        assert more[0].get("data-de") and more[0].get("data-en")
+    izzy = fragment(HTML, '<section id="izzy"', "</section>")
+    assert "https://github.com/DJTJ9/IzzysIslandParty" in izzy, "„Mehr dazu\" hat den Repo-Link verdrängt"

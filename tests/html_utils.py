@@ -82,3 +82,34 @@ def rules_for_selector(css_text, selector, media=None):
             if media is None or (rule["media"] and media in rule["media"]):
                 out.append(rule)
     return out
+
+
+def fragment(html_text, start_marker, end_marker):
+    """Teilstring vom ersten `start_marker` bis zum nächsten `end_marker`.
+
+    Nur zum Eingrenzen des Bereichs; die eigentlichen Assertions laufen
+    danach über parse_elements() auf diesem Ausschnitt.
+    """
+    start = html_text.index(start_marker)
+    end = html_text.index(end_marker, start)
+    return html_text[start:end + len(end_marker)]
+
+
+def element_ids(html_text):
+    return {attrs["id"] for _, attrs in parse_elements(html_text) if attrs.get("id")}
+
+
+def jpeg_size(data):
+    """(width, height) aus dem SOF-Marker einer JPEG-Datei — stdlib only."""
+    i = 2
+    while i < len(data) - 9:
+        if data[i] != 0xFF:
+            i += 1
+            continue
+        marker = data[i + 1]
+        if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
+            height = int.from_bytes(data[i + 5:i + 7], "big")
+            width = int.from_bytes(data[i + 7:i + 9], "big")
+            return width, height
+        i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
+    raise ValueError("kein SOF-Marker gefunden")

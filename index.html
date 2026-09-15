@@ -21,26 +21,44 @@
     </div>
   </header>
 
+  <nav class="chapters" aria-label="Kapitel">
+    <a href="#start" data-de="Start" data-en="Start">Start</a>
+    <a href="#ueber" data-de="Über" data-en="About">Über</a>
+    <a href="#izzy">Izzy</a>
+    <a href="#bullseyeq">BullseyeQ</a>
+    <a href="#bob">Bob</a>
+    <a href="#desk-buddy">Desk-Buddy</a>
+    <a href="#lebenslauf" data-de="Lebenslauf" data-en="CV">Lebenslauf</a>
+    <a href="#kontakt" data-de="Kontakt" data-en="Contact">Kontakt</a>
+  </nav>
+
   <div class="layout">
-    <aside class="rail" aria-hidden="true">
-      <span class="rail__line"></span>
-      <span class="rail__marker"></span>
+    <nav class="rail" aria-label="Tiefe">
+      <span class="rail__line" aria-hidden="true"></span>
+      <span class="rail__marker" aria-hidden="true"></span>
       <ol class="rail__scale">
-        <li style="--at: 0">0 m</li>
-        <li style="--at: 20">20 m</li>
-        <li style="--at: 60">60 m</li>
-        <li style="--at: 90">90 m</li>
-        <li style="--at: 120">120 m</li>
-        <li style="--at: 150">150 m</li>
-        <li style="--at: 180">180 m</li>
+        <li style="--at: 0"><a href="#start"><span class="rail__depth">0 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Start" data-en="Start">Start</span></a></li>
+        <li style="--at: 20"><a href="#ueber"><span class="rail__depth">20 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Wer ich bin" data-en="Who I am">Wer ich bin</span></a></li>
+        <li style="--at: 60"><a href="#izzy"><span class="rail__depth">60 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Izzy's Island Party</span></a></li>
+        <li style="--at: 90"><a href="#bullseyeq"><span class="rail__depth">90 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">BullseyeQ</span></a></li>
+        <li style="--at: 120"><a href="#bob"><span class="rail__depth">120 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Bob der Job-Bot</span></a></li>
+        <li style="--at: 150"><a href="#desk-buddy"><span class="rail__depth">150 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Desk-Buddy</span></a></li>
+        <li style="--at: 180"><a href="#lebenslauf"><span class="rail__depth">180 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Lebenslauf" data-en="CV">Lebenslauf</span></a></li>
+        <li style="--at: 200"><a href="#kontakt"><span class="rail__depth">200 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Kontakt" data-en="Contact">Kontakt</span></a></li>
       </ol>
-    </aside>
+    </nav>
 
     <main class="wrap">
-      <section class="hero" data-depth="0">
-        <h1 class="hero__name">Tjark Dreyer</h1>
-        <p class="hero__role">Games Programmer</p>
-        <div class="hero__sweep" aria-hidden="true"></div>
+      <section class="hero" id="start" data-depth="0">
+        <div class="hero__ping" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="hero__intro">
+          <h1 class="hero__name">Tjark Dreyer</h1>
+          <p class="hero__role">Games Programmer</p>
+          <div class="hero__sweep" aria-hidden="true"></div>
+        </div>
+        <figure class="hero__photo">
+          <img src="assets/me.jpg" width="440" height="440" alt="Tjark Dreyer" />
+        </figure>
       </section>
 
       <section id="ueber" data-depth="20">
@@ -59,7 +77,7 @@
 
       <h2 id="projekte" class="sr-anchor" data-de="Projekte" data-en="Projects">Projekte</h2>
 
-      <section class="project project--left" data-depth="60">
+      <section id="izzy" class="project project--left" data-depth="60">
         <figure class="project__shot">
           <img src="assets/projects/izzy.png" width="800" height="500" alt="Izzy's Island Party — Screenshot" loading="lazy" />
         </figure>
@@ -68,11 +86,14 @@
           <p data-de="Lokale Party-Minispiel-Sammlung für 1–4 Spieler. SAE-Abschlussprojekt im 2er-Team mit 6 Minispielen; Bowling Battle, Minigolf Mayhem und Swaggy Snapshots habe ich eigenständig verantwortet."
              data-en="Local party mini-game collection for 1–4 players. SAE final project in a two-person team with 6 mini-games; I built Bowling Battle, Minigolf Mayhem and Swaggy Snapshots on my own.">Lokale Party-Minispiel-Sammlung für 1–4 Spieler. SAE-Abschlussprojekt im 2er-Team mit 6 Minispielen; Bowling Battle, Minigolf Mayhem und Swaggy Snapshots habe ich eigenständig verantwortet.</p>
           <p class="project__tech"><span class="chip">Unity</span><span class="chip">C#</span></p>
-          <a class="project__link" href="https://github.com/DJTJ9/IzzysIslandParty" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+          <p class="project__links">
+            <a class="project__link" href="projekt-izzy.html" data-de="Mehr dazu" data-en="More about it">Mehr dazu</a>
+            <a class="project__link" href="https://github.com/DJTJ9/IzzysIslandParty" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+          </p>
         </div>
       </section>
 
-      <section class="project project--right" data-depth="90">
+      <section id="bullseyeq" class="project project--right" data-depth="90">
         <figure class="project__shot">
           <img src="assets/projects/bullseyeq.png" width="800" height="500" alt="BullseyeQ — Screenshot" loading="lazy" />
         </figure>
@@ -81,11 +102,14 @@
           <p data-de="Dart-Trainings-App mit Progress-Tracking, Trainingsspielen und deterministischer Wurfdaten-Analyse, die daraus konkrete Trainingsempfehlungen ableitet. Solo gebaut, aus eigenem Bedarf."
              data-en="Darts training app with progress tracking, practice games and deterministic throw-data analysis that derives concrete training recommendations. Built solo, out of my own need.">Dart-Trainings-App mit Progress-Tracking, Trainingsspielen und deterministischer Wurfdaten-Analyse, die daraus konkrete Trainingsempfehlungen ableitet. Solo gebaut, aus eigenem Bedarf.</p>
           <p class="project__tech"><span class="chip">Unity</span><span class="chip">C#</span></p>
-          <a class="project__link" href="https://github.com/DJTJ9/BullseyeQ" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+          <p class="project__links">
+            <a class="project__link" href="projekt-bullseyeq.html" data-de="Mehr dazu" data-en="More about it">Mehr dazu</a>
+            <a class="project__link" href="https://github.com/DJTJ9/BullseyeQ" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+          </p>
         </div>
       </section>
 
-      <section class="project project--left" data-depth="120">
+      <section id="bob" class="project project--left" data-depth="120">
         <figure class="project__shot">
           <img src="assets/projects/bob.png" width="800" height="500" alt="Bob der Job-Bot — Web-Oberfläche" loading="lazy" />
         </figure>
@@ -94,11 +118,14 @@
           <p data-de="Job-Scanner mit Telegram-Bot und Web-App: sammelt Stellenanzeigen in einen geteilten Pool und filtert sie pro Nutzerprofil nach eigenen Kriterien. Scraping, Datenmodell, Bot und Oberfläche komplett selbst, bis in den laufenden Betrieb."
              data-en="Job scanner with a Telegram bot and web app: collects listings into a shared pool and filters them per user profile against individual criteria. Scraping, data model, bot and interface built entirely by me and running in production.">Job-Scanner mit Telegram-Bot und Web-App: sammelt Stellenanzeigen in einen geteilten Pool und filtert sie pro Nutzerprofil nach eigenen Kriterien. Scraping, Datenmodell, Bot und Oberfläche komplett selbst, bis in den laufenden Betrieb.</p>
           <p class="project__tech"><span class="chip">Python</span><span class="chip">Telegram</span><span class="chip">SQLite</span><span class="chip">MCP</span></p>
-          <a class="project__link" href="https://github.com/DJTJ9/job-scanner" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+          <p class="project__links">
+            <a class="project__link" href="projekt-bob.html" data-de="Mehr dazu" data-en="More about it">Mehr dazu</a>
+            <a class="project__link" href="https://github.com/DJTJ9/job-scanner" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
+          </p>
         </div>
       </section>
 
-      <section class="project project--right" data-depth="150">
+      <section id="desk-buddy" class="project project--right" data-depth="150">
         <figure class="project__shot">
           <img src="assets/projects/desk-buddy.png" width="800" height="500" alt="Desk-Buddy — Overlay-Prototyp" loading="lazy" />
         </figure>
@@ -107,6 +134,9 @@
           <p data-de="Transparente Overlay-App in Unity: ein kleiner Helfer erinnert am Rechner ans Bewegen, erklärt Übungen und macht sie vor. Prototyp-Stand — bewusst ohne Repo-Link."
              data-en="Transparent overlay app in Unity: a small companion reminds you to move at your desk, explains exercises and demonstrates them. Prototype stage — deliberately without a repo link.">Transparente Overlay-App in Unity: ein kleiner Helfer erinnert am Rechner ans Bewegen, erklärt Übungen und macht sie vor. Prototyp-Stand — bewusst ohne Repo-Link.</p>
           <p class="project__tech"><span class="chip">Unity</span></p>
+          <p class="project__links">
+            <a class="project__link" href="projekt-desk-buddy.html" data-de="Mehr dazu" data-en="More about it">Mehr dazu</a>
+          </p>
         </div>
       </section>
 
@@ -116,8 +146,10 @@
           <a class="dl__btn" href="assets/cv/cv-de.pdf" download>CV&nbsp;DE&nbsp;(PDF)</a>
           <a class="dl__btn" href="assets/cv/cv-en.pdf" download>CV&nbsp;EN&nbsp;(PDF)</a>
         </p>
+      </section>
 
-        <h2 id="kontakt" data-de="Kontakt" data-en="Contact">Kontakt</h2>
+      <section id="kontakt" data-depth="200">
+        <h2 data-de="Kontakt" data-en="Contact">Kontakt</h2>
         <ul class="contact">
           <li><a id="mail" href="#" data-user="TjarkDreyer" data-domain="gmail.com">E-Mail</a><noscript> (TjarkDreyer (at) gmail.com)</noscript></li>
           <li><a href="https://github.com/DJTJ9" target="_blank" rel="noopener">GitHub</a></li>

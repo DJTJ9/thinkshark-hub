@@ -32,7 +32,10 @@ def test_legal_pages_are_german_only():
 
 
 def test_all_pages_link_legal_pages():
-    for name in ["index.html", "hub.html", "changelog.html", "impressum.html", "datenschutz.html"]:
+    for name in [
+        "index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html",
+        "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html",
+    ]:
         html = (ROOT / name).read_text(encoding="utf-8")
         hrefs = {a.get("href") for a in elements_by_tag(html, "a")}
         assert "impressum.html" in hrefs, f"{name}: kein <a href=\"impressum.html\">"
