@@ -112,15 +112,17 @@ def test_cv_pdfs_are_single_page_and_current():
 def test_cv_pdfs_carry_the_new_profile():
     if shutil.which("pdftotext") is None:
         pytest.skip("pdftotext nicht installiert")
+    # Bindestrich-Umbrüche im PDF überleben den Whitespace-Join als "KI- Algorithmen",
+    # deshalb wird jede Wortgrenze tolerant gesucht statt wörtlich.
     expected = {
-        "cv-de.pdf": "spielspezifischer KI-Algorithmen",
-        "cv-en.pdf": "game-specific AI algorithms",
+        "cv-de.pdf": r"spielspezifischer\s*KI-\s*Algorithmen",
+        "cv-en.pdf": r"game-\s*specific\s*AI\s*algorithms",
     }
-    for n, needle in expected.items():
+    for n, pattern in expected.items():
         result = subprocess.run(
             ["pdftotext", "-raw", str(ROOT / "assets" / "cv" / n), "-"],
             capture_output=True, text=True, check=True,
         )
         text = " ".join(result.stdout.split())
-        assert needle in text, f"{n}: PDF trägt noch das alte Profil"
-        assert "Desk-Buddy" in text, f"{n}: Desk-Buddy fehlt im gerenderten CV"
+        assert re.search(pattern, text), f"{n}: PDF trägt noch das alte Profil"
+        assert re.search(r"Desk-\s*Buddy", text), f"{n}: Desk-Buddy fehlt im gerenderten CV"
