@@ -48,6 +48,14 @@ if (marker && sections.length) {
         if (a.getAttribute("href") === "#" + id) a.setAttribute("aria-current", "true");
         else a.removeAttribute("aria-current");
       });
+      const activeChapter = document.querySelector('.chapters a[aria-current="true"]');
+      if (activeChapter) {
+        activeChapter.scrollIntoView({
+          block: "nearest",
+          inline: "center",
+          behavior: reduce ? "auto" : "smooth",
+        });
+      }
     },
     { rootMargin: "-40% 0px -50% 0px" }
   );

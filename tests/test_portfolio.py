@@ -196,3 +196,31 @@ def test_hero_sweep_animates_once_and_respects_reduced_motion():
     assert ".portfolio .hero__sweep { transform-origin: left; animation: sweep 0.9s ease-out both; }" in CSS
     tail = CSS[CSS.rfind("prefers-reduced-motion"):]
     assert ".portfolio .hero__sweep { animation: none; opacity: 0; }" in tail
+
+
+def test_chapter_bar_mirrors_the_rail_targets():
+    chapters = fragment(HTML, '<nav class="chapters"', "</nav>")
+    links = [attrs for tag, attrs in parse_elements(chapters) if tag == "a"]
+    assert [a.get("href") for a in links] == RAIL_TARGETS
+    navs = [a for tag, a in parse_elements(HTML) if tag == "nav" and has_class(a, "chapters")]
+    assert navs and navs[0].get("aria-label"), "Kapitelleiste ohne aria-label"
+
+
+def test_exactly_one_navigation_is_visible_per_viewport():
+    base = rules_for_selector(CSS, ".portfolio .chapters")
+    assert any(r["media"] is None and "display: none" in r["body"] for r in base), \
+        "Kapitelleiste ist auf dem Desktop nicht ausgeblendet"
+    mobile = rules_for_selector(CSS, ".portfolio .chapters", media="max-width: 899px")
+    assert any("display: flex" in r["body"] for r in mobile), \
+        "Kapitelleiste erscheint unter 900px nicht"
+    rail_hidden = rules_for_selector(CSS, ".rail__scale", media="max-width: 899px")
+    assert any("display: none" in r["body"] for r in rail_hidden), \
+        "Rail-Labels bleiben unter 900px sichtbar — zwei Navigationen gleichzeitig"
+
+
+def test_chapter_bar_is_sticky_and_scrolls_the_active_entry_into_view():
+    base = rules_for_selector(CSS, ".portfolio .chapters")
+    body = next(r["body"] for r in base if r["media"] is None)
+    assert "position: sticky" in body
+    assert "overflow-x: auto" in body
+    assert "scrollIntoView" in JS and "chapters" in JS

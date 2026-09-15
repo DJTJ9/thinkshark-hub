@@ -294,6 +294,25 @@ body::before {
 .portfolio .rail__scale a[aria-current="true"] .rail__label { color: var(--teal); }
 .portfolio .rail__scale a[aria-current="true"] .rail__tick { width: 14px; background: var(--teal); }
 
+/* ---------- Kapitelleiste (<900px) ---------- */
+.portfolio .chapters {
+  display: none;
+  position: sticky; top: 0; z-index: 3;
+  gap: 18px;
+  padding: 10px clamp(20px, 5vw, 48px);
+  background: var(--abyss);
+  border-bottom: 1px solid var(--current);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+}
+.portfolio .chapters a {
+  flex: 0 0 auto; scroll-snap-align: center; white-space: nowrap;
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 0.85rem;
+  color: var(--mist); text-decoration: none;
+  padding-bottom: 4px; border-bottom: 2px solid transparent;
+}
+.portfolio .chapters a[aria-current="true"] { color: var(--teal); border-bottom-color: var(--teal); }
+
 /* ---------- Sektionen ---------- */
 .portfolio section { padding: clamp(40px, 7vw, 72px) 0; }
 .portfolio h2 { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.75rem; margin-bottom: 16px; }
@@ -358,11 +377,15 @@ a:focus-visible, button:focus-visible {
 }
 
 /* ---------- Mobile ---------- */
-@media (max-width: 640px) {
+@media (max-width: 899px) {
+  .portfolio .chapters { display: flex; }
   .layout { grid-template-columns: 12px minmax(0, 1fr); }
   .rail__scale { display: none; }
   .rail__line { margin-left: 4px; width: 3px; }
   .rail__marker { margin-left: 1px; }
+}
+
+@media (max-width: 640px) {
   .project { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .project--right .project__shot { order: 0; }
 }
