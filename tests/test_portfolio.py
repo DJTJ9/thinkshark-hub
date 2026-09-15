@@ -398,3 +398,11 @@ def test_no_tier_colouring_on_the_chips():
     assert not rules_for_selector(CSS, ".portfolio .skills .chip--weak"), \
         "abgewertete Chip-Variante — das Niveau gehört ins Label"
     assert "border-style: dashed" not in CSS
+
+
+def test_readme_documents_the_expander_and_the_cv_gate():
+    readme = (Path(__file__).resolve().parent.parent / "README.md").read_text(encoding="utf-8")
+    assert "Mehr über mich" in readme or "Aufklapper" in readme, \
+        "README erklärt den Aufklapper nicht"
+    assert "master.md" in readme and "test_cv_sync" in readme, \
+        "README nennt die CV-Sync-Regel nicht"
