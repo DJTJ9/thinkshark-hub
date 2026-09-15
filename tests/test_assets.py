@@ -94,3 +94,9 @@ def test_portrait_placeholder_is_a_square_jpeg():
     assert data[:3] == b"\xff\xd8\xff", "assets/me.jpg ist kein JPEG"
     width, height = jpeg_size(data)
     assert width == height, f"me.jpg ist nicht 1:1: {width}x{height}"
+
+
+def test_readme_deploy_copies_every_page():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    for page in sorted(p.name for p in ROOT.glob("*.html")):
+        assert page in readme, f"{page} fehlt im Redeploy-cp in README.md"

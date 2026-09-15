@@ -23,6 +23,7 @@ Live unter https://thinkshark.de. DNS (`thinkshark.de` + `www` + `*.thinkshark.d
 
     cd /root/projekte/website
     cp index.html hub.html impressum.html datenschutz.html changelog.html \
+       projekt-izzy.html projekt-bullseyeq.html projekt-bob.html projekt-desk-buddy.html \
        styles.css main.js changelog.js fonts.css patches.json /var/www/thinkshark-hub/
     cp fonts/*.woff2 /var/www/thinkshark-hub/fonts/
     cp -r assets /var/www/thinkshark-hub/
@@ -30,7 +31,8 @@ Live unter https://thinkshark.de. DNS (`thinkshark.de` + `www` + `*.thinkshark.d
 Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 
 ## Struktur
-- `index.html` — Portfolio: Hero, About, vier Projekt-Cards, CV-Downloads, Kontakt; DE/EN via `data-de`/`data-en` + `localStorage`, sticky Depth-Rail
+- `index.html` — Portfolio: Hero (Sonar-Ringe + Foto), About, vier Projekt-Cards mit „Mehr dazu", CV-Downloads, Kontakt; DE/EN via `data-de`/`data-en` + `localStorage`; Sprungnavigation: Depth-Rail ≥900px, sticky Kapitelleiste <900px
+- `projekt-izzy.html`, `projekt-bullseyeq.html`, `projekt-bob.html`, `projekt-desk-buddy.html` — Projekt-Detailseiten (Gerüst mit leeren Clip-Slots, Abschnitt „Meine Rolle")
 - `hub.html` — die vier Tool-Cards, ehemals auf der Apex
 - `impressum.html`, `datenschutz.html` — rechtliche Seiten, nur Deutsch
 - `changelog.html`, `changelog.js`, `patches.json` — Changelog, unverändert im Inhalt
@@ -39,6 +41,7 @@ Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 - `fonts.css`, `fonts/*.woff2` — Schriften, von allen Seiten geteilt
 - `assets/projects/*.png` — Projektbilder (izzy, bullseyeq, bob, desk-buddy)
 - `assets/cv/cv-de.pdf`, `assets/cv/cv-en.pdf` — öffentliche CV-Downloads (ohne Telefonnummer)
+- `assets/me.jpg` — Porträt-Platzhalter im Hero (1:1), wird durch das echte Foto ersetzt
 - `tests/` — Pytest-Suite (Markup, Inhalte, rechtliche Seiten, CSS-Scoping, Asset-Integrität)
 
 ## Tests
