@@ -375,6 +375,10 @@ body::before {
   font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--foam);
   cursor: default;
 }
+.portfolio .skills li {
+  display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 16px; align-items: baseline;
+}
+.portfolio .skills__group { text-align: right; margin-right: 0; }
 
 /* ---------- Mehr über mich (Aufklapper) ---------- */
 .portfolio .deeper { position: relative; margin-top: 28px; padding-left: 36px; }
@@ -459,6 +463,8 @@ a:focus-visible, button:focus-visible {
 @media (max-width: 640px) {
   .project { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .project--right .project__shot { order: 0; }
+  .portfolio .skills li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .portfolio .skills__group { text-align: left; }
 }
 
 /* ---------- Rechtsseiten (Impressum, Datenschutz) ---------- */

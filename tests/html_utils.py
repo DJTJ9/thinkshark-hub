@@ -113,3 +113,37 @@ def jpeg_size(data):
             return width, height
         i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
     raise ValueError("kein SOF-Marker gefunden")
+
+
+class _TextCollector(HTMLParser):
+    """Sammelt den Textinhalt aller <tag class="cls">-Elemente (ohne Verschachtelung derselben Klasse)."""
+
+    def __init__(self, tag, cls):
+        super().__init__(convert_charrefs=True)
+        self.tag, self.cls = tag, cls
+        self.out, self._depth, self._buf = [], 0, []
+
+    def handle_starttag(self, tag, attrs):
+        if self._depth:
+            if tag == self.tag:
+                self._depth += 1
+            return
+        if tag == self.tag and has_class(dict(attrs), self.cls):
+            self._depth, self._buf = 1, []
+
+    def handle_data(self, data):
+        if self._depth:
+            self._buf.append(data)
+
+    def handle_endtag(self, tag):
+        if self._depth and tag == self.tag:
+            self._depth -= 1
+            if self._depth == 0:
+                self.out.append("".join(self._buf).strip())
+
+
+def text_by_class(html_text, tag, cls):
+    """Textinhalte aller <tag class="cls"> in Dokumentreihenfolge."""
+    parser = _TextCollector(tag, cls)
+    parser.feed(html_text)
+    return parser.out

@@ -1,7 +1,8 @@
 import re
 from pathlib import Path
 
-from html_utils import element_ids, fragment, has_class, parse_css_rules, parse_elements, rules_for_selector
+from html_utils import (element_ids, fragment, has_class, parse_css_rules, parse_elements,
+                        rules_for_selector, text_by_class)
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -352,3 +353,48 @@ def test_details_expander_respects_reduced_motion():
         rules = rules_for_selector(CSS, selector, media="prefers-reduced-motion")
         assert rules, f"kein reduced-motion-Override für {selector}"
         assert "transition: none" in rules[0]["body"]
+
+
+SKILL_GROUPS = {
+    "Engine · täglich": ["Unity", "C#"],
+    "Game AI · Uni-Projekte": ["Pathfinding", "State Machines", "Behaviour Trees", "GOAP",
+                               "Wave Function Collapse"],
+    "Werkzeuge · täglich": ["Git", "LLM-Workflows", "MCP"],
+    "Grundlagen · angefangen": ["Unreal Engine", "C++"],
+    "Mit KI gebaut · läuft produktiv": ["Python", "SQLite", "HTML/CSS", "JavaScript"],
+}
+
+
+def _skill_items():
+    skills = fragment(HTML, '<ul class="skills"', "</ul>")
+    return [chunk for chunk in re.split(r"<li>", skills)[1:]]
+
+
+def test_skills_are_five_groups_with_the_level_in_the_label():
+    items = _skill_items()
+    assert len(items) == 5, f"{len(items)} Skill-Gruppen statt 5"
+    seen = {}
+    for chunk in items:
+        labels = [a for t, a in parse_elements(chunk) if t == "span" and has_class(a, "skills__group")]
+        assert len(labels) == 1, "Gruppe ohne genau ein Label"
+        assert labels[0].get("data-de") and labels[0].get("data-en"), "Gruppenlabel nicht zweisprachig"
+        seen[labels[0]["data-de"]] = text_by_class(chunk, "span", "chip")
+    assert seen == SKILL_GROUPS
+
+
+def test_skills_read_as_a_ladder_and_stack_on_small_screens():
+    rows = rules_for_selector(CSS, ".portfolio .skills li")
+    assert rows, "keine Regel für .portfolio .skills li"
+    assert "grid-template-columns: 220px minmax(0, 1fr)" in rows[0]["body"], \
+        "Skill-Zeilen sind nicht zweispaltig"
+    label = rules_for_selector(CSS, ".portfolio .skills__group")
+    assert label and "text-align: right" in label[0]["body"], "Label-Spalte ist nicht rechtsbündig"
+    stacked = rules_for_selector(CSS, ".portfolio .skills li", media="max-width: 640px")
+    assert stacked and "grid-template-columns: minmax(0, 1fr)" in stacked[0]["body"], \
+        "Skill-Zeilen stapeln unter 640px nicht"
+
+
+def test_no_tier_colouring_on_the_chips():
+    assert not rules_for_selector(CSS, ".portfolio .skills .chip--weak"), \
+        "abgewertete Chip-Variante — das Niveau gehört ins Label"
+    assert "border-style: dashed" not in CSS
