@@ -314,3 +314,41 @@ def test_profile_paragraph_is_the_new_short_profile():
                  "engine tools", "AI algorithms", "wave function collapse"]:
         assert term in en, f"Kurzprofil (EN) ohne „{term}\""
     assert "SAE Institute Hamburg (04/2026)" not in de, "alter Hub-Absatz steht noch da"
+
+
+def test_about_has_a_native_details_expander():
+    block = fragment(HTML, '<section id="ueber"', "</section>")
+    elements = parse_elements(block)
+    details = [a for t, a in elements if t == "details" and has_class(a, "deeper")]
+    assert len(details) == 1, "kein (oder mehr als ein) <details class=\"deeper\"> in der Über-Sektion"
+    assert "open" not in details[0], "der Aufklapper ist im Markup schon geöffnet"
+    summaries = [a for t, a in elements if t == "summary"]
+    assert len(summaries) == 1 and summaries[0].get("data-de") and summaries[0].get("data-en"), \
+        "Summary fehlt oder ist nicht zweisprachig"
+    tail = block[block.index("<details"):]
+    paras = [a for t, a in parse_elements(tail) if t == "p"]
+    assert len(paras) >= 3, f"nur {len(paras)} Absätze im Aufklapper"
+    for attrs in paras:
+        assert attrs.get("data-de") and attrs.get("data-en")
+
+
+def test_details_expander_uses_the_existing_sonar_language():
+    hairline = rules_for_selector(CSS, ".portfolio .deeper::before")
+    assert hairline, "keine Hairline-Regel für den Aufklapper"
+    assert "transform: scaleY(0)" in hairline[0]["body"], "Hairline wächst nicht aus dem Nichts"
+    assert rules_for_selector(CSS, ".portfolio .deeper[open]::before"), "kein geöffneter Zustand der Hairline"
+    marker = rules_for_selector(CSS, ".portfolio .deeper > summary::marker")
+    assert marker and "content: none" in marker[0]["body"], "Default-Marker wird nicht entfernt"
+    assert rules_for_selector(CSS, ".portfolio .deeper > summary::-webkit-details-marker"), \
+        "kein -webkit-details-marker-Override"
+    ring = rules_for_selector(CSS, ".portfolio .deeper > summary::before")
+    assert ring and "border-radius: 50%" in ring[0]["body"], "kein Sonar-Ring als Marker"
+    open_ring = rules_for_selector(CSS, ".portfolio .deeper[open] > summary::before")
+    assert open_ring and "var(--teal)" in open_ring[0]["body"], "der Ring füllt sich beim Öffnen nicht teal"
+
+
+def test_details_expander_respects_reduced_motion():
+    for selector in (".portfolio .deeper::before", ".portfolio .deeper > summary::before"):
+        rules = rules_for_selector(CSS, selector, media="prefers-reduced-motion")
+        assert rules, f"kein reduced-motion-Override für {selector}"
+        assert "transition: none" in rules[0]["body"]

@@ -376,6 +376,31 @@ body::before {
   cursor: default;
 }
 
+/* ---------- Mehr über mich (Aufklapper) ---------- */
+.portfolio .deeper { position: relative; margin-top: 28px; padding-left: 36px; }
+.portfolio .deeper::before {
+  content: ""; position: absolute; left: 10px; top: 10px; bottom: 4px; width: 2px;
+  background: linear-gradient(180deg, var(--teal), var(--mist) 30%, transparent);
+  transform: scaleY(0); transform-origin: top; transition: transform 0.35s ease;
+}
+.portfolio .deeper[open]::before { transform: scaleY(1); }
+.portfolio .deeper > summary {
+  list-style: none; cursor: pointer; position: relative;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--mist);
+}
+.portfolio .deeper > summary::marker { content: none; }
+.portfolio .deeper > summary::-webkit-details-marker { display: none; }
+.portfolio .deeper > summary::before {
+  content: ""; position: absolute; left: -32px; top: 2px; width: 10px; height: 10px;
+  border-radius: 50%; border: 1px solid var(--mist);
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.portfolio .deeper[open] > summary::before {
+  background: var(--teal); border-color: var(--teal); box-shadow: 0 0 8px var(--teal);
+}
+.portfolio .deeper > summary:hover { color: var(--foam); }
+.portfolio .deeper p { margin-top: 16px; }
+
 /* ---------- Projekte ---------- */
 .project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
 .project--right .project__shot { order: 2; }
@@ -466,3 +491,9 @@ a:focus-visible, button:focus-visible {
   background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
 }
 .detail .clip figcaption { margin-top: 8px; color: var(--mist); font-size: 0.85rem; }
+
+/* reduced-motion-Overrides gehören ans Dateiende: gleiche Spezifität, spätere Regel gewinnt. */
+@media (prefers-reduced-motion: reduce) {
+  .portfolio .deeper::before { transition: none; }
+  .portfolio .deeper > summary::before { transition: none; }
+}
