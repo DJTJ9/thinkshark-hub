@@ -42,7 +42,7 @@ if (marker && sections.length) {
       if (!visible.length) return;
       const top = visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
       const depth = Number(top.target.dataset.depth);
-      marker.style.setProperty("--pos", (depth / MAX_DEPTH) * 92 + 4);
+      marker.style.setProperty("--pos", (depth / MAX_DEPTH) * 84 + 10);
       const id = top.target.id;
       navLinks.forEach((a) => {
         if (a.getAttribute("href") === "#" + id) a.setAttribute("aria-current", "true");

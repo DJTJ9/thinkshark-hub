@@ -266,7 +266,7 @@ body::before {
 }
 .rail__scale { list-style: none; margin-top: -100vh; height: 100vh; }
 .rail__scale li {
-  position: absolute; left: 0; top: calc(var(--at) / 200 * 92vh + 4vh);
+  position: absolute; left: 0; top: calc(var(--at) / 200 * 84vh + 10vh);
   font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--mist);
 }
 .portfolio .rail__scale li { width: 152px; }
@@ -358,7 +358,7 @@ body::before {
 /* ---------- Sektionen ---------- */
 .portfolio section { padding: clamp(40px, 7vw, 72px) 0; }
 /* Letzte Sektion füllt den Bildschirm, damit ihr Sprungziel oben landen kann. */
-.portfolio section:last-of-type { min-height: 100vh; }
+.portfolio section:last-of-type { min-height: 60vh; }
 .portfolio h2 { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.75rem; margin-bottom: 16px; }
 .portfolio p { max-width: 68ch; font-size: 1.0625rem; line-height: 1.7; color: var(--foam); }
 .sr-anchor { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
