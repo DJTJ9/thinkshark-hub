@@ -163,3 +163,14 @@ def test_the_ai_share_is_named_on_every_project():
         body = _longtext(name)
         assert "Coding Agent" in body or "mit KI" in body or "Die KI" in body, \
             f"{name}: der KI-Anteil wird nicht benannt"
+
+
+def test_longtext_paragraphs_and_headings_keep_their_spacing():
+    # Regression 2026-09-16: .portfolio p traegt keinen Margin — ohne diese Regeln
+    # kleben aufeinanderfolgende Absaetze und Ueberschriften aneinander.
+    paras = rules_for_selector(CSS, ".detail main p + p")
+    assert paras and "margin-top" in paras[0]["body"], "aufeinanderfolgende Absätze ohne Abstand"
+    heads = rules_for_selector(CSS, ".detail main h2")
+    assert heads and "margin-top" in heads[0]["body"], "Abschnittsüberschriften ohne Abstand nach oben"
+    sub = rules_for_selector(CSS, ".portfolio .deeper h3")
+    assert sub and "margin-top" in sub[0]["body"], "Spiel-Zwischenüberschriften ohne Abstand"

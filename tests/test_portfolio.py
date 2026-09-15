@@ -406,3 +406,14 @@ def test_readme_documents_the_expander_and_the_cv_gate():
         "README erklärt den Aufklapper nicht"
     assert "master.md" in readme and "test_cv_sync" in readme, \
         "README nennt die CV-Sync-Regel nicht"
+
+
+def test_skill_chips_flow_inside_one_grid_cell():
+    # Regression 2026-09-16: ohne Wrapper wurde jeder Chip zur eigenen Grid-Zelle
+    # und die Leiter lief über die volle Breite auseinander.
+    for chunk in _skill_items():
+        wrappers = [a for t, a in parse_elements(chunk) if t == "span" and has_class(a, "skills__chips")]
+        assert len(wrappers) == 1, "Chips einer Gruppe liegen nicht in genau einem Wrapper"
+    rules = rules_for_selector(CSS, ".portfolio .skills__chips")
+    assert rules, "keine Regel für .portfolio .skills__chips"
+    assert "flex-wrap: wrap" in rules[0]["body"], "Chips brechen im Wrapper nicht um"

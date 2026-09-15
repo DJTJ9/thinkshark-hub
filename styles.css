@@ -379,6 +379,7 @@ body::before {
   display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 16px; align-items: baseline;
 }
 .portfolio .skills__group { text-align: right; margin-right: 0; }
+.portfolio .skills__chips { display: flex; flex-wrap: wrap; }
 
 /* ---------- Mehr über mich (Aufklapper) ---------- */
 .portfolio .deeper { position: relative; margin-top: 28px; padding-left: 36px; }
@@ -404,6 +405,11 @@ body::before {
 }
 .portfolio .deeper > summary:hover { color: var(--foam); }
 .portfolio .deeper p { margin-top: 16px; }
+.portfolio .deeper h3 {
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.125rem;
+  margin-top: 24px; margin-bottom: 8px;
+}
+.portfolio .deeper h3:first-of-type { margin-top: 20px; }
 
 /* ---------- Projekte ---------- */
 .project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
@@ -485,6 +491,8 @@ a:focus-visible, button:focus-visible {
   font-size: clamp(1.9rem, 5vw, 2.6rem); letter-spacing: -0.02em;
 }
 .detail .detail__intro { margin-top: 16px; }
+.detail main p + p { margin-top: 14px; }
+.detail main h2 { margin-top: 40px; }
 .detail .clip { margin: 28px 0; }
 .detail .clip--empty {
   display: flex; align-items: center; justify-content: center;
