@@ -1,7 +1,8 @@
 import re
 from pathlib import Path
 
-from html_utils import element_ids, fragment, has_class, parse_css_rules, parse_elements, rules_for_selector
+from html_utils import (element_ids, fragment, has_class, parse_css_rules, parse_elements,
+                        rules_for_selector, text_by_class)
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -298,3 +299,121 @@ def test_more_link_is_bilingual_and_keeps_the_repo_link():
         assert more[0].get("data-de") and more[0].get("data-en")
     izzy = fragment(HTML, '<section id="izzy"', "</section>")
     assert "https://github.com/DJTJ9/IzzysIslandParty" in izzy, "„Mehr dazu\" hat den Repo-Link verdrängt"
+
+
+def test_profile_paragraph_is_the_new_short_profile():
+    block = fragment(HTML, '<section id="ueber"', "</section>")
+    paras = [a for t, a in parse_elements(block) if t == "p"]
+    assert paras, "kein Absatz in der Über-Sektion"
+    de, en = paras[0].get("data-de"), paras[0].get("data-en")
+    assert de and en, "Kurzprofil ohne vollständiges Sprachpaar"
+    assert de.startswith("Games Programmer mit fundierter Erfahrung in Unity und C#")
+    for term in ["Sportwissenschaft, Mathematik und Physik", "Lernen, Training und Wissensvermittlung",
+                 "Engine-Tools", "KI-Algorithmen", "Wave Function Collapse"]:
+        assert term in de, f"Kurzprofil (DE) ohne „{term}\""
+    for term in ["sports science, mathematics and physics", "learning, training and knowledge transfer",
+                 "engine tools", "AI algorithms", "wave function collapse"]:
+        assert term in en, f"Kurzprofil (EN) ohne „{term}\""
+    assert "SAE Institute Hamburg (04/2026)" not in de, "alter Hub-Absatz steht noch da"
+
+
+def test_about_has_a_native_details_expander():
+    block = fragment(HTML, '<section id="ueber"', "</section>")
+    elements = parse_elements(block)
+    details = [a for t, a in elements if t == "details" and has_class(a, "deeper")]
+    assert len(details) == 1, "kein (oder mehr als ein) <details class=\"deeper\"> in der Über-Sektion"
+    assert "open" not in details[0], "der Aufklapper ist im Markup schon geöffnet"
+    summaries = [a for t, a in elements if t == "summary"]
+    assert len(summaries) == 1 and summaries[0].get("data-de") and summaries[0].get("data-en"), \
+        "Summary fehlt oder ist nicht zweisprachig"
+    tail = block[block.index("<details"):]
+    paras = [a for t, a in parse_elements(tail) if t == "p"]
+    assert len(paras) >= 3, f"nur {len(paras)} Absätze im Aufklapper"
+    for attrs in paras:
+        assert attrs.get("data-de") and attrs.get("data-en")
+
+
+def test_details_expander_uses_the_existing_sonar_language():
+    hairline = rules_for_selector(CSS, ".portfolio .deeper::before")
+    assert hairline, "keine Hairline-Regel für den Aufklapper"
+    assert "transform: scaleY(0)" in hairline[0]["body"], "Hairline wächst nicht aus dem Nichts"
+    assert rules_for_selector(CSS, ".portfolio .deeper[open]::before"), "kein geöffneter Zustand der Hairline"
+    marker = rules_for_selector(CSS, ".portfolio .deeper > summary::marker")
+    assert marker and "content: none" in marker[0]["body"], "Default-Marker wird nicht entfernt"
+    assert rules_for_selector(CSS, ".portfolio .deeper > summary::-webkit-details-marker"), \
+        "kein -webkit-details-marker-Override"
+    ring = rules_for_selector(CSS, ".portfolio .deeper > summary::before")
+    assert ring and "border-radius: 50%" in ring[0]["body"], "kein Sonar-Ring als Marker"
+    open_ring = rules_for_selector(CSS, ".portfolio .deeper[open] > summary::before")
+    assert open_ring and "var(--teal)" in open_ring[0]["body"], "der Ring füllt sich beim Öffnen nicht teal"
+
+
+def test_details_expander_respects_reduced_motion():
+    for selector in (".portfolio .deeper::before", ".portfolio .deeper > summary::before"):
+        rules = rules_for_selector(CSS, selector, media="prefers-reduced-motion")
+        assert rules, f"kein reduced-motion-Override für {selector}"
+        assert "transition: none" in rules[0]["body"]
+
+
+SKILL_GROUPS = {
+    "Engine · täglich": ["Unity", "C#"],
+    "Game AI · Uni-Projekte": ["Pathfinding", "State Machines", "Behaviour Trees", "GOAP",
+                               "Wave Function Collapse"],
+    "Werkzeuge · täglich": ["Git", "LLM-Workflows", "MCP"],
+    "Grundlagen · angefangen": ["Unreal Engine", "C++"],
+    "Mit KI gebaut · läuft produktiv": ["Python", "SQLite", "HTML/CSS", "JavaScript"],
+}
+
+
+def _skill_items():
+    skills = fragment(HTML, '<ul class="skills"', "</ul>")
+    return [chunk for chunk in re.split(r"<li>", skills)[1:]]
+
+
+def test_skills_are_five_groups_with_the_level_in_the_label():
+    items = _skill_items()
+    assert len(items) == 5, f"{len(items)} Skill-Gruppen statt 5"
+    seen = {}
+    for chunk in items:
+        labels = [a for t, a in parse_elements(chunk) if t == "span" and has_class(a, "skills__group")]
+        assert len(labels) == 1, "Gruppe ohne genau ein Label"
+        assert labels[0].get("data-de") and labels[0].get("data-en"), "Gruppenlabel nicht zweisprachig"
+        seen[labels[0]["data-de"]] = text_by_class(chunk, "span", "chip")
+    assert seen == SKILL_GROUPS
+
+
+def test_skills_read_as_a_ladder_and_stack_on_small_screens():
+    rows = rules_for_selector(CSS, ".portfolio .skills li")
+    assert rows, "keine Regel für .portfolio .skills li"
+    assert "grid-template-columns: 220px minmax(0, 1fr)" in rows[0]["body"], \
+        "Skill-Zeilen sind nicht zweispaltig"
+    label = rules_for_selector(CSS, ".portfolio .skills__group")
+    assert label and "text-align: right" in label[0]["body"], "Label-Spalte ist nicht rechtsbündig"
+    stacked = rules_for_selector(CSS, ".portfolio .skills li", media="max-width: 640px")
+    assert stacked and "grid-template-columns: minmax(0, 1fr)" in stacked[0]["body"], \
+        "Skill-Zeilen stapeln unter 640px nicht"
+
+
+def test_no_tier_colouring_on_the_chips():
+    assert not rules_for_selector(CSS, ".portfolio .skills .chip--weak"), \
+        "abgewertete Chip-Variante — das Niveau gehört ins Label"
+    assert "border-style: dashed" not in CSS
+
+
+def test_readme_documents_the_expander_and_the_cv_gate():
+    readme = (Path(__file__).resolve().parent.parent / "README.md").read_text(encoding="utf-8")
+    assert "Mehr über mich" in readme or "Aufklapper" in readme, \
+        "README erklärt den Aufklapper nicht"
+    assert "master.md" in readme and "test_cv_sync" in readme, \
+        "README nennt die CV-Sync-Regel nicht"
+
+
+def test_skill_chips_flow_inside_one_grid_cell():
+    # Regression 2026-09-16: ohne Wrapper wurde jeder Chip zur eigenen Grid-Zelle
+    # und die Leiter lief über die volle Breite auseinander.
+    for chunk in _skill_items():
+        wrappers = [a for t, a in parse_elements(chunk) if t == "span" and has_class(a, "skills__chips")]
+        assert len(wrappers) == 1, "Chips einer Gruppe liegen nicht in genau einem Wrapper"
+    rules = rules_for_selector(CSS, ".portfolio .skills__chips")
+    assert rules, "keine Regel für .portfolio .skills__chips"
+    assert "flex-wrap: wrap" in rules[0]["body"], "Chips brechen im Wrapper nicht um"

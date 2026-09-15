@@ -375,6 +375,41 @@ body::before {
   font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--foam);
   cursor: default;
 }
+.portfolio .skills li {
+  display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 16px; align-items: baseline;
+}
+.portfolio .skills__group { text-align: right; margin-right: 0; }
+.portfolio .skills__chips { display: flex; flex-wrap: wrap; }
+
+/* ---------- Mehr über mich (Aufklapper) ---------- */
+.portfolio .deeper { position: relative; margin-top: 28px; padding-left: 36px; }
+.portfolio .deeper::before {
+  content: ""; position: absolute; left: 10px; top: 10px; bottom: 4px; width: 2px;
+  background: linear-gradient(180deg, var(--teal), var(--mist) 30%, transparent);
+  transform: scaleY(0); transform-origin: top; transition: transform 0.35s ease;
+}
+.portfolio .deeper[open]::before { transform: scaleY(1); }
+.portfolio .deeper > summary {
+  list-style: none; cursor: pointer; position: relative;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--mist);
+}
+.portfolio .deeper > summary::marker { content: none; }
+.portfolio .deeper > summary::-webkit-details-marker { display: none; }
+.portfolio .deeper > summary::before {
+  content: ""; position: absolute; left: -32px; top: 2px; width: 10px; height: 10px;
+  border-radius: 50%; border: 1px solid var(--mist);
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.portfolio .deeper[open] > summary::before {
+  background: var(--teal); border-color: var(--teal); box-shadow: 0 0 8px var(--teal);
+}
+.portfolio .deeper > summary:hover { color: var(--foam); }
+.portfolio .deeper p { margin-top: 16px; }
+.portfolio .deeper h3 {
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.125rem;
+  margin-top: 24px; margin-bottom: 8px;
+}
+.portfolio .deeper h3:first-of-type { margin-top: 20px; }
 
 /* ---------- Projekte ---------- */
 .project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
@@ -434,6 +469,8 @@ a:focus-visible, button:focus-visible {
 @media (max-width: 640px) {
   .project { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .project--right .project__shot { order: 0; }
+  .portfolio .skills li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .portfolio .skills__group { text-align: left; }
 }
 
 /* ---------- Rechtsseiten (Impressum, Datenschutz) ---------- */
@@ -454,6 +491,8 @@ a:focus-visible, button:focus-visible {
   font-size: clamp(1.9rem, 5vw, 2.6rem); letter-spacing: -0.02em;
 }
 .detail .detail__intro { margin-top: 16px; }
+.detail main p + p { margin-top: 14px; }
+.detail main h2 { margin-top: 40px; }
 .detail .clip { margin: 28px 0; }
 .detail .clip--empty {
   display: flex; align-items: center; justify-content: center;
@@ -466,3 +505,9 @@ a:focus-visible, button:focus-visible {
   background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
 }
 .detail .clip figcaption { margin-top: 8px; color: var(--mist); font-size: 0.85rem; }
+
+/* reduced-motion-Overrides gehören ans Dateiende: gleiche Spezifität, spätere Regel gewinnt. */
+@media (prefers-reduced-motion: reduce) {
+  .portfolio .deeper::before { transition: none; }
+  .portfolio .deeper > summary::before { transition: none; }
+}
