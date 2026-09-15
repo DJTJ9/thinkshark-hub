@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 
-from html_utils import parse_elements, rules_for_selector
+from html_utils import element_ids, fragment, has_class, parse_css_rules, parse_elements, rules_for_selector
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "index.html").read_text(encoding="utf-8")
@@ -22,10 +22,26 @@ def test_tool_subdomains_no_longer_on_apex():
 
 
 def test_all_sections_present_with_depth():
-    for sid in ["ueber", "projekte", "lebenslauf", "kontakt"]:
-        assert f'id="{sid}"' in HTML
+    ids = element_ids(HTML)
+    for sid in ["start", "ueber", "projekte", "izzy", "bullseyeq", "bob", "desk-buddy", "lebenslauf", "kontakt"]:
+        assert sid in ids, f"Sprungziel #{sid} fehlt im Dokument"
     depths = re.findall(r'data-depth="(\d+)"', HTML)
-    assert depths == ["0", "20", "60", "90", "120", "150", "180"]
+    assert depths == ["0", "20", "60", "90", "120", "150", "180", "200"]
+
+
+def test_lebenslauf_and_kontakt_are_separate_sections():
+    sections = [attrs for tag, attrs in parse_elements(HTML) if tag == "section"]
+    by_id = {a.get("id"): a for a in sections if a.get("id")}
+    assert by_id["lebenslauf"].get("data-depth") == "180"
+    assert by_id["kontakt"].get("data-depth") == "200"
+
+
+def test_depth_scale_matches_max_depth():
+    assert "const MAX_DEPTH = 200;" in JS
+    rules = rules_for_selector(CSS, ".rail__scale li")
+    assert rules, "keine Regel für .rail__scale li"
+    assert "var(--at) / 200" in rules[0]["body"], \
+        "CSS-Tiefenskala passt nicht zu MAX_DEPTH in main.js"
 
 
 def test_rail_is_present_and_static():

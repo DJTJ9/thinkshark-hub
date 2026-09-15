@@ -82,3 +82,18 @@ def rules_for_selector(css_text, selector, media=None):
             if media is None or (rule["media"] and media in rule["media"]):
                 out.append(rule)
     return out
+
+
+def fragment(html_text, start_marker, end_marker):
+    """Teilstring vom ersten `start_marker` bis zum nächsten `end_marker`.
+
+    Nur zum Eingrenzen des Bereichs; die eigentlichen Assertions laufen
+    danach über parse_elements() auf diesem Ausschnitt.
+    """
+    start = html_text.index(start_marker)
+    end = html_text.index(end_marker, start)
+    return html_text[start:end + len(end_marker)]
+
+
+def element_ids(html_text):
+    return {attrs["id"] for _, attrs in parse_elements(html_text) if attrs.get("id")}

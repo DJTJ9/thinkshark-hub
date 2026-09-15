@@ -266,7 +266,7 @@ body::before {
 }
 .rail__scale { list-style: none; margin-top: -100vh; height: 100vh; }
 .rail__scale li {
-  position: absolute; left: 0; top: calc(var(--at) / 180 * 92vh + 4vh);
+  position: absolute; left: 0; top: calc(var(--at) / 200 * 92vh + 4vh);
   font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--mist);
 }
 
