@@ -241,10 +241,10 @@ body::before {
 .layout {
   flex: 1;
   width: 100%;
-  max-width: calc(var(--maxw) + 64px);
+  max-width: calc(var(--maxw) + 168px);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns: 168px minmax(0, 1fr);
 }
 .portfolio .wrap { max-width: var(--maxw); padding-top: clamp(24px, 5vw, 48px); }
 
@@ -269,6 +269,30 @@ body::before {
   position: absolute; left: 0; top: calc(var(--at) / 200 * 92vh + 4vh);
   font-family: "IBM Plex Mono", monospace; font-size: 0.75rem; color: var(--mist);
 }
+.portfolio .rail__scale li { width: 152px; }
+.portfolio .rail__scale a {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none;
+}
+.portfolio .rail__depth {
+  flex: 0 0 34px;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--mist);
+}
+.portfolio .rail__tick {
+  flex: 0 0 auto; width: 8px; height: 1px; background: var(--current);
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+.portfolio .rail__label {
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 0.8rem;
+  line-height: 1.15; color: var(--mist);
+  transition: color 0.2s ease;
+}
+.portfolio .rail__scale a:hover .rail__label,
+.portfolio .rail__scale a:focus-visible .rail__label { color: var(--foam); }
+.portfolio .rail__scale a:hover .rail__tick,
+.portfolio .rail__scale a:focus-visible .rail__tick { width: 14px; background: var(--mist); }
+.portfolio .rail__scale a[aria-current="true"] .rail__label { color: var(--teal); }
+.portfolio .rail__scale a[aria-current="true"] .rail__tick { width: 14px; background: var(--teal); }
 
 /* ---------- Sektionen ---------- */
 .portfolio section { padding: clamp(40px, 7vw, 72px) 0; }

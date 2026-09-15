@@ -44,15 +44,48 @@ def test_depth_scale_matches_max_depth():
         "CSS-Tiefenskala passt nicht zu MAX_DEPTH in main.js"
 
 
-def test_rail_is_present_and_static():
+RAIL_TARGETS = ["#start", "#ueber", "#izzy", "#bullseyeq", "#bob", "#desk-buddy", "#lebenslauf", "#kontakt"]
+
+
+def test_rail_is_a_labelled_navigation():
     elements = parse_elements(HTML)
-    assert any(tag == "aside" and "rail" in (attrs.get("class") or "").split() for tag, attrs in elements), \
-        "kein <aside class=\"rail\"> im Markup"
-    assert any(tag == "span" and "rail__marker" in (attrs.get("class") or "").split() for tag, attrs in elements), \
-        "kein .rail__marker-Element im Markup"
-    rules = rules_for_selector(CSS, ".rail__marker")
-    assert any("position: sticky" in r["body"] for r in rules), \
-        ".rail__marker hat keine position: sticky-Regel"
+    rails = [attrs for tag, attrs in elements if tag == "nav" and has_class(attrs, "rail")]
+    assert rails, 'kein <nav class="rail"> im Markup'
+    assert "aria-hidden" not in rails[0], "die Rail ist Navigation und darf nicht aria-hidden sein"
+    assert rails[0].get("aria-label"), "die Rail-Navigation hat kein aria-label"
+    assert not any(tag == "aside" and has_class(attrs, "rail") for tag, attrs in elements), \
+        "die Rail ist noch ein <aside>"
+    assert any(tag == "span" and has_class(attrs, "rail__marker") for tag, attrs in elements)
+    assert any("position: sticky" in r["body"] for r in rules_for_selector(CSS, ".rail__marker"))
+
+
+def test_every_rail_entry_links_to_an_existing_id():
+    rail = fragment(HTML, '<ol class="rail__scale"', "</ol>")
+    links = [attrs for tag, attrs in parse_elements(rail) if tag == "a"]
+    assert [a.get("href") for a in links] == RAIL_TARGETS
+    ids = element_ids(HTML)
+    for a in links:
+        assert a["href"][1:] in ids, f"Rail-Ziel {a['href']} existiert nicht im Dokument"
+
+
+def test_every_rail_entry_carries_depth_and_label():
+    rail = fragment(HTML, '<ol class="rail__scale"', "</ol>")
+    elements = parse_elements(rail)
+    assert len([a for t, a in elements if t == "span" and has_class(a, "rail__depth")]) == 8
+    assert len([a for t, a in elements if t == "span" and has_class(a, "rail__label")]) == 8
+
+
+def test_rail_column_is_wide_enough_for_labels():
+    rules = rules_for_selector(CSS, ".layout")
+    assert rules, "keine .layout-Regel"
+    assert "grid-template-columns: 168px" in rules[0]["body"]
+
+
+def test_rail_marks_the_active_entry():
+    active = rules_for_selector(CSS, '.portfolio .rail__scale a[aria-current="true"] .rail__label')
+    assert active, "kein aktiver Zustand für Rail-Labels"
+    assert "color: var(--teal)" in active[0]["body"]
+    assert "aria-current" in JS and "rail__scale" in JS
 
 
 def test_four_projects_in_strength_order():
