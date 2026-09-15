@@ -438,3 +438,27 @@ a:focus-visible, button:focus-visible {
 .legal p { max-width: 68ch; line-height: 1.7; color: var(--foam); }
 .legal a { color: var(--teal); }
 .legal code { font-family: "IBM Plex Mono", monospace; font-size: 0.9em; color: var(--mist); }
+
+/* ---------- Projekt-Detailseiten ---------- */
+.detail .detail__back {
+  display: inline-block; margin-bottom: 24px;
+  color: var(--teal); text-decoration: none; font-size: 0.9rem;
+}
+.detail .detail__back:hover { text-decoration: underline; }
+.detail .detail__title {
+  font-family: "Space Grotesk", sans-serif; font-weight: 600;
+  font-size: clamp(1.9rem, 5vw, 2.6rem); letter-spacing: -0.02em;
+}
+.detail .detail__intro { margin-top: 16px; }
+.detail .clip { margin: 28px 0; }
+.detail .clip--empty {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; aspect-ratio: 16 / 9;
+  background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
+  color: var(--mist); font-family: "IBM Plex Mono", monospace; font-size: 0.8rem;
+}
+.detail .clip video {
+  width: 100%; height: auto; aspect-ratio: 16 / 9; display: block;
+  background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
+}
+.detail .clip figcaption { margin-top: 8px; color: var(--mist); font-size: 0.85rem; }

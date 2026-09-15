@@ -10,7 +10,10 @@ from html_utils import elements_by_tag, jpeg_size
 ROOT = Path(__file__).resolve().parent.parent
 SHOTS = ROOT / "assets" / "projects"
 NAMES = ["izzy.png", "bullseyeq.png", "bob.png", "desk-buddy.png"]
-PAGES = ["index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html"]
+PAGES = [
+    "index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html",
+    "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html",
+]
 
 # Erkennt telefonnummer-artige Ziffernfolgen (Ländervorwahl/Trennzeichen erlaubt),
 # ohne auf eine konkrete Nummer zu prüfen.
