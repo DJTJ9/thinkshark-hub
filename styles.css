@@ -357,6 +357,8 @@ body::before {
 
 /* ---------- Sektionen ---------- */
 .portfolio section { padding: clamp(40px, 7vw, 72px) 0; }
+/* Letzte Sektion füllt den Bildschirm, damit ihr Sprungziel oben landen kann. */
+.portfolio section:last-of-type { min-height: 100vh; }
 .portfolio h2 { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.75rem; margin-bottom: 16px; }
 .portfolio p { max-width: 68ch; font-size: 1.0625rem; line-height: 1.7; color: var(--foam); }
 .sr-anchor { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
