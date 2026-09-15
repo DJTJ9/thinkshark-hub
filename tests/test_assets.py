@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from html_utils import elements_by_tag
+from html_utils import elements_by_tag, jpeg_size
 
 ROOT = Path(__file__).resolve().parent.parent
 SHOTS = ROOT / "assets" / "projects"
@@ -82,3 +82,12 @@ def test_cv_pdfs_contain_no_phone_number():
             assert len(digits) < PHONE_DIGIT_MIN, (
                 f"{n}: telefonnummer-artige Ziffernfolge gefunden: {match!r}"
             )
+
+
+def test_portrait_placeholder_is_a_square_jpeg():
+    p = ROOT / "assets" / "me.jpg"
+    assert p.exists(), "assets/me.jpg fehlt"
+    data = p.read_bytes()
+    assert data[:3] == b"\xff\xd8\xff", "assets/me.jpg ist kein JPEG"
+    width, height = jpeg_size(data)
+    assert width == height, f"me.jpg ist nicht 1:1: {width}x{height}"

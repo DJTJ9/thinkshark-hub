@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from html_utils import elements_by_tag
+from html_utils import elements_by_tag, rules_for_selector
 
 ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "changelog.html").read_text(encoding="utf-8")
@@ -34,8 +34,9 @@ def test_portfolio_overrides_do_not_leak_to_changelog():
 
 def test_ping_animation_respects_reduced_motion():
     assert "@keyframes ping" in CSS
-    tail = CSS[CSS.rfind("prefers-reduced-motion"):]
-    assert ".entry--latest .entry__echo::after { animation: none; }" in tail
+    rules = rules_for_selector(CSS, ".entry--latest .entry__echo::after", media="prefers-reduced-motion")
+    assert rules, "kein reduced-motion-Override für den Changelog-Echo-Ring"
+    assert "animation: none" in rules[0]["body"]
 
 
 def test_patches_json_valid_and_shaped():

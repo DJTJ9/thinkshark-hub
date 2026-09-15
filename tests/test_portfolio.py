@@ -193,9 +193,11 @@ def test_rail_marker_uses_intersection_observer():
 
 def test_hero_sweep_animates_once_and_respects_reduced_motion():
     assert "@keyframes sweep" in CSS
-    assert ".portfolio .hero__sweep { transform-origin: left; animation: sweep 0.9s ease-out both; }" in CSS
-    tail = CSS[CSS.rfind("prefers-reduced-motion"):]
-    assert ".portfolio .hero__sweep { animation: none; opacity: 0; }" in tail
+    base = rules_for_selector(CSS, ".portfolio .hero__sweep")
+    assert any("animation: sweep 0.9s ease-out both" in r["body"] for r in base if r["media"] is None)
+    reduced = rules_for_selector(CSS, ".portfolio .hero__sweep", media="prefers-reduced-motion")
+    assert reduced, "kein reduced-motion-Override für .hero__sweep"
+    assert "animation: none" in reduced[0]["body"]
 
 
 def test_chapter_bar_mirrors_the_rail_targets():
@@ -224,3 +226,50 @@ def test_chapter_bar_is_sticky_and_scrolls_the_active_entry_into_view():
     assert "position: sticky" in body
     assert "overflow-x: auto" in body
     assert "scrollIntoView" in JS and "chapters" in JS
+
+
+def test_hero_has_three_sonar_rings():
+    ping = fragment(HTML, '<div class="hero__ping"', "</div>")
+    spans = [a for tag, a in parse_elements(ping) if tag == "span"]
+    assert len(spans) == 3, f"{len(spans)} Ringe statt 3"
+    assert "@keyframes ping-in" in CSS
+    base = rules_for_selector(CSS, ".portfolio .hero__ping span")
+    assert base, "keine Regel für .portfolio .hero__ping span"
+    assert "animation: ping-in" in base[0]["body"]
+    delays = []
+    for n in (1, 2, 3):
+        rules = rules_for_selector(CSS, f".portfolio .hero__ping span:nth-child({n})")
+        assert rules, f"keine Regel für Ring {n}"
+        delays.append(rules[0]["body"])
+    assert "animation-delay: 0s" in delays[0]
+    assert "animation-delay: 0.35s" in delays[1]
+    assert "animation-delay: 0.7s" in delays[2]
+
+
+def test_sonar_rings_stop_at_a_faint_resting_state():
+    tail = CSS[CSS.index("@keyframes ping-in"):]
+    end = tail[:tail.index("}\n")]
+    assert "opacity: 0.10" in tail[:tail.index("\n}")], \
+        "Ringe verschwinden am Ende statt schwach stehenzubleiben"
+
+
+def test_hero_ping_respects_reduced_motion():
+    rules = rules_for_selector(CSS, ".portfolio .hero__ping span", media="prefers-reduced-motion")
+    assert rules, "keine reduced-motion-Regel für die Sonar-Ringe"
+    assert "animation: none" in rules[0]["body"]
+    assert "opacity: 0.10" in rules[0]["body"], "Endzustand wird bei reduced motion nicht gesetzt"
+
+
+def test_hero_photo_slot_is_square_and_shift_free():
+    imgs = [a for tag, a in parse_elements(HTML) if tag == "img" and a.get("src") == "assets/me.jpg"]
+    assert len(imgs) == 1, "kein (oder mehr als ein) Foto-Slot im Hero"
+    attrs = imgs[0]
+    assert attrs.get("alt"), "Foto-Slot ohne alt"
+    assert attrs.get("width") and attrs.get("height"), "Foto-Slot ohne width/height (Layout-Shift)"
+    assert attrs["width"] == attrs["height"], "Foto-Slot ist nicht 1:1"
+    rules = rules_for_selector(CSS, ".portfolio .hero__photo img")
+    assert rules, "keine Regel für .portfolio .hero__photo img"
+    body = rules[0]["body"]
+    assert "aspect-ratio: 1 / 1" in body
+    # Learning 2026-09-14: ohne height:auto gewinnt das height-Attribut gegen aspect-ratio
+    assert "height: auto" in body
