@@ -307,12 +307,12 @@ def test_profile_paragraph_is_the_new_short_profile():
     assert paras, "kein Absatz in der Über-Sektion"
     de, en = paras[0].get("data-de"), paras[0].get("data-en")
     assert de and en, "Kurzprofil ohne vollständiges Sprachpaar"
-    assert de.startswith("Games Programmer mit fundierter Erfahrung in Unity und C#")
-    for term in ["Sportwissenschaft, Mathematik und Physik", "Lernen, Training und Wissensvermittlung",
-                 "Engine-Tools", "KI-Algorithmen", "Wave Function Collapse"]:
+    assert de.startswith("Sport gilt heute selbstverständlich als wertvoll")
+    for term in ["Übung, Feedback, Motivation und Lernen durch Handeln", "Sportwissenschaft",
+                 "Datenanalyse", "Engine-Tools", "spielspezifischer KI"]:
         assert term in de, f"Kurzprofil (DE) ohne „{term}\""
-    for term in ["sports science, mathematics and physics", "learning, training and knowledge transfer",
-                 "engine tools", "AI algorithms", "wave function collapse"]:
+    for term in ["practice, feedback, motivation and learning by doing", "sports science",
+                 "data analysis", "engine tools", "game-specific AI"]:
         assert term in en, f"Kurzprofil (EN) ohne „{term}\""
     assert "SAE Institute Hamburg (04/2026)" not in de, "alter Hub-Absatz steht noch da"
 
