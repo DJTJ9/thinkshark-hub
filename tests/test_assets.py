@@ -19,6 +19,9 @@ PAGES = [
 # ohne auf eine konkrete Nummer zu prüfen.
 PHONE_RUN_RE = re.compile(r"\+?\d[\d ./\-()]{5,}\d")
 PHONE_DIGIT_MIN = 7
+# Das Geburtsdatum steht bewusst auch im öffentlichen CV und hat 8 Ziffern —
+# ohne diese Ausnahme meldet die Telefon-Heuristik es als Treffer.
+DATE_RE = re.compile(r"\A\d{2}\.\d{2}\.\d{4}\Z")
 
 
 def test_all_project_images_exist():
@@ -81,6 +84,8 @@ def test_cv_pdfs_contain_no_phone_number():
         text = result.stdout
         assert text.strip(), f"{n}: leere Textextraktion"
         for match in PHONE_RUN_RE.findall(text):
+            if DATE_RE.match(match.strip()):
+                continue
             digits = re.sub(r"\D", "", match)
             assert len(digits) < PHONE_DIGIT_MIN, (
                 f"{n}: telefonnummer-artige Ziffernfolge gefunden: {match!r}"
@@ -115,8 +120,8 @@ def test_cv_pdfs_carry_the_new_profile():
     # Bindestrich-Umbrüche im PDF überleben den Whitespace-Join als "KI- Algorithmen",
     # deshalb wird jede Wortgrenze tolerant gesucht statt wörtlich.
     expected = {
-        "cv-de.pdf": r"spielspezifischer\s*KI-\s*Algorithmen",
-        "cv-en.pdf": r"game-\s*specific\s*AI\s*algorithms",
+        "cv-de.pdf": r"Datenanalyse,\s*Engine-\s*Tools",
+        "cv-en.pdf": r"data\s*analysis,\s*engine\s*tools",
     }
     for n, pattern in expected.items():
         result = subprocess.run(
@@ -125,4 +130,6 @@ def test_cv_pdfs_carry_the_new_profile():
         )
         text = " ".join(result.stdout.split())
         assert re.search(pattern, text), f"{n}: PDF trägt noch das alte Profil"
-        assert re.search(r"Desk-\s*Buddy", text), f"{n}: Desk-Buddy fehlt im gerenderten CV"
+        # Desk-Buddy steht per `im_cv: false` bewusst nur auf der Seite, nicht im CV.
+        assert not re.search(r"Desk-\s*Buddy", text), f"{n}: Desk-Buddy gehört nicht ins CV"
+        assert re.search(r"BullseyeQ", text), f"{n}: BullseyeQ fehlt im gerenderten CV"
