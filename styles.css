@@ -275,7 +275,7 @@ body::before {
   text-decoration: none;
 }
 .portfolio .rail__depth {
-  flex: 0 0 34px;
+  flex: 0 0 36px;
   font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--mist);
 }
 .portfolio .rail__tick {
