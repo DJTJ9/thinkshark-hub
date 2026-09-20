@@ -81,6 +81,19 @@ if (marker && sections.length) {
   sections.forEach((s) => observer.observe(s));
 }
 
+// Fund-Ping: genau ein Sonar-Ping pro Projektbild, beim ersten Reinscrollen
+const shots = document.querySelectorAll(".project__shot");
+if (shots.length && !reduce) {
+  const foundObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("is-found");
+      foundObserver.unobserve(e.target);
+    });
+  }, { threshold: 0.5 });
+  shots.forEach((s) => foundObserver.observe(s));
+}
+
 // Sonar-Ping auf Karten-Hover — nur auf hub.html vorhanden
 if (!reduce) {
   document.querySelectorAll(".hub-card").forEach((card) => {

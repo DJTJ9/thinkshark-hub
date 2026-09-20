@@ -104,3 +104,42 @@ def test_readme_deploys_the_sea():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "sea.js" in readme[readme.index("Redeploy"):readme.index("Caddy-Reload")], \
         "sea.js fehlt im Redeploy-cp"
+
+
+INDEX = (ROOT / "index.html").read_text(encoding="utf-8")
+
+
+def test_project_shots_are_framed_as_finds():
+    tags = [a for t, a in parse_elements(INDEX) if t == "figcaption" and "project__depth" in (a.get("class") or "")]
+    assert len(tags) == 4, "nicht jedes Projektbild trägt seine Tiefe"
+    texts = re.findall(r'<figcaption class="project__depth">([^<]+)<', INDEX)
+    assert texts == ["60 m", "90 m", "120 m", "150 m"]
+    frame = rules_for_selector(CSS, ".portfolio .project__shot::before")
+    assert frame and frame[0]["body"].count("linear-gradient") == 8, "keine vier Sonar-Eckklammern"
+
+
+def test_one_sonar_ping_per_project_image():
+    assert "@keyframes found-ping" in CSS
+    ring = rules_for_selector(CSS, ".portfolio .project__shot.is-found::after")
+    assert ring and "animation: found-ping" in ring[0]["body"] and " 1 " in ring[0]["body"] + " ", \
+        "Ping läuft nicht genau einmal"
+    reduced = rules_for_selector(CSS, ".portfolio .project__shot.is-found::after", media="prefers-reduced-motion")
+    assert reduced and "animation: none" in reduced[0]["body"]
+    assert "is-found" in JS and "unobserve" in JS, "Ping würde bei jedem Reinscrollen neu feuern"
+
+
+def test_contact_carries_the_amber_lure():
+    lure = rules_for_selector(CSS, ".portfolio #kontakt h2::before")
+    assert lure and "var(--flare)" in lure[0]["body"] and "animation" not in lure[0]["body"]
+
+
+def test_rail_depths_use_tabular_figures():
+    rules = rules_for_selector(CSS, ".portfolio .rail__depth")
+    assert any("font-variant-numeric: tabular-nums" in r["body"] for r in rules)
+
+
+def test_portrait_sits_inside_the_sonar_rings():
+    photo = rules_for_selector(CSS, ".portfolio .hero__photo img")
+    assert any("border-radius: 50%" in r["body"] for r in photo), "Porträt ist nicht rund"
+    assert rules_for_selector(CSS, ".portfolio .hero__ping", media="min-width: 1000px"), \
+        "Ringe sind auf dem Desktop nicht auf das Porträt zentriert"
