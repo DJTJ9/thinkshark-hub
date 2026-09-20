@@ -317,20 +317,69 @@ def test_profile_paragraph_is_the_new_short_profile():
     assert "SAE Institute Hamburg (04/2026)" not in de, "alter Hub-Absatz steht noch da"
 
 
-def test_about_has_a_native_details_expander():
+def test_about_longtext_is_always_visible():
     block = fragment(HTML, '<section id="ueber"', "</section>")
     elements = parse_elements(block)
-    details = [a for t, a in elements if t == "details" and has_class(a, "deeper")]
-    assert len(details) == 1, "kein (oder mehr als ein) <details class=\"deeper\"> in der Über-Sektion"
-    assert "open" not in details[0], "der Aufklapper ist im Markup schon geöffnet"
-    summaries = [a for t, a in elements if t == "summary"]
-    assert len(summaries) == 1 and summaries[0].get("data-de") and summaries[0].get("data-en"), \
-        "Summary fehlt oder ist nicht zweisprachig"
-    tail = block[block.index("<details"):]
+    assert not any(t in ("details", "summary") for t, _ in elements), \
+        "Über mich trägt noch einen Aufklapper"
+    subs = [a for t, a in elements if t == "h3" and has_class(a, "about__sub")]
+    assert len(subs) == 1, "keine (oder mehrere) Zwischenüberschrift(en) in Über mich"
+    assert (subs[0].get("data-de"), subs[0].get("data-en")) == ("Was mich antreibt", "What drives me")
+    tail = block[block.index('<h3 class="about__sub"'):]
     paras = [a for t, a in parse_elements(tail) if t == "p"]
-    assert len(paras) >= 3, f"nur {len(paras)} Absätze im Aufklapper"
+    assert len(paras) >= 3, f"nur {len(paras)} Absätze unter „Was mich antreibt\""
     for attrs in paras:
         assert attrs.get("data-de") and attrs.get("data-en")
+    assert rules_for_selector(CSS, ".portfolio #ueber p + p"), "Absätze in Über mich kleben aneinander"
+
+
+def test_about_is_called_ueber_mich_everywhere():
+    assert "Wer ich bin" not in HTML and "Who I am" not in HTML
+    block = fragment(HTML, '<section id="ueber"', "</section>")
+    h2 = [a for t, a in parse_elements(block) if t == "h2"][0]
+    assert (h2.get("data-de"), h2.get("data-en")) == ("Über mich", "About me")
+    rail = fragment(HTML, '<ol class="rail__scale"', "</ol>")
+    labels = [a.get("data-de") for t, a in parse_elements(rail)
+              if t == "span" and has_class(a, "rail__label")]
+    assert "Über mich" in labels
+
+
+def test_projects_are_a_visible_group():
+    elements = parse_elements(HTML)
+    heads = [a for t, a in elements if t == "h2" and a.get("id") == "projekte"]
+    assert len(heads) == 1 and not has_class(heads[0], "sr-anchor"), "H2 Projekte ist noch versteckt"
+    assert ".sr-anchor" not in CSS, "verwaiste .sr-anchor-Regel"
+    intro = [a for t, a in elements if t == "p" and has_class(a, "projects__intro")]
+    assert len(intro) == 1 and intro[0].get("data-de") and intro[0].get("data-en")
+
+    rail = fragment(HTML, '<ol class="rail__scale"', "</ol>")
+    relems = parse_elements(rail)
+    assert len([a for t, a in relems if t == "li" and has_class(a, "rail__group")]) == 1
+    glabel = [a for t, a in relems if t == "span" and has_class(a, "rail__group-label")]
+    assert glabel and (glabel[0].get("data-de"), glabel[0].get("data-en")) == ("Projekte", "Projects")
+    assert not any(t == "a" for t, _ in parse_elements(fragment(rail, '<li class="rail__group"', "</li>"))), \
+        "der Gruppenmarker darf kein Link sein"
+    assert rail.index('href="#ueber"') < rail.index('class="rail__group"') < rail.index('href="#izzy"')
+    assert len([a for t, a in relems if t == "li" and has_class(a, "rail__item--project")]) == 4
+    assert rules_for_selector(CSS, ".portfolio .rail__group::after"), "keine Klammer um die Projektgruppe"
+
+    chapters = fragment(HTML, '<nav class="chapters"', "</nav>")
+    seps = [a for t, a in parse_elements(chapters) if t == "span" and has_class(a, "chapters__sep")]
+    assert len(seps) == 1 and (seps[0].get("data-de"), seps[0].get("data-en")) == ("Projekte:", "Projects:")
+    assert chapters.index("chapters__sep") < chapters.index('href="#izzy"')
+
+
+def test_hero_guides_recruiters_with_two_ctas():
+    hero = fragment(HTML, '<section class="hero"', "</section>")
+    ctas = [a for t, a in parse_elements(hero) if t == "a" and has_class(a, "cta")]
+    assert [a.get("href") for a in ctas] == ["#projekte", "assets/cv/cv-de.pdf"]
+    for a in ctas:
+        assert a.get("data-de") and a.get("data-en")
+    cv = ctas[1]
+    assert cv.get("data-href-de") == "assets/cv/cv-de.pdf"
+    assert cv.get("data-href-en") == "assets/cv/cv-en.pdf"
+    assert "download" in cv
+    assert "hrefEn" in JS and "hrefDe" in JS, "applyLang tauscht den CV-Link nicht mit der Sprache"
 
 
 def test_details_expander_uses_the_existing_sonar_language():
@@ -400,10 +449,10 @@ def test_no_tier_colouring_on_the_chips():
     assert "border-style: dashed" not in CSS
 
 
-def test_readme_documents_the_expander_and_the_cv_gate():
+def test_readme_documents_the_about_block_and_the_cv_gate():
     readme = (Path(__file__).resolve().parent.parent / "README.md").read_text(encoding="utf-8")
-    assert "Mehr über mich" in readme or "Aufklapper" in readme, \
-        "README erklärt den Aufklapper nicht"
+    assert "Was mich antreibt" in readme, "README beschreibt den offenen Über-mich-Block nicht"
+    assert "Tiefer tauchen" not in readme and "Wer ich bin" not in readme
     assert "master.md" in readme and "test_cv_sync" in readme, \
         "README nennt die CV-Sync-Regel nicht"
 

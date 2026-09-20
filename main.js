@@ -7,10 +7,12 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 // Sprache: data-de / data-en + localStorage
 const langNodes = document.querySelectorAll("[data-de][data-en]");
 const langBtns = document.querySelectorAll(".lang__btn");
+const langHrefs = document.querySelectorAll("[data-href-de][data-href-en]");
 
 function applyLang(lang) {
   document.documentElement.lang = lang;
   langNodes.forEach((el) => { el.textContent = el.dataset[lang]; });
+  langHrefs.forEach((el) => { el.setAttribute("href", lang === "en" ? el.dataset.hrefEn : el.dataset.hrefDe); });
   langBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
   try { localStorage.setItem("lang", lang); } catch (e) { /* Private Mode */ }
 }

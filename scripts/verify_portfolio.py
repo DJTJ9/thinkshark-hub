@@ -64,7 +64,7 @@ def main():
                     )
 
             page.click(".lang__btn[data-lang='en']")
-            if "Who I am" not in page.content():
+            if "About me" not in page.content():
                 fails.append(f"{label}: EN-Umschaltung greift nicht")
             page.reload(wait_until="networkidle")
             if page.evaluate("document.documentElement.lang") != "en":

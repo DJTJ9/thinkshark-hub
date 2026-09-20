@@ -361,7 +361,6 @@ body::before {
 .portfolio section:last-of-type { min-height: 60vh; }
 .portfolio h2 { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.75rem; margin-bottom: 16px; }
 .portfolio p { max-width: 68ch; font-size: 1.0625rem; line-height: 1.7; color: var(--foam); }
-.sr-anchor { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
 .portfolio .hero__name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: clamp(2.6rem, 8vw, 4.5rem); letter-spacing: -0.03em; }
 .portfolio .hero__role { font-size: 1.125rem; color: var(--mist); margin-top: 8px; }
@@ -505,6 +504,43 @@ a:focus-visible, button:focus-visible {
   background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
 }
 .detail .clip figcaption { margin-top: 8px; color: var(--mist); font-size: 0.85rem; }
+
+/* ---------- Rail: Projektgruppe ---------- */
+.portfolio .rail__group { padding-left: 50px; }
+.portfolio .rail__group-label {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.65rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--mist);
+}
+/* Klammer von 60 m bis 150 m: (60-46)/200*84vh = 5.88vh, Spanne 90/200*84vh = 37.8vh */
+.portfolio .rail__group::after {
+  content: ""; position: absolute; left: 40px; top: calc(5.88vh - 8px);
+  width: 6px; height: calc(37.8vh + 30px);
+  border: 1px solid var(--current); border-right: 0; border-radius: 3px 0 0 3px;
+}
+.portfolio .rail__item--project .rail__tick { margin-left: 8px; }
+.portfolio .chapters__sep {
+  flex: 0 0 auto; align-self: center; padding-left: 12px; border-left: 1px solid var(--current);
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--mist);
+}
+
+/* ---------- Über mich / Projekte-Kopf / Hero-CTAs ---------- */
+.portfolio .about__sub {
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.25rem;
+  margin-top: 36px; margin-bottom: 10px;
+}
+.portfolio #ueber p + p { margin-top: 16px; }
+.portfolio .projects__head { padding-top: clamp(40px, 7vw, 72px); }
+/* Sprungziel ist die H2 selbst, nicht eine Sektion mit Padding: Abstand zur sticky Kapitelleiste. */
+.portfolio #projekte { scroll-margin-top: 72px; }
+.portfolio .projects__intro { color: var(--mist); }
+.portfolio .hero__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.portfolio .cta {
+  padding: 11px 20px; border: 1px solid var(--teal); border-radius: 8px;
+  color: var(--teal); text-decoration: none; font-size: 0.95rem; font-weight: 500;
+}
+.portfolio .cta:hover { background: rgba(61, 225, 192, 0.1); }
+.portfolio .cta--primary { background: var(--teal); color: var(--abyss); }
+.portfolio .cta--primary:hover { background: #5FEBD0; }
 
 /* reduced-motion-Overrides gehören ans Dateiende: gleiche Spezifität, spätere Regel gewinnt. */
 @media (prefers-reduced-motion: reduce) {
