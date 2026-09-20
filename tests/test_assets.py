@@ -133,3 +133,22 @@ def test_cv_pdfs_carry_the_new_profile():
         # Desk-Buddy steht per `im_cv: false` bewusst nur auf der Seite, nicht im CV.
         assert not re.search(r"Desk-\s*Buddy", text), f"{n}: Desk-Buddy gehört nicht ins CV"
         assert re.search(r"BullseyeQ", text), f"{n}: BullseyeQ fehlt im gerenderten CV"
+
+
+CLIPS = ["minigolf", "swaggy", "bowling"]
+
+
+def test_clips_are_web_sized_silent_h264():
+    for n in CLIPS:
+        mp4, jpg = ROOT / "assets" / "clips" / f"{n}.mp4", ROOT / "assets" / "clips" / f"{n}.jpg"
+        assert mp4.exists() and jpg.exists(), f"Clip oder Poster fehlt: {n}"
+        assert mp4.stat().st_size < 10 * 1024 * 1024, f"{n}.mp4 ist {mp4.stat().st_size / 1e6:.1f} MB"
+        assert jpeg_size(jpg.read_bytes()) == (1280, 720)
+    if shutil.which("ffprobe") is None:
+        pytest.skip("ffprobe nicht installiert")
+    for n in CLIPS:
+        out = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "stream=codec_type,codec_name,width,height",
+             "-of", "csv=p=0", str(ROOT / "assets" / "clips" / f"{n}.mp4")],
+            capture_output=True, text=True, check=True).stdout.split()
+        assert out == ["h264,video,1280,720"], f"{n}.mp4: unerwartete Streams {out}"

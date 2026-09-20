@@ -463,12 +463,6 @@ a:focus-visible, button:focus-visible {
 .detail main p + p { margin-top: 14px; }
 .detail main h2 { margin-top: 40px; }
 .detail .clip { margin: 28px 0; }
-.detail .clip--empty {
-  display: flex; align-items: center; justify-content: center;
-  width: 100%; aspect-ratio: 16 / 9;
-  background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
-  color: var(--mist); font-family: "IBM Plex Mono", monospace; font-size: 0.8rem;
-}
 .detail .clip video {
   width: 100%; height: auto; aspect-ratio: 16 / 9; display: block;
   background: var(--deep); border: 1px solid var(--current); border-radius: 10px;

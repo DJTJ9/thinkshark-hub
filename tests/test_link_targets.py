@@ -14,7 +14,7 @@ PAGES = [
     "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html",
 ]
 
-ATTR_BY_TAG = {"a": "href", "link": "href", "script": "src", "img": "src"}
+ATTR_BY_TAG = {"a": "href", "link": "href", "script": "src", "img": "src", "source": "src", "video": "poster"}
 
 
 def _local_targets(html_text):

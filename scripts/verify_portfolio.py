@@ -122,8 +122,12 @@ def main():
         page.on("pageerror", lambda e: detail_errors.append(str(e)))
         page.goto(BASE.rstrip("/") + "/projekt-izzy.html", wait_until="networkidle")
         page.screenshot(path=str(OUT / "detail-desktop.png"), full_page=True)
-        if page.locator(".clip--empty").count() != 3:
-            fails.append("detail: nicht 3 Clip-Slots")
+        if page.locator(".clip video").count() != 3 or page.locator(".clip--empty").count() != 0:
+            fails.append("detail: nicht genau 3 Video-Clips")
+        page.locator(".clip video").first.scroll_into_view_if_needed()
+        page.wait_for_timeout(1200)
+        if page.evaluate("document.querySelector('.clip video').paused"):
+            fails.append("detail: Clip im Viewport spielt nicht")
         if page.evaluate(
             "document.documentElement.scrollWidth > document.documentElement.clientWidth"
         ):

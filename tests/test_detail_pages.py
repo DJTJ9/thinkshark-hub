@@ -86,10 +86,9 @@ def test_detail_rules_are_scoped_to_the_detail_body_class():
     assert not unscoped, "ungescopte Detailseiten-Regeln: " + ", ".join(unscoped)
 
 
-def test_empty_clip_slot_keeps_a_16_by_9_box():
-    rules = rules_for_selector(CSS, ".detail .clip--empty")
-    assert rules, "keine Regel für .detail .clip--empty"
-    assert "aspect-ratio: 16 / 9" in rules[0]["body"]
+def test_clip_video_keeps_a_16_by_9_box():
+    rules = rules_for_selector(CSS, ".detail .clip video")
+    assert rules and "aspect-ratio: 16 / 9" in rules[0]["body"] and "height: auto" in rules[0]["body"]
 
 
 LONGTEXT_HEADINGS = [
@@ -161,6 +160,29 @@ def test_only_izzy_carries_clip_slots():
         figs = [a for t, a in parse_elements(_html(name)) if t == "figure" and has_class(a, "clip")]
         expected = 3 if name == "projekt-izzy.html" else 0
         assert len(figs) == expected, f"{name}: {len(figs)} Clip-Slots statt {expected}"
+
+
+CLIPS = ["minigolf", "swaggy", "bowling"]
+
+
+def test_izzy_clips_are_lazy_muted_loops():
+    html = _html("projekt-izzy.html")
+    elements = parse_elements(html)
+    videos = [a for t, a in elements if t == "video"]
+    assert [a.get("poster") for a in videos] == [f"assets/clips/{n}.jpg" for n in CLIPS]
+    for a in videos:
+        for flag in ("muted", "loop", "playsinline"):
+            assert flag in a, f"Clip ohne {flag}"
+        assert a.get("preload") == "none", "Clips laden schon beim Seitenaufruf"
+        assert "autoplay" not in a and "controls" not in a, "Abspielen steuert main.js"
+        assert (a.get("width"), a.get("height")) == ("1280", "720"), "Layout-Shift: width/height fehlen"
+    sources = [a for t, a in elements if t == "source"]
+    assert [(a.get("src"), a.get("type")) for a in sources] == [(f"assets/clips/{n}.mp4", "video/mp4") for n in CLIPS]
+    for name in DETAIL_PAGES:
+        assert "clip--empty" not in _html(name) and "Clip folgt" not in _html(name)
+    assert ".clip--empty" not in CSS
+    js = (ROOT / "main.js").read_text(encoding="utf-8")
+    assert ".clip video" in js and ".play()" in js and ".pause()" in js and "controls = true" in js
 
 
 def test_role_is_folded_into_the_summary():

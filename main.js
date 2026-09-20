@@ -94,6 +94,22 @@ if (shots.length && !reduce) {
   shots.forEach((s) => foundObserver.observe(s));
 }
 
+// Izzy-Clips: nur im Viewport abspielen; reduced motion -> Controls statt Autoplay
+const clips = document.querySelectorAll(".clip video");
+if (clips.length) {
+  if (reduce) {
+    clips.forEach((v) => { v.controls = true; });
+  } else {
+    const clipObserver = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.play().catch(() => {});
+        else e.target.pause();
+      });
+    }, { threshold: 0.4 });
+    clips.forEach((v) => clipObserver.observe(v));
+  }
+}
+
 // Sonar-Ping auf Karten-Hover — nur auf hub.html vorhanden
 if (!reduce) {
   document.querySelectorAll(".hub-card").forEach((card) => {
