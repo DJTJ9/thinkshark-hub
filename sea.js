@@ -33,14 +33,15 @@
     b.vy = (b.vy / sp) * cl;
   }
 
-  function wrap(b, w, h) {
+  function wrap(b, w, h, top = 0) {
     const m = CFG.margin;
     if (b.x < -m) b.x = w + m; else if (b.x > w + m) b.x = -m;
-    if (b.y < -m) b.y = h + m; else if (b.y > h + m) b.y = -m;
+    if (b.y < top - m) b.y = top + h + m; else if (b.y > top + h + m) b.y = top - m;
   }
 
   // Separation, Alignment, Cohesion + Flucht vor allen threats ({x, y, radius}).
-  function stepBoids(boids, threats, w, h, dt) {
+  // top = obere Kante des Kamera-Bandes in Weltkoordinaten (0 = viewport-fix wie bisher).
+  function stepBoids(boids, threats, w, h, dt, top = 0) {
     const view2 = CFG.viewRadius * CFG.viewRadius, sep2 = CFG.sepRadius * CFG.sepRadius;
     for (const b of boids) {
       let sx = 0, sy = 0, ax = 0, ay = 0, cx = 0, cy = 0, n = 0;
@@ -58,13 +59,13 @@
       for (const t of threats) flee(b, t, CFG.wFlee);
       clampSpeed(b, CFG.minSpeed, CFG.maxSpeed);
     }
-    for (const b of boids) { b.x += b.vx * dt; b.y += b.vy * dt; wrap(b, w, h); }
+    for (const b of boids) { b.x += b.vx * dt; b.y += b.vy * dt; wrap(b, w, h, top); }
   }
 
-  // Der Hai patrouilliert zwischen zufälligen Wegpunkten und weicht nur dem Pointer aus.
-  function stepShark(s, pointer, w, h, dt, rand) {
+  // Der Hai patrouilliert zwischen zufälligen Wegpunkten im Kamera-Band und weicht nur dem Pointer aus.
+  function stepShark(s, pointer, w, h, dt, rand, top = 0) {
     const dx = s.tx - s.x, dy = s.ty - s.y;
-    if (dx * dx + dy * dy < 3600) { s.tx = rand() * w; s.ty = rand() * h; }
+    if (dx * dx + dy * dy < 3600) { s.tx = rand() * w; s.ty = top + rand() * h; }
     const d = Math.hypot(dx, dy) || 1e-6;
     s.vx += (dx / d) * CFG.sharkTurn * dt;
     s.vy += (dy / d) * CFG.sharkTurn * dt;
