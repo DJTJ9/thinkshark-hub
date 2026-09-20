@@ -135,6 +135,21 @@ def test_cv_pdfs_carry_the_new_profile():
         assert re.search(r"BullseyeQ", text), f"{n}: BullseyeQ fehlt im gerenderten CV"
 
 
+def test_cv_pdfs_carry_the_reworked_cv():
+    if shutil.which("pdftotext") is None:
+        pytest.skip("pdftotext nicht installiert")
+    expected = {"cv-de.pdf": "BERUFLICHE STATIONEN", "cv-en.pdf": "PREVIOUS EMPLOYMENT"}
+    for n, heading in expected.items():
+        result = subprocess.run(
+            ["pdftotext", "-raw", str(ROOT / "assets" / "cv" / n), "-"],
+            capture_output=True, text=True, check=True,
+        )
+        text = " ".join(result.stdout.split())
+        assert heading in text, f"{n}: PDF trägt noch die alte Reihenfolge"
+        assert "Project Setup Tool" in text, f"{n}: Project Setup Tool fehlt"
+        assert "A1, B, BE" not in text and "Telegram" not in text, f"{n}: alter Inhalt steht noch drin"
+
+
 CLIPS = ["minigolf", "swaggy", "bowling"]
 
 
