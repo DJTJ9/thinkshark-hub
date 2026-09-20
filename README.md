@@ -43,8 +43,13 @@ Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 - `fonts.css`, `fonts/*.woff2` — Schriften, von allen Seiten geteilt
 - `assets/projects/*.png` — Projektbilder (izzy, bullseyeq, bob, desk-buddy)
 - `assets/cv/cv-de.pdf`, `assets/cv/cv-en.pdf` — öffentliche CV-Downloads (ohne Telefonnummer)
-- `assets/me.jpg` — Porträt-Platzhalter im Hero (1:1), wird durch das echte Foto ersetzt
+- `assets/clips/{minigolf,swaggy,bowling}.{mp4,jpg}` — drei Izzy-Loops (720p30, H.264, ohne Ton, < 10 MB) plus Poster; das Rohmaterial bleibt in `/root/uploads/portfolio-videos/` und gehört nicht ins Git
+- `assets/og.jpg` — Link-Vorschau (1200×630), von allen Portfolio-Seiten per `og:image` referenziert; gerendert aus dem Hero mit `python3 scripts/make_og.py` (Playwright, braucht einen lokalen Server)
+- `assets/me.jpg` — NOCH Porträt-Platzhalter im Hero (1:1), das echte Foto steht aus. Sobald es da ist: Datei ersetzen und `assets/og.jpg` neu rendern, sonst zeigt die Link-Vorschau weiter den Platzhalter
+- `scripts/verify_portfolio.py` — gerenderte Verifikation per Playwright (Default LIVE; lokal mit `PORTFOLIO_BASE`/`PORTFOLIO_HUB`), Screenshots in `/tmp/portfolio-verify/` — ansehen, nicht nur den Exit-Code lesen
 - `tests/` — Pytest-Suite (Markup, Inhalte, rechtliche Seiten, CSS-Scoping, Asset-Integrität)
 
 ## Tests
     python3 -m pytest tests/ -q
+
+`tests/test_sea.py` braucht `node`, die Clip-Prüfungen in `tests/test_assets.py` brauchen `ffprobe` — beide überspringen sich, wenn das Werkzeug nicht im `PATH` liegt (auf dem Server: `PATH=/root/.nvm/versions/node/v24.16.0/bin:$PATH`).
