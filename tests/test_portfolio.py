@@ -387,7 +387,7 @@ def test_no_expander_styles_are_left_behind():
 
 
 SKILL_GROUPS = {
-    "Engine · täglich": ["Unity", "C#", "Shader"],
+    "Engine · täglich": ["Unity", "C#", "Shader", "UI Toolkit (USS/CSS)"],
     "Game AI · Uni-Projekte": ["Pathfinding", "State Machines", "Behaviour Trees", "GOAP",
                                "Wave Function Collapse"],
     "Werkzeuge · täglich": ["Git", "LLM-Workflows", "MCP"],
