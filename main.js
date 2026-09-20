@@ -32,6 +32,23 @@ if (mail) {
   mail.textContent = address;
 }
 
+// Scrolltiefe -> --depth (0..1): treibt den Hintergrundverlauf und sea.js
+if (document.body.classList.contains("portfolio")) {
+  const root = document.documentElement;
+  let depthQueued = false;
+  const setDepth = () => {
+    const max = root.scrollHeight - window.innerHeight;
+    const depth = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    root.style.setProperty("--depth", depth.toFixed(3));
+    depthQueued = false;
+  };
+  window.addEventListener("scroll", () => {
+    if (!depthQueued) { depthQueued = true; requestAnimationFrame(setDepth); }
+  }, { passive: true });
+  window.addEventListener("resize", setDepth);
+  setDepth();
+}
+
 // Rail-Marker: Tiefe der sichtbaren Sektion -> Marker-Position
 const marker = document.querySelector(".rail__marker");
 const sections = document.querySelectorAll("section[data-depth]");
