@@ -557,6 +557,7 @@ body.portfolio::after {
 }
 /* Kapitelleiste: deckendes --abyss steht auf dem hellen Oberflächenblau als Balken da. */
 .portfolio .chapters { background: rgba(10, 20, 32, 0.55); backdrop-filter: blur(6px); }
+.portfolio .sea { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
 /* reduced-motion-Overrides gehören ans Dateiende: gleiche Spezifität, spätere Regel gewinnt. */
 @media (prefers-reduced-motion: reduce) {

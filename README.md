@@ -24,7 +24,7 @@ Live unter https://thinkshark.de. DNS (`thinkshark.de` + `www` + `*.thinkshark.d
     cd /root/projekte/website
     cp index.html hub.html impressum.html datenschutz.html changelog.html \
        projekt-izzy.html projekt-bullseyeq.html projekt-bob.html projekt-desk-buddy.html \
-       styles.css main.js changelog.js fonts.css patches.json /var/www/thinkshark-hub/
+       styles.css main.js sea.js changelog.js fonts.css patches.json /var/www/thinkshark-hub/
     cp fonts/*.woff2 /var/www/thinkshark-hub/fonts/
     cp -r assets /var/www/thinkshark-hub/
 
@@ -38,7 +38,8 @@ Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 - `impressum.html`, `datenschutz.html` — rechtliche Seiten, nur Deutsch
 - `changelog.html`, `changelog.js`, `patches.json` — Changelog, unverändert im Inhalt
 - `styles.css` — „Abyssal/Sonar"-Design, von allen Seiten geteilt
-- `main.js` — DE/EN-Sprachumschalter mit localStorage, Depth-Rail-Marker, Mail-Deobfuskation, Footer-Jahr; Sonar-Ping-Hover nur auf hub.html (respektiert reduced-motion), null-safe, auf jeder Seite eingebunden
+- `main.js` — DE/EN-Sprachumschalter mit localStorage, Depth-Rail-Marker, Scrolltiefe als `--depth` (0..1, nur `.portfolio`), Mail-Deobfuskation, Footer-Jahr; Sonar-Ping-Hover nur auf hub.html (respektiert reduced-motion), null-safe, auf jeder Seite eingebunden
+- `sea.js` — „Lebendiges Meer": Boids-Schwarm + Hai + Partikel auf einem fixen Canvas (erzeugt es selbst), liest `--depth` und den Pointer; reiner Simulationskern per node getestet (`tests/test_sea.py`); Detailseiten nur Partikel; reduced-motion = Standbild
 - `fonts.css`, `fonts/*.woff2` — Schriften, von allen Seiten geteilt
 - `assets/projects/*.png` — Projektbilder (izzy, bullseyeq, bob, desk-buddy)
 - `assets/cv/cv-de.pdf`, `assets/cv/cv-en.pdf` — öffentliche CV-Downloads (ohne Telefonnummer)

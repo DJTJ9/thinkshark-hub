@@ -59,3 +59,48 @@ def test_text_colours_stay_aa_on_every_depth_colour():
         for bg in DEPTH_COLOURS:
             ratio = _contrast(_var(name), bg)
             assert ratio >= 4.5, f"{name} auf {bg}: nur {ratio:.2f}:1"
+
+
+SEA = (ROOT / "sea.js").read_text(encoding="utf-8") if (ROOT / "sea.js").exists() else ""
+SEA_PAGES = ["index.html", "projekt-izzy.html", "projekt-bullseyeq.html",
+             "projekt-bob.html", "projekt-desk-buddy.html"]
+NO_SEA_PAGES = ["hub.html", "impressum.html", "datenschutz.html", "changelog.html"]
+
+
+def _scripts(name):
+    html = (ROOT / name).read_text(encoding="utf-8")
+    return [a for t, a in parse_elements(html) if t == "script"]
+
+
+def test_sea_runs_on_portfolio_pages_only():
+    for name in SEA_PAGES:
+        sea = [a for a in _scripts(name) if a.get("src") == "sea.js"]
+        assert len(sea) == 1 and "defer" in sea[0], f"{name}: sea.js fehlt oder blockiert das Parsen"
+    for name in NO_SEA_PAGES:
+        assert not any(a.get("src") == "sea.js" for a in _scripts(name)), f"{name}: sea.js gehört hier nicht hin"
+
+
+def test_sea_canvas_never_blocks_the_page():
+    rules = rules_for_selector(CSS, ".portfolio .sea")
+    assert rules, "keine Regel für das Canvas"
+    body = rules[0]["body"]
+    for needle in ("position: fixed", "pointer-events: none", "z-index: -1"):
+        assert needle in body, f"Canvas ohne „{needle}\""
+    assert 'setAttribute("aria-hidden", "true")' in SEA
+
+
+def test_sea_guard_rails():
+    assert SEA.lstrip().startswith("//") and "(function () {" in SEA, "sea.js ist keine IIFE"
+    assert "Math.min(window.devicePixelRatio || 1, 1.5)" in SEA, "DPR nicht auf 1.5 gedeckelt"
+    assert "visibilitychange" in SEA and "document.hidden" in SEA, "Loop pausiert nicht im Hintergrund-Tab"
+    assert "prefers-reduced-motion" in SEA, "reduced motion wird nicht beachtet"
+    assert "const FISH_ALPHA = 0.35;" in SEA, "Fisch-Deckkraft nicht auf 35 % gedeckelt"
+    assert "STILL_FISH = 8" in SEA
+    assert 'classList.contains("detail")' in SEA, "Detailseiten bekämen den Schwarm"
+    assert "window.innerWidth < 900 ? 14 : 36" in SEA
+
+
+def test_readme_deploys_the_sea():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "sea.js" in readme[readme.index("Redeploy"):readme.index("Caddy-Reload")], \
+        "sea.js fehlt im Redeploy-cp"
