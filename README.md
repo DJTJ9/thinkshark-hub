@@ -33,7 +33,7 @@ Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 ## Struktur
 - `index.html` — Portfolio: Hero (Sonar-Ringe + Foto), „Über mich" mit immer sichtbarem Block „Was mich antreibt", zwei Hero-CTAs (Projekte / CV in Seitensprache), Rail mit Gruppenmarker „Projekte", fünf Skill-Gruppen mit dem Niveau im Label, vier Projekt-Cards mit „Mehr dazu", CV-Downloads, Kontakt; DE/EN via `data-de`/`data-en` + `localStorage`; Sprungnavigation: Depth-Rail ≥900px, sticky Kapitelleiste <900px
 - **CV-Sync-Regel:** Kurzprofil, Rolle und die Skill-Gruppen stehen zusätzlich in `/root/projekte/bewerbung/profil/master.md`, aus dem `assets/cv/*.pdf` gerendert wird. Der Kurzprofil-Absatz IST `profil.de` (bzw. `data-en` = `profil.en`), Wort für Wort. `tests/test_cv_sync.py` macht jede Abweichung rot; ohne das Bewerbungs-Repo überspringt sich der Test. Wer eine der beiden Seiten ändert, ändert beide und rendert die PDFs neu (`render.py cv --lang de|en --web`).
-- `projekt-izzy.html`, `projekt-bullseyeq.html`, `projekt-bob.html`, `projekt-desk-buddy.html` — Projekt-Detailseiten (Gerüst mit leeren Clip-Slots, Abschnitt „Meine Rolle")
+- `projekt-izzy.html`, `projekt-bullseyeq.html`, `projekt-bob.html`, `projekt-desk-buddy.html` — Projekt-Detailseiten (Rolle in „Worum es geht", Fußnavigation „Nächstes Projekt"/„Kontakt"; nur Izzy trägt Clips — ein offener Block pro Minispiel)
 - `hub.html` — die vier Tool-Cards, ehemals auf der Apex
 - `impressum.html`, `datenschutz.html` — rechtliche Seiten, nur Deutsch
 - `changelog.html`, `changelog.js`, `patches.json` — Changelog, unverändert im Inhalt

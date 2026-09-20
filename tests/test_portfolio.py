@@ -382,26 +382,8 @@ def test_hero_guides_recruiters_with_two_ctas():
     assert "hrefEn" in JS and "hrefDe" in JS, "applyLang tauscht den CV-Link nicht mit der Sprache"
 
 
-def test_details_expander_uses_the_existing_sonar_language():
-    hairline = rules_for_selector(CSS, ".portfolio .deeper::before")
-    assert hairline, "keine Hairline-Regel für den Aufklapper"
-    assert "transform: scaleY(0)" in hairline[0]["body"], "Hairline wächst nicht aus dem Nichts"
-    assert rules_for_selector(CSS, ".portfolio .deeper[open]::before"), "kein geöffneter Zustand der Hairline"
-    marker = rules_for_selector(CSS, ".portfolio .deeper > summary::marker")
-    assert marker and "content: none" in marker[0]["body"], "Default-Marker wird nicht entfernt"
-    assert rules_for_selector(CSS, ".portfolio .deeper > summary::-webkit-details-marker"), \
-        "kein -webkit-details-marker-Override"
-    ring = rules_for_selector(CSS, ".portfolio .deeper > summary::before")
-    assert ring and "border-radius: 50%" in ring[0]["body"], "kein Sonar-Ring als Marker"
-    open_ring = rules_for_selector(CSS, ".portfolio .deeper[open] > summary::before")
-    assert open_ring and "var(--teal)" in open_ring[0]["body"], "der Ring füllt sich beim Öffnen nicht teal"
-
-
-def test_details_expander_respects_reduced_motion():
-    for selector in (".portfolio .deeper::before", ".portfolio .deeper > summary::before"):
-        rules = rules_for_selector(CSS, selector, media="prefers-reduced-motion")
-        assert rules, f"kein reduced-motion-Override für {selector}"
-        assert "transition: none" in rules[0]["body"]
+def test_no_expander_styles_are_left_behind():
+    assert ".deeper" not in CSS, "verwaiste Aufklapper-Regeln im Stylesheet"
 
 
 SKILL_GROUPS = {
