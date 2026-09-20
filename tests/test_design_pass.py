@@ -96,7 +96,10 @@ def test_sea_guard_rails():
     assert "prefers-reduced-motion" in SEA, "reduced motion wird nicht beachtet"
     assert "const FISH_ALPHA = 0.35;" in SEA, "Fisch-Deckkraft nicht auf 35 % gedeckelt"
     assert "STILL_FISH = 8" in SEA
-    assert 'classList.contains("detail")' in SEA, "Detailseiten bekämen den Schwarm"
+    assert 'classList.contains("detail")' not in SEA, "Detailseiten sind wieder vom Schwarm ausgenommen"
+    assert "const camY = window.scrollY;" in SEA, "die Kamera folgt der Scrollposition nicht"
+    assert "const PARALLAX = 0.5;" in SEA, "Partikel-Parallaxe nicht auf Faktor 0.5"
+    assert "e.clientY + window.scrollY" in SEA, "Pointer wird nicht nach Welt-y umgerechnet"
     assert "window.innerWidth < 900 ? 14 : 36" in SEA
 
 

@@ -33,14 +33,15 @@
     b.vy = (b.vy / sp) * cl;
   }
 
-  function wrap(b, w, h) {
+  function wrap(b, w, h, top = 0) {
     const m = CFG.margin;
     if (b.x < -m) b.x = w + m; else if (b.x > w + m) b.x = -m;
-    if (b.y < -m) b.y = h + m; else if (b.y > h + m) b.y = -m;
+    if (b.y < top - m) b.y = top + h + m; else if (b.y > top + h + m) b.y = top - m;
   }
 
   // Separation, Alignment, Cohesion + Flucht vor allen threats ({x, y, radius}).
-  function stepBoids(boids, threats, w, h, dt) {
+  // top = obere Kante des Kamera-Bandes in Weltkoordinaten (0 = viewport-fix wie bisher).
+  function stepBoids(boids, threats, w, h, dt, top = 0) {
     const view2 = CFG.viewRadius * CFG.viewRadius, sep2 = CFG.sepRadius * CFG.sepRadius;
     for (const b of boids) {
       let sx = 0, sy = 0, ax = 0, ay = 0, cx = 0, cy = 0, n = 0;
@@ -58,13 +59,13 @@
       for (const t of threats) flee(b, t, CFG.wFlee);
       clampSpeed(b, CFG.minSpeed, CFG.maxSpeed);
     }
-    for (const b of boids) { b.x += b.vx * dt; b.y += b.vy * dt; wrap(b, w, h); }
+    for (const b of boids) { b.x += b.vx * dt; b.y += b.vy * dt; wrap(b, w, h, top); }
   }
 
-  // Der Hai patrouilliert zwischen zufälligen Wegpunkten und weicht nur dem Pointer aus.
-  function stepShark(s, pointer, w, h, dt, rand) {
+  // Der Hai patrouilliert zwischen zufälligen Wegpunkten im Kamera-Band und weicht nur dem Pointer aus.
+  function stepShark(s, pointer, w, h, dt, rand, top = 0) {
     const dx = s.tx - s.x, dy = s.ty - s.y;
-    if (dx * dx + dy * dy < 3600) { s.tx = rand() * w; s.ty = rand() * h; }
+    if (dx * dx + dy * dy < 3600) { s.tx = rand() * w; s.ty = top + rand() * h; }
     const d = Math.hypot(dx, dy) || 1e-6;
     s.vx += (dx / d) * CFG.sharkTurn * dt;
     s.vy += (dy / d) * CFG.sharkTurn * dt;
@@ -80,8 +81,8 @@
 
   const FISH_ALPHA = 0.35;
   const STILL_FISH = 8;
+  const PARALLAX = 0.5;
   const root = document.documentElement;
-  const detail = document.body.classList.contains("detail");
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const canvas = document.createElement("canvas");
@@ -102,30 +103,34 @@
   }
   resize();
 
-  const fishCount = detail ? 0 : still ? STILL_FISH : (window.innerWidth < 900 ? 14 : 36);
+  // Startposition der Kamera: beim Reload stellt der Browser scrollY wieder her.
+  const camY0 = window.scrollY;
+  const fishCount = still ? STILL_FISH : (window.innerWidth < 900 ? 14 : 36);
   const boids = Array.from({ length: fishCount }, () => makeBoid(Math.random, w, h));
-  boids.forEach((b) => { b.size = 5 + Math.random() * 4; });
-  const shark = detail || still ? null
-    : { x: -80, y: h * 0.6, vx: 1, vy: 0, tx: w * 0.7, ty: h * 0.4 };
+  boids.forEach((b) => { b.y += camY0; b.size = 5 + Math.random() * 4; });
+  const shark = still ? null
+    : { x: -80, y: camY0 + h * 0.6, vx: 1, vy: 0, tx: w * 0.7, ty: camY0 + h * 0.4 };
   const small = window.innerWidth < 900;
   const bubbles = Array.from({ length: small ? 8 : 18 }, () => ({
-    x: Math.random() * w, y: Math.random() * h, r: 1 + Math.random() * 2.5, v: 0.3 + Math.random() * 0.5,
+    x: Math.random() * w, y: camY0 * PARALLAX + Math.random() * h,
+    r: 1 + Math.random() * 2.5, v: 0.3 + Math.random() * 0.5,
   }));
   const snow = Array.from({ length: small ? 16 : 40 }, (_, i) => ({
-    x: Math.random() * w, y: Math.random() * h, r: 0.6 + Math.random() * 1.2,
+    x: Math.random() * w, y: camY0 * PARALLAX + Math.random() * h, r: 0.6 + Math.random() * 1.2,
     v: 0.08 + Math.random() * 0.18, amber: i % 7 === 0,
   }));
 
-  function update(dt) {
+  function update(dt, camY) {
     const threats = [];
     if (pointer) threats.push(pointer);
     if (shark) {
-      stepShark(shark, pointer, w, h, dt, Math.random);
+      stepShark(shark, pointer, w, h, dt, Math.random, camY);
       threats.push({ x: shark.x, y: shark.y, radius: CFG.sharkRadius });
     }
-    stepBoids(boids, threats, w, h, dt);
-    for (const p of bubbles) { p.y -= p.v * dt; if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; } }
-    for (const p of snow) { p.y += p.v * dt; if (p.y > h + 10) { p.y = -10; p.x = Math.random() * w; } }
+    stepBoids(boids, threats, w, h, dt, camY);
+    const pTop = camY * PARALLAX;
+    for (const p of bubbles) { p.y -= p.v * dt; if (p.y < pTop - 10) { p.y = pTop + h + 10; p.x = Math.random() * w; } }
+    for (const p of snow) { p.y += p.v * dt; if (p.y > pTop + h + 10) { p.y = pTop - 10; p.x = Math.random() * w; } }
   }
 
   function drawFish(b, alpha) {
@@ -157,14 +162,19 @@
     ctx.restore();
   }
 
-  function draw() {
+  function draw(camY) {
     const d = depth();
     ctx.clearRect(0, 0, w, h);
     // Schwarm am dichtesten um 60 m (d = 0.3)
     const school = clamp01(1 - Math.abs(d - 0.3) * 1.1);
+    ctx.save();
+    ctx.translate(0, -camY);
     ctx.fillStyle = "#E8EEF2";
     for (const b of boids) drawFish(b, FISH_ALPHA * Math.max(0.4, school));
     if (shark) drawShark(shark, 0.28);
+    ctx.restore();
+    ctx.save();
+    ctx.translate(0, -camY * PARALLAX);
     const bubbleAlpha = 0.25 * clamp01(1 - d * 4);
     if (bubbleAlpha > 0) {
       ctx.globalAlpha = bubbleAlpha; ctx.strokeStyle = "#E8EEF2"; ctx.lineWidth = 1;
@@ -178,19 +188,21 @@
         ctx.beginPath(); ctx.arc(p.x, p.y, p.amber ? p.r * 1.6 : p.r, 0, Math.PI * 2); ctx.fill();
       }
     }
+    ctx.restore();
     ctx.globalAlpha = 1;
   }
 
   if (still) {
-    draw();
-    window.addEventListener("resize", () => { resize(); draw(); });
+    draw(0);
+    window.addEventListener("resize", () => { resize(); draw(0); });
     return;
   }
 
   function frame(t) {
     const dt = Math.min((t - last) / 16.67, 3) || 1;
     last = t;
-    update(dt); draw();
+    const camY = window.scrollY;
+    update(dt, camY); draw(camY);
     raf = requestAnimationFrame(frame);
   }
   function start() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }
@@ -198,7 +210,8 @@
 
   window.addEventListener("resize", resize);
   window.addEventListener("pointermove", (e) => {
-    pointer = { x: e.clientX, y: e.clientY, radius: CFG.pointerRadius };
+    // clientY ist Viewport-, die Boids rechnen in Welt-Koordinaten.
+    pointer = { x: e.clientX, y: e.clientY + window.scrollY, radius: CFG.pointerRadius };
   }, { passive: true });
   document.addEventListener("pointerleave", () => { pointer = null; });
   window.addEventListener("pointerup", (e) => { if (e.pointerType !== "mouse") pointer = null; });

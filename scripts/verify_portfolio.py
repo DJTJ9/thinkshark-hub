@@ -20,6 +20,23 @@ OUT = Path("/tmp/portfolio-verify")
 BASE = os.environ.get("PORTFOLIO_BASE", "https://thinkshark.de")
 HUB = os.environ.get("PORTFOLIO_HUB", "https://hub.thinkshark.de")
 
+INK = """() => {
+  const c = document.querySelector('canvas.sea');
+  const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+  let n = 0;
+  for (let i = 3; i < d.length; i += 4) if (d[i] > 8) n++;
+  return n;
+}"""
+
+FPS = """() => new Promise((res) => {
+  let n = 0; const t0 = performance.now();
+  const tick = () => {
+    n++; const dt = performance.now() - t0;
+    if (dt < 2000) requestAnimationFrame(tick); else res(n / (dt / 1000));
+  };
+  requestAnimationFrame(tick);
+})"""
+
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
@@ -32,7 +49,7 @@ def main():
             page.on("console", lambda m: m.type == "error" and errors.append(m.text))
             page.on("pageerror", lambda e: errors.append(str(e)))
             page.goto(BASE, wait_until="networkidle")
-            page.screenshot(path=str(OUT / f"portfolio-{label}.png"), full_page=True)
+            page.screenshot(path=str(OUT / f"portfolio-{label}.png"))
 
             hscroll = page.evaluate(
                 "document.documentElement.scrollWidth > document.documentElement.clientWidth"
@@ -178,6 +195,29 @@ def main():
         if page.locator(".hub-card").count() != 4:
             fails.append("hub: nicht 4 Tool-Karten")
         page.close()
+
+        for label, url in [("index", BASE), ("detail", BASE.rstrip("/") + "/projekt-izzy.html")]:
+            page = browser.new_page(viewport={"width": 1280, "height": 800})
+            page.goto(url, wait_until="networkidle")
+            maxscroll = page.evaluate("document.documentElement.scrollHeight - window.innerHeight")
+            inks = []
+            for tag, y in [("oben", 0), ("mitte", maxscroll // 2), ("unten", maxscroll)]:
+                page.evaluate(f"window.scrollTo(0, {y})")
+                # Ein Sprung-Scroll recycelt den ganzen Schwarm an die Bandkante;
+                # er braucht ~1,5 s, um zurück ins Bild zu schwimmen.
+                page.wait_for_timeout(2000)
+                page.screenshot(path=str(OUT / f"sea-{label}-{tag}.png"))
+                inks.append(page.evaluate(INK))
+            if min(inks) < 400:
+                fails.append(f"sea {label}: Schwarm läuft leer (Tinte {inks})")
+            if inks[2] < inks[0] * 0.5:
+                fails.append(f"sea {label}: unten nur {inks[2]} statt ~{inks[0]} Tinte")
+            fps = page.evaluate(FPS)
+            if fps < 50:
+                fails.append(f"sea {label}: nur {fps:.0f} fps")
+            print(f"sea {label}: Tinte {inks}, {fps:.0f} fps, maxScroll {maxscroll}")
+            page.close()
+
         browser.close()
 
     for f in fails:
