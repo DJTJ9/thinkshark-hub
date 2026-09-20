@@ -275,7 +275,7 @@ body::before {
   text-decoration: none;
 }
 .portfolio .rail__depth {
-  flex: 0 0 34px;
+  flex: 0 0 36px;
   font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--mist);
 }
 .portfolio .rail__tick {
@@ -361,7 +361,6 @@ body::before {
 .portfolio section:last-of-type { min-height: 60vh; }
 .portfolio h2 { font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.75rem; margin-bottom: 16px; }
 .portfolio p { max-width: 68ch; font-size: 1.0625rem; line-height: 1.7; color: var(--foam); }
-.sr-anchor { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
 .portfolio .hero__name { font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: clamp(2.6rem, 8vw, 4.5rem); letter-spacing: -0.03em; }
 .portfolio .hero__role { font-size: 1.125rem; color: var(--mist); margin-top: 8px; }
@@ -380,36 +379,6 @@ body::before {
 }
 .portfolio .skills__group { text-align: right; margin-right: 0; }
 .portfolio .skills__chips { display: flex; flex-wrap: wrap; }
-
-/* ---------- Mehr über mich (Aufklapper) ---------- */
-.portfolio .deeper { position: relative; margin-top: 28px; padding-left: 36px; }
-.portfolio .deeper::before {
-  content: ""; position: absolute; left: 10px; top: 10px; bottom: 4px; width: 2px;
-  background: linear-gradient(180deg, var(--teal), var(--mist) 30%, transparent);
-  transform: scaleY(0); transform-origin: top; transition: transform 0.35s ease;
-}
-.portfolio .deeper[open]::before { transform: scaleY(1); }
-.portfolio .deeper > summary {
-  list-style: none; cursor: pointer; position: relative;
-  font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--mist);
-}
-.portfolio .deeper > summary::marker { content: none; }
-.portfolio .deeper > summary::-webkit-details-marker { display: none; }
-.portfolio .deeper > summary::before {
-  content: ""; position: absolute; left: -32px; top: 2px; width: 10px; height: 10px;
-  border-radius: 50%; border: 1px solid var(--mist);
-  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.portfolio .deeper[open] > summary::before {
-  background: var(--teal); border-color: var(--teal); box-shadow: 0 0 8px var(--teal);
-}
-.portfolio .deeper > summary:hover { color: var(--foam); }
-.portfolio .deeper p { margin-top: 16px; }
-.portfolio .deeper h3 {
-  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.125rem;
-  margin-top: 24px; margin-bottom: 8px;
-}
-.portfolio .deeper h3:first-of-type { margin-top: 20px; }
 
 /* ---------- Projekte ---------- */
 .project { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
@@ -494,20 +463,138 @@ a:focus-visible, button:focus-visible {
 .detail main p + p { margin-top: 14px; }
 .detail main h2 { margin-top: 40px; }
 .detail .clip { margin: 28px 0; }
-.detail .clip--empty {
-  display: flex; align-items: center; justify-content: center;
-  width: 100%; aspect-ratio: 16 / 9;
-  background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
-  color: var(--mist); font-family: "IBM Plex Mono", monospace; font-size: 0.8rem;
-}
 .detail .clip video {
   width: 100%; height: auto; aspect-ratio: 16 / 9; display: block;
   background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
 }
 .detail .clip figcaption { margin-top: 8px; color: var(--mist); font-size: 0.85rem; }
+.detail .game {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px; align-items: start; margin-top: 56px;
+}
+.detail .game__title { grid-column: 1 / -1; margin-top: 0; margin-bottom: 0; }
+.detail .game .clip { margin: 0; position: sticky; top: 24px; }
+.detail .game--right .clip { order: 2; }
+.detail .game h3 {
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.125rem;
+  margin-top: 24px; margin-bottom: 8px;
+}
+.detail .game h3:first-child { margin-top: 0; }
+.detail .detail__next {
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--current);
+}
+.detail .detail__next-link {
+  padding: 11px 20px; border: 1px solid var(--teal); border-radius: 8px;
+  color: var(--teal); text-decoration: none; font-size: 0.95rem;
+}
+.detail .detail__next-link:hover { background: rgba(61, 225, 192, 0.1); }
+@media (max-width: 760px) {
+  .detail .game { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .detail .game--right .clip { order: 0; }
+  .detail .game .clip { position: static; }
+}
+
+/* ---------- Rail: Projektgruppe ---------- */
+.portfolio .rail__group { padding-left: 50px; }
+.portfolio .rail__group-label {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.65rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--mist);
+}
+/* Klammer von 60 m bis 150 m: (60-46)/200*84vh = 5.88vh, Spanne 90/200*84vh = 37.8vh */
+.portfolio .rail__group::after {
+  content: ""; position: absolute; left: 40px; top: calc(5.88vh - 8px);
+  width: 6px; height: calc(37.8vh + 30px);
+  border: 1px solid var(--current); border-right: 0; border-radius: 3px 0 0 3px;
+}
+.portfolio .rail__item--project .rail__tick { margin-left: 8px; }
+.portfolio .chapters__sep {
+  flex: 0 0 auto; align-self: center; padding-left: 12px; border-left: 1px solid var(--current);
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; color: var(--mist);
+}
+
+/* ---------- Über mich / Projekte-Kopf / Hero-CTAs ---------- */
+.portfolio .about__sub {
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.25rem;
+  margin-top: 36px; margin-bottom: 10px;
+}
+.portfolio #ueber p + p { margin-top: 16px; }
+.portfolio .projects__head { padding-top: clamp(40px, 7vw, 72px); }
+/* Sprungziel ist die H2 selbst, nicht eine Sektion mit Padding: Abstand zur sticky Kapitelleiste. */
+.portfolio #projekte { scroll-margin-top: 72px; }
+.portfolio .projects__intro { color: var(--mist); }
+.portfolio .hero__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.portfolio .cta {
+  padding: 11px 20px; border: 1px solid var(--teal); border-radius: 8px;
+  color: var(--teal); text-decoration: none; font-size: 0.95rem; font-weight: 500;
+}
+.portfolio .cta:hover { background: rgba(61, 225, 192, 0.1); }
+.portfolio .cta--primary { background: var(--teal); color: var(--abyss); }
+.portfolio .cta--primary:hover { background: #5FEBD0; }
+
+/* ---------- Meer: Tiefenverlauf + Lichtstrahlen ---------- */
+.portfolio { --mist: #B4C5D3; }
+/* Verlauf ist 4 Viewports hoch; --depth schiebt das sichtbare Viertel von Oberfläche bis Abyss. */
+body.portfolio::before {
+  background: linear-gradient(180deg, #14506B 0%, #0E2F47 30%, #0A1A2B 60%, #050B14 100%);
+  background-size: 100% 400%;
+  background-position: 0 calc(var(--depth, 0) * 100%);
+  animation: none; transform: none;
+}
+body.portfolio::after {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: repeating-linear-gradient(105deg,
+    rgba(232, 238, 242, 0.07) 0 40px, transparent 40px 130px,
+    rgba(232, 238, 242, 0.04) 130px 190px, transparent 190px 300px);
+  mask-image: linear-gradient(180deg, #000 0%, transparent 75%);
+  opacity: calc(1 - var(--depth, 0) * 5);
+}
+/* Kapitelleiste: deckendes --abyss steht auf dem hellen Oberflächenblau als Balken da. */
+.portfolio .chapters { background: rgba(10, 20, 32, 0.55); backdrop-filter: blur(6px); }
+.portfolio .sea { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+/* ---------- Projektbilder als Funde ---------- */
+.portfolio .project__shot { position: relative; padding: 10px; overflow: hidden; }
+.portfolio .project__shot::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(var(--teal), var(--teal)) left top / 18px 1px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) left top / 1px 18px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) right top / 18px 1px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) right top / 1px 18px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) left bottom / 18px 1px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) left bottom / 1px 18px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) right bottom / 18px 1px no-repeat,
+    linear-gradient(var(--teal), var(--teal)) right bottom / 1px 18px no-repeat;
+}
+.portfolio .project__depth {
+  position: absolute; left: 20px; bottom: 20px; padding: 2px 8px; border-radius: 4px;
+  background: rgba(5, 11, 20, 0.7); color: var(--teal);
+  font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; font-variant-numeric: tabular-nums;
+}
+.portfolio .project__shot.is-found::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 240px; height: 240px;
+  border: 1px solid var(--teal); border-radius: 50%; pointer-events: none; opacity: 0;
+  animation: found-ping 1.1s ease-out 1 both;
+}
+@keyframes found-ping {
+  from { transform: translate(-50%, -50%) scale(0.03); opacity: 0.7; }
+  to   { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+/* ---------- Locklicht + Rail-Ziffern + Porträt ---------- */
+.portfolio #kontakt h2::before {
+  content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 14px;
+  border-radius: 50%; background: var(--flare); vertical-align: middle;
+  box-shadow: 0 0 18px 5px rgba(255, 180, 84, 0.45);
+}
+.portfolio .rail__depth { font-variant-numeric: tabular-nums; }
+.portfolio .hero__photo img { border-radius: 50%; }
+@media (min-width: 1000px) {
+  .portfolio .hero__ping { left: auto; right: 110px; top: 50%; }
+}
 
 /* reduced-motion-Overrides gehören ans Dateiende: gleiche Spezifität, spätere Regel gewinnt. */
 @media (prefers-reduced-motion: reduce) {
-  .portfolio .deeper::before { transition: none; }
-  .portfolio .deeper > summary::before { transition: none; }
+  .portfolio .project__shot.is-found::after { animation: none; }
 }

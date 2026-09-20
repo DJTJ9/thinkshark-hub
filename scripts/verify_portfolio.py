@@ -39,6 +39,14 @@ def main():
             )
             if hscroll:
                 fails.append(f"{label}: horizontales Scrollen")
+            if page.locator("canvas.sea").count() != 1:
+                fails.append(f"{label}: Meer-Canvas fehlt")
+            page.click(".hero__cta .cta--primary")
+            page.wait_for_timeout(600)
+            head_top = page.evaluate("document.getElementById('projekte').getBoundingClientRect().top")
+            if not (0 <= head_top <= 260):
+                fails.append(f"{label}: CTA landet nicht auf der Projekte-Überschrift (top={head_top:.0f})")
+            page.evaluate("window.scrollTo(0, 0)")
             if errors:
                 fails.append(f"{label}: Konsolen-Fehler beim Laden {errors}")
             errors_at_load = len(errors)
@@ -64,8 +72,12 @@ def main():
                     )
 
             page.click(".lang__btn[data-lang='en']")
-            if "Who I am" not in page.content():
+            if "About me" not in page.content():
                 fails.append(f"{label}: EN-Umschaltung greift nicht")
+            page.screenshot(path=str(OUT / f"portfolio-{label}-en.png"), full_page=True)
+            cv_href = page.evaluate("document.querySelector('.hero__cta a[download]').getAttribute('href')")
+            if cv_href != "assets/cv/cv-en.pdf":
+                fails.append(f"{label}: CV-CTA folgt der Sprache nicht ({cv_href})")
             page.reload(wait_until="networkidle")
             if page.evaluate("document.documentElement.lang") != "en":
                 fails.append(f"{label}: Sprachwahl überlebt Reload nicht")
@@ -91,6 +103,8 @@ def main():
                 fails.append("mobile: Kapitelleiste fehlt")
             if not is_mobile and not rail_visible:
                 fails.append("desktop: Rail-Navigation fehlt")
+            if not is_mobile and not page.locator(".rail__group").is_visible():
+                fails.append("desktop: Rail-Gruppenmarker fehlt")
 
             nav_sel = ".chapters" if is_mobile else ".rail__scale"
             page.click(f'{nav_sel} a[href="#kontakt"]')
@@ -114,6 +128,7 @@ def main():
             if "#kontakt" not in focus_chain:
                 fails.append(f"{label}: Navigation nicht per Tab erreichbar ({focus_chain})")
             page.screenshot(path=str(OUT / f"portfolio-{label}-focus.png"))
+            page.click(".lang__btn[data-lang='de']")
             page.close()
 
         page = browser.new_page(viewport={"width": 1280, "height": 800})
@@ -122,8 +137,12 @@ def main():
         page.on("pageerror", lambda e: detail_errors.append(str(e)))
         page.goto(BASE.rstrip("/") + "/projekt-izzy.html", wait_until="networkidle")
         page.screenshot(path=str(OUT / "detail-desktop.png"), full_page=True)
-        if page.locator(".clip--empty").count() != 3:
-            fails.append("detail: nicht 3 Clip-Slots")
+        if page.locator(".clip video").count() != 3 or page.locator(".clip--empty").count() != 0:
+            fails.append("detail: nicht genau 3 Video-Clips")
+        page.locator(".clip video").first.scroll_into_view_if_needed()
+        page.wait_for_timeout(1200)
+        if page.evaluate("document.querySelector('.clip video').paused"):
+            fails.append("detail: Clip im Viewport spielt nicht")
         if page.evaluate(
             "document.documentElement.scrollWidth > document.documentElement.clientWidth"
         ):
@@ -138,6 +157,19 @@ def main():
             fails.append("detail: Zurück-Link führt nicht zur Startseite")
         if detail_errors:
             fails.append(f"detail: Konsolen-Fehler {detail_errors}")
+        page.close()
+
+        page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.goto(BASE.rstrip("/") + "/projekt-izzy.html", wait_until="networkidle")
+        page.screenshot(path=str(OUT / "detail-mobile.png"), full_page=True)
+        if page.evaluate(
+            "document.documentElement.scrollWidth > document.documentElement.clientWidth"
+        ):
+            fails.append("detail mobile: horizontales Scrollen")
+        page.locator(".detail__next-link").first.click()
+        page.wait_for_load_state("networkidle")
+        if "projekt-bullseyeq" not in page.url:
+            fails.append(f"detail mobile: Fußnav führt nicht zu BullseyeQ ({page.url})")
         page.close()
 
         page = browser.new_page(viewport={"width": 1280, "height": 800})

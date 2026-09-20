@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tjark Dreyer — Games Programmer</title>
   <meta name="description" content="Portfolio von Tjark Dreyer, Games Programmer aus Hamburg — Unity, C#, Python." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://thinkshark.de/" />
+  <meta property="og:title" content="Tjark Dreyer — Games Programmer" />
+  <meta property="og:description" content="Portfolio von Tjark Dreyer, Games Programmer aus Hamburg — Unity, C#, Python." />
+  <meta property="og:image" content="https://thinkshark.de/assets/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="alternate icon" href="favicon.svg" />
   <link rel="stylesheet" href="fonts.css" />
@@ -24,6 +32,7 @@
   <nav class="chapters" aria-label="Kapitel">
     <a href="#start" data-de="Start" data-en="Start">Start</a>
     <a href="#ueber" data-de="Über" data-en="About">Über</a>
+    <span class="chapters__sep" data-de="Projekte:" data-en="Projects:">Projekte:</span>
     <a href="#izzy">Izzy</a>
     <a href="#bullseyeq">BullseyeQ</a>
     <a href="#bob">Bob</a>
@@ -38,11 +47,12 @@
       <span class="rail__marker" aria-hidden="true"></span>
       <ol class="rail__scale">
         <li style="--at: 0"><a href="#start"><span class="rail__depth">0 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Start" data-en="Start">Start</span></a></li>
-        <li style="--at: 20"><a href="#ueber"><span class="rail__depth">20 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Wer ich bin" data-en="Who I am">Wer ich bin</span></a></li>
-        <li style="--at: 60"><a href="#izzy"><span class="rail__depth">60 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Izzy's Island Party</span></a></li>
-        <li style="--at: 90"><a href="#bullseyeq"><span class="rail__depth">90 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">BullseyeQ</span></a></li>
-        <li style="--at: 120"><a href="#bob"><span class="rail__depth">120 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Bob der Job-Bot</span></a></li>
-        <li style="--at: 150"><a href="#desk-buddy"><span class="rail__depth">150 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Desk-Buddy</span></a></li>
+        <li style="--at: 20"><a href="#ueber"><span class="rail__depth">20 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Über mich" data-en="About me">Über mich</span></a></li>
+        <li class="rail__group" style="--at: 46"><span class="rail__group-label" data-de="Projekte" data-en="Projects">Projekte</span></li>
+        <li class="rail__item--project" style="--at: 60"><a href="#izzy"><span class="rail__depth">60 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Izzy's Island Party</span></a></li>
+        <li class="rail__item--project" style="--at: 90"><a href="#bullseyeq"><span class="rail__depth">90 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">BullseyeQ</span></a></li>
+        <li class="rail__item--project" style="--at: 120"><a href="#bob"><span class="rail__depth">120 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Bob der Job-Bot</span></a></li>
+        <li class="rail__item--project" style="--at: 150"><a href="#desk-buddy"><span class="rail__depth">150 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label">Desk-Buddy</span></a></li>
         <li style="--at: 180"><a href="#lebenslauf"><span class="rail__depth">180 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Lebenslauf" data-en="CV">Lebenslauf</span></a></li>
         <li style="--at: 200"><a href="#kontakt"><span class="rail__depth">200 m</span><span class="rail__tick" aria-hidden="true"></span><span class="rail__label" data-de="Kontakt" data-en="Contact">Kontakt</span></a></li>
       </ol>
@@ -55,6 +65,10 @@
           <h1 class="hero__name">Tjark Dreyer</h1>
           <p class="hero__role">Games Programmer</p>
           <div class="hero__sweep" aria-hidden="true"></div>
+          <div class="hero__cta">
+            <a class="cta cta--primary" href="#projekte" data-de="Projekte ansehen" data-en="View projects">Projekte ansehen</a>
+            <a class="cta" href="assets/cv/cv-de.pdf" data-href-de="assets/cv/cv-de.pdf" data-href-en="assets/cv/cv-en.pdf" download data-de="CV laden" data-en="Download CV">CV laden</a>
+          </div>
         </div>
         <figure class="hero__photo">
           <img src="assets/me.jpg" width="440" height="440" alt="Tjark Dreyer" />
@@ -62,23 +76,21 @@
       </section>
 
       <section id="ueber" data-depth="20">
-        <h2 data-de="Wer ich bin" data-en="Who I am">Wer ich bin</h2>
+        <h2 data-de="Über mich" data-en="About me">Über mich</h2>
         <p data-de="Sport gilt heute selbstverständlich als wertvoll, während Gaming immer noch oft auf seine Schattenseiten reduziert wird. Dabei leben beide von denselben Prinzipien: Übung, Feedback, Motivation und Lernen durch Handeln. Aus der Sportwissenschaft kommend entwickle ich seit drei Jahren digitale Spiele, die dieses Potenzial nutzen und verstärken. Kein anderes Medium kann komplexe Zusammenhänge und trockene Inhalte so erlebbar machen, dass sie leichter und nachhaltiger verstanden werden. Kombiniert mit einem motivierenden Spielerlebnis entsteht daraus in meinen Augen eine optimale Lernumgebung. Meine Schwerpunkte liegen dabei auf komplexen Systemen, Datenanalyse, Engine-Tools, Workflow-Optimierung und spielspezifischer KI."
            data-en="Sport is taken for granted as something valuable, while gaming is still often reduced to its downsides. Yet both run on the same principles: practice, feedback, motivation and learning by doing. Coming from sports science, I have spent three years building digital games that use and amplify that potential. No other medium can make complex relationships and dry material this tangible, so that they are understood more easily and stay understood. Combined with a motivating play experience, that is what I consider an ideal learning environment. My focus areas are complex systems, data analysis, engine tools, workflow optimisation and game-specific AI.">Sport gilt heute selbstverständlich als wertvoll, während Gaming immer noch oft auf seine Schattenseiten reduziert wird. Dabei leben beide von denselben Prinzipien: Übung, Feedback, Motivation und Lernen durch Handeln. Aus der Sportwissenschaft kommend entwickle ich seit drei Jahren digitale Spiele, die dieses Potenzial nutzen und verstärken. Kein anderes Medium kann komplexe Zusammenhänge und trockene Inhalte so erlebbar machen, dass sie leichter und nachhaltiger verstanden werden. Kombiniert mit einem motivierenden Spielerlebnis entsteht daraus in meinen Augen eine optimale Lernumgebung. Meine Schwerpunkte liegen dabei auf komplexen Systemen, Datenanalyse, Engine-Tools, Workflow-Optimierung und spielspezifischer KI.</p>
-        <details class="deeper">
-          <summary data-de="Tiefer tauchen" data-en="Dive deeper">Tiefer tauchen</summary>
-          <p data-de="Games sind für mich weit mehr als Unterhaltung. Sie verbinden Motivation, Interaktion, Feedback, Problemlösung und eigenes Erleben auf eine Weise, die klassische Formen der Wissensvermittlung häufig nicht erreichen. Gerade bei komplexen oder trockenen Themen steckt darin enormes Potenzial: Wer nicht nur Informationen aufnimmt, sondern selbst handelt, ausprobiert und Konsequenzen erlebt, lernt nachhaltiger."
-             data-en="Games are far more than entertainment to me. They combine motivation, interaction, feedback, problem solving and first-hand experience in a way that traditional forms of teaching often cannot reach. That potential is largest exactly where a topic is complex or dry: someone who does not just take in information but acts, experiments and lives with the consequences learns more durably.">Games sind für mich weit mehr als Unterhaltung. Sie verbinden Motivation, Interaktion, Feedback, Problemlösung und eigenes Erleben auf eine Weise, die klassische Formen der Wissensvermittlung häufig nicht erreichen. Gerade bei komplexen oder trockenen Themen steckt darin enormes Potenzial: Wer nicht nur Informationen aufnimmt, sondern selbst handelt, ausprobiert und Konsequenzen erlebt, lernt nachhaltiger.</p>
-          <p data-de="Diese Überzeugung begleitet mich seit dem Studium der Sportwissenschaft. Über Trainings- und Spieltheorie habe ich erlebt, wie viel Lernen und Entwicklung durch spielerische Systeme möglich wird — und als Kursleiter, unter anderem im Reha- und Windsurfbereich, habe ich Menschen beim Lernen und Trainieren begleitet. Heute verbinde ich diese Erfahrung mit der Ausbildung als Games Programmer an der SAE und der täglichen Arbeit mit Unity und C#."
-             data-en="That conviction has been with me since studying sports science. Training theory and game theory showed me how much learning and development playful systems can carry — and as a course instructor, among other things in rehabilitation and windsurfing, I have guided people through learning and training myself. Today I combine that experience with my games programming training at SAE and daily work in Unity and C#.">Diese Überzeugung begleitet mich seit dem Studium der Sportwissenschaft. Über Trainings- und Spieltheorie habe ich erlebt, wie viel Lernen und Entwicklung durch spielerische Systeme möglich wird — und als Kursleiter, unter anderem im Reha- und Windsurfbereich, habe ich Menschen beim Lernen und Trainieren begleitet. Heute verbinde ich diese Erfahrung mit der Ausbildung als Games Programmer an der SAE und der täglichen Arbeit mit Unity und C#.</p>
-          <p data-de="Technisch liegen meine Schwerpunkte in Unity, C#, Game Design und der Entwicklung von Engine-Tools. Mich interessiert weniger, ob ein System läuft, als wie es besser wird — durch Workflow-Optimierung, eigene Werkzeuge oder datenbasierte Lösungen. Mathematik, Datenanalyse und KI-Algorithmen gehören für mich dazu; ein zusätzliches Studienjahr in Mathematik und Physik hilft mir, mich auch in komplexe Themen selbstständig einzuarbeiten."
-             data-en="Technically my focus is Unity, C#, game design and building engine tools. I am less interested in whether a system runs than in how it gets better — through workflow optimisation, purpose-built tools or data-driven solutions. Mathematics, data analysis and AI algorithms are part of that; an additional year of university mathematics and physics helps me work my way into complex topics on my own.">Technisch liegen meine Schwerpunkte in Unity, C#, Game Design und der Entwicklung von Engine-Tools. Mich interessiert weniger, ob ein System läuft, als wie es besser wird — durch Workflow-Optimierung, eigene Werkzeuge oder datenbasierte Lösungen. Mathematik, Datenanalyse und KI-Algorithmen gehören für mich dazu; ein zusätzliches Studienjahr in Mathematik und Physik hilft mir, mich auch in komplexe Themen selbstständig einzuarbeiten.</p>
-          <p data-de="In eigenen Projekten laufen diese Interessen zusammen: BullseyeQ wertet Wurfdaten aus und leitet daraus Trainingsübungen ab, der Desk-Buddy motiviert am Schreibtisch zu Bewegung, und in einem Shader-Lernspiel wollte ich eine Sandbox bauen, in der man durch das Kombinieren von Effekten eigene Shader entwickelt und dabei versteht, wie sie technisch funktionieren. Ich arbeite gern im Team, kommuniziere offen und möchte an Dingen arbeiten, die Menschen tatsächlich weiterbringen."
-             data-en="My own projects are where those interests meet: BullseyeQ analyses throw data and derives training drills from it, Desk-Buddy nudges me to move at my desk, and in a shader learning game I set out to build a sandbox where combining effects produces your own shaders while you learn how they actually work. I enjoy working in a team, communicate openly, and want to work on things that genuinely move people forward.">In eigenen Projekten laufen diese Interessen zusammen: BullseyeQ wertet Wurfdaten aus und leitet daraus Trainingsübungen ab, der Desk-Buddy motiviert am Schreibtisch zu Bewegung, und in einem Shader-Lernspiel wollte ich eine Sandbox bauen, in der man durch das Kombinieren von Effekten eigene Shader entwickelt und dabei versteht, wie sie technisch funktionieren. Ich arbeite gern im Team, kommuniziere offen und möchte an Dingen arbeiten, die Menschen tatsächlich weiterbringen.</p>
-        </details>
+        <h3 class="about__sub" data-de="Was mich antreibt" data-en="What drives me">Was mich antreibt</h3>
+        <p data-de="Games sind für mich weit mehr als Unterhaltung. Sie verbinden Motivation, Interaktion, Feedback, Problemlösung und eigenes Erleben auf eine Weise, die klassische Formen der Wissensvermittlung häufig nicht erreichen. Gerade bei komplexen oder trockenen Themen steckt darin enormes Potenzial: Wer nicht nur Informationen aufnimmt, sondern selbst handelt, ausprobiert und Konsequenzen erlebt, lernt nachhaltiger."
+           data-en="Games are far more than entertainment to me. They combine motivation, interaction, feedback, problem solving and first-hand experience in a way that traditional forms of teaching often cannot reach. That potential is largest exactly where a topic is complex or dry: someone who does not just take in information but acts, experiments and lives with the consequences learns more durably.">Games sind für mich weit mehr als Unterhaltung. Sie verbinden Motivation, Interaktion, Feedback, Problemlösung und eigenes Erleben auf eine Weise, die klassische Formen der Wissensvermittlung häufig nicht erreichen. Gerade bei komplexen oder trockenen Themen steckt darin enormes Potenzial: Wer nicht nur Informationen aufnimmt, sondern selbst handelt, ausprobiert und Konsequenzen erlebt, lernt nachhaltiger.</p>
+        <p data-de="Diese Überzeugung begleitet mich seit dem Studium der Sportwissenschaft. Über Trainings- und Spieltheorie habe ich erlebt, wie viel Lernen und Entwicklung durch spielerische Systeme möglich wird — und als Kursleiter, unter anderem im Reha- und Windsurfbereich, habe ich Menschen beim Lernen und Trainieren begleitet. Heute verbinde ich diese Erfahrung mit der Ausbildung als Games Programmer an der SAE und der täglichen Arbeit mit Unity und C#."
+           data-en="That conviction has been with me since studying sports science. Training theory and game theory showed me how much learning and development playful systems can carry — and as a course instructor, among other things in rehabilitation and windsurfing, I have guided people through learning and training myself. Today I combine that experience with my games programming training at SAE and daily work in Unity and C#.">Diese Überzeugung begleitet mich seit dem Studium der Sportwissenschaft. Über Trainings- und Spieltheorie habe ich erlebt, wie viel Lernen und Entwicklung durch spielerische Systeme möglich wird — und als Kursleiter, unter anderem im Reha- und Windsurfbereich, habe ich Menschen beim Lernen und Trainieren begleitet. Heute verbinde ich diese Erfahrung mit der Ausbildung als Games Programmer an der SAE und der täglichen Arbeit mit Unity und C#.</p>
+        <p data-de="Technisch liegen meine Schwerpunkte in Unity, C#, Game Design und der Entwicklung von Engine-Tools. Mich interessiert weniger, ob ein System läuft, als wie es besser wird — durch Workflow-Optimierung, eigene Werkzeuge oder datenbasierte Lösungen. Mathematik, Datenanalyse und KI-Algorithmen gehören für mich dazu; ein zusätzliches Studienjahr in Mathematik und Physik hilft mir, mich auch in komplexe Themen selbstständig einzuarbeiten."
+           data-en="Technically my focus is Unity, C#, game design and building engine tools. I am less interested in whether a system runs than in how it gets better — through workflow optimisation, purpose-built tools or data-driven solutions. Mathematics, data analysis and AI algorithms are part of that; an additional year of university mathematics and physics helps me work my way into complex topics on my own.">Technisch liegen meine Schwerpunkte in Unity, C#, Game Design und der Entwicklung von Engine-Tools. Mich interessiert weniger, ob ein System läuft, als wie es besser wird — durch Workflow-Optimierung, eigene Werkzeuge oder datenbasierte Lösungen. Mathematik, Datenanalyse und KI-Algorithmen gehören für mich dazu; ein zusätzliches Studienjahr in Mathematik und Physik hilft mir, mich auch in komplexe Themen selbstständig einzuarbeiten.</p>
+        <p data-de="In eigenen Projekten laufen diese Interessen zusammen: BullseyeQ wertet Wurfdaten aus und leitet daraus Trainingsübungen ab, der Desk-Buddy motiviert am Schreibtisch zu Bewegung, und in einem Shader-Lernspiel wollte ich eine Sandbox bauen, in der man durch das Kombinieren von Effekten eigene Shader entwickelt und dabei versteht, wie sie technisch funktionieren. Ich arbeite gern im Team, kommuniziere offen und möchte an Dingen arbeiten, die Menschen tatsächlich weiterbringen."
+           data-en="My own projects are where those interests meet: BullseyeQ analyses throw data and derives training drills from it, Desk-Buddy nudges me to move at my desk, and in a shader learning game I set out to build a sandbox where combining effects produces your own shaders while you learn how they actually work. I enjoy working in a team, communicate openly, and want to work on things that genuinely move people forward.">In eigenen Projekten laufen diese Interessen zusammen: BullseyeQ wertet Wurfdaten aus und leitet daraus Trainingsübungen ab, der Desk-Buddy motiviert am Schreibtisch zu Bewegung, und in einem Shader-Lernspiel wollte ich eine Sandbox bauen, in der man durch das Kombinieren von Effekten eigene Shader entwickelt und dabei versteht, wie sie technisch funktionieren. Ich arbeite gern im Team, kommuniziere offen und möchte an Dingen arbeiten, die Menschen tatsächlich weiterbringen.</p>
         <ul class="skills">
           <li><span class="skills__group" data-de="Engine · täglich" data-en="Engine · daily">Engine · täglich</span>
-            <span class="skills__chips"><span class="chip">Unity</span><span class="chip">C#</span></span></li>
+            <span class="skills__chips"><span class="chip">Unity</span><span class="chip">C#</span><span class="chip">Shader</span></span></li>
           <li><span class="skills__group" data-de="Game AI · Uni-Projekte" data-en="Game AI · university projects">Game AI · Uni-Projekte</span>
             <span class="skills__chips"><span class="chip">Pathfinding</span><span class="chip">State Machines</span><span class="chip">Behaviour Trees</span><span class="chip">GOAP</span><span class="chip">Wave Function Collapse</span></span></li>
           <li><span class="skills__group" data-de="Werkzeuge · täglich" data-en="Tools · daily">Werkzeuge · täglich</span>
@@ -90,16 +102,22 @@
         </ul>
       </section>
 
-      <h2 id="projekte" class="sr-anchor" data-de="Projekte" data-en="Projects">Projekte</h2>
+      <div class="projects__head">
+        <h2 id="projekte" data-de="Projekte" data-en="Projects">Projekte</h2>
+        <p class="projects__intro"
+           data-de="Vier Projekte, das aussagekräftigste zuerst — vom Unity-Abschlussprojekt im Team bis zum selbst betriebenen Web-Dienst. Jede Karte führt zu einer Detailseite."
+           data-en="Four projects, the most telling one first — from the Unity final project in a team to a web service I run myself. Every card links to a detail page.">Vier Projekte, das aussagekräftigste zuerst — vom Unity-Abschlussprojekt im Team bis zum selbst betriebenen Web-Dienst. Jede Karte führt zu einer Detailseite.</p>
+      </div>
 
       <section id="izzy" class="project project--left" data-depth="60">
         <figure class="project__shot">
           <img src="assets/projects/izzy.png" width="800" height="500" alt="Izzy's Island Party — Screenshot" loading="lazy" />
+          <figcaption class="project__depth">60 m</figcaption>
         </figure>
         <div class="project__body">
           <h3 class="project__title">Izzy's Island Party</h3>
-          <p data-de="Lokale Party-Minispiel-Sammlung für 1–4 Spieler. SAE-Abschlussprojekt im 2er-Team mit 6 Minispielen; Bowling Battle, Minigolf Mayhem und Swaggy Snapshots habe ich eigenständig verantwortet."
-             data-en="Local party mini-game collection for 1–4 players. SAE final project in a two-person team with 6 mini-games; I built Bowling Battle, Minigolf Mayhem and Swaggy Snapshots on my own.">Lokale Party-Minispiel-Sammlung für 1–4 Spieler. SAE-Abschlussprojekt im 2er-Team mit 6 Minispielen; Bowling Battle, Minigolf Mayhem und Swaggy Snapshots habe ich eigenständig verantwortet.</p>
+          <p data-de="Drei von sechs Minispielen einer lokalen Partysammlung für 1–4 Spieler — inklusive selbst gebauter GOAP-KI für die CPU-Gegner im Minigolf. SAE-Abschlussprojekt im Zweierteam; Bowling Battle, Minigolf Mayhem und Swaggy Snapshots habe ich eigenständig gebaut."
+             data-en="Three of the six mini-games in a local party collection for 1–4 players — including a GOAP AI I built myself for the CPU opponents in minigolf. SAE final project in a two-person team; I built Bowling Battle, Minigolf Mayhem and Swaggy Snapshots on my own.">Drei von sechs Minispielen einer lokalen Partysammlung für 1–4 Spieler — inklusive selbst gebauter GOAP-KI für die CPU-Gegner im Minigolf. SAE-Abschlussprojekt im Zweierteam; Bowling Battle, Minigolf Mayhem und Swaggy Snapshots habe ich eigenständig gebaut.</p>
           <p class="project__tech"><span class="chip">Unity</span><span class="chip">C#</span></p>
           <p class="project__links">
             <a class="project__link" href="projekt-izzy.html" data-de="Mehr dazu" data-en="More about it">Mehr dazu</a>
@@ -111,11 +129,12 @@
       <section id="bullseyeq" class="project project--right" data-depth="90">
         <figure class="project__shot">
           <img src="assets/projects/bullseyeq.png" width="800" height="500" alt="BullseyeQ — Screenshot" loading="lazy" />
+          <figcaption class="project__depth">90 m</figcaption>
         </figure>
         <div class="project__body">
           <h3 class="project__title">BullseyeQ</h3>
-          <p data-de="Dart-Trainings-App mit Progress-Tracking, Trainingsspielen und deterministischer Wurfdaten-Analyse, die daraus konkrete Trainingsempfehlungen ableitet. Solo gebaut, aus eigenem Bedarf."
-             data-en="Darts training app with progress tracking, practice games and deterministic throw-data analysis that derives concrete training recommendations. Built solo, out of my own need.">Dart-Trainings-App mit Progress-Tracking, Trainingsspielen und deterministischer Wurfdaten-Analyse, die daraus konkrete Trainingsempfehlungen ableitet. Solo gebaut, aus eigenem Bedarf.</p>
+          <p data-de="Dart-Trainings-App, die jeden Wurf auswertet und aus Average, Wasted-Darts- und Checkout-Quote regelbasiert die nächste Übung ableitet. Solo gebaut, aus eigenem Bedarf."
+             data-en="Darts training app that evaluates every throw and derives the next exercise, rule-based, from your average, wasted-darts rate and checkout rate. Built solo, out of my own need.">Dart-Trainings-App, die jeden Wurf auswertet und aus Average, Wasted-Darts- und Checkout-Quote regelbasiert die nächste Übung ableitet. Solo gebaut, aus eigenem Bedarf.</p>
           <p class="project__tech"><span class="chip">Unity</span><span class="chip">C#</span></p>
           <p class="project__links">
             <a class="project__link" href="projekt-bullseyeq.html" data-de="Mehr dazu" data-en="More about it">Mehr dazu</a>
@@ -127,12 +146,13 @@
       <section id="bob" class="project project--left" data-depth="120">
         <figure class="project__shot">
           <img src="assets/projects/bob.png" width="800" height="500" alt="Bob der Job-Bot — Web-Oberfläche" loading="lazy" />
+          <figcaption class="project__depth">120 m</figcaption>
         </figure>
         <div class="project__body">
           <h3 class="project__title">Bob der Job-Bot</h3>
-          <p data-de="Job-Scanner mit Telegram-Bot und Web-App: sammelt Stellenanzeigen in einen geteilten Pool und filtert sie pro Nutzerprofil nach eigenen Kriterien. Scraping, Datenmodell, Bot und Oberfläche komplett selbst, bis in den laufenden Betrieb."
-             data-en="Job scanner with a Telegram bot and web app: collects listings into a shared pool and filters them per user profile against individual criteria. Scraping, data model, bot and interface built entirely by me and running in production.">Job-Scanner mit Telegram-Bot und Web-App: sammelt Stellenanzeigen in einen geteilten Pool und filtert sie pro Nutzerprofil nach eigenen Kriterien. Scraping, Datenmodell, Bot und Oberfläche komplett selbst, bis in den laufenden Betrieb.</p>
-          <p class="project__tech"><span class="chip">Python</span><span class="chip">Telegram</span><span class="chip">SQLite</span><span class="chip">MCP</span></p>
+          <p data-de="Mehrnutzer-Job-Scanner als Web-App mit MCP-Server: geteilter Anzeigen-Pool, strikt getrennte Bewertung pro Profil. Von Scraping bis Betrieb selbst gebaut und live."
+             data-en="Multi-user job scanner as a web app with an MCP server: a shared pool of listings, strictly separate scoring per profile. Built by me from scraping to operations, and live.">Mehrnutzer-Job-Scanner als Web-App mit MCP-Server: geteilter Anzeigen-Pool, strikt getrennte Bewertung pro Profil. Von Scraping bis Betrieb selbst gebaut und live.</p>
+          <p class="project__tech"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">SQLite</span><span class="chip">MCP</span></p>
           <p class="project__links">
             <a class="project__link" href="projekt-bob.html" data-de="Mehr dazu" data-en="More about it">Mehr dazu</a>
             <a class="project__link" href="https://github.com/DJTJ9/job-scanner" target="_blank" rel="noopener" data-de="Code ansehen" data-en="View code">Code ansehen</a>
@@ -143,12 +163,13 @@
       <section id="desk-buddy" class="project project--right" data-depth="150">
         <figure class="project__shot">
           <img src="assets/projects/desk-buddy.png" width="800" height="500" alt="Desk-Buddy — Overlay-Prototyp" loading="lazy" />
+          <figcaption class="project__depth">150 m</figcaption>
         </figure>
         <div class="project__body">
           <h3 class="project__title">Desk-Buddy <span class="badge badge--wip" data-de="in Arbeit" data-en="in progress">in Arbeit</span></h3>
-          <p data-de="Transparente Overlay-App in Unity: ein kleiner Helfer erinnert am Rechner ans Bewegen, erklärt Übungen und macht sie vor. Prototyp-Stand — bewusst ohne Repo-Link."
-             data-en="Transparent overlay app in Unity: a small companion reminds you to move at your desk, explains exercises and demonstrates them. Prototype stage — deliberately without a repo link.">Transparente Overlay-App in Unity: ein kleiner Helfer erinnert am Rechner ans Bewegen, erklärt Übungen und macht sie vor. Prototyp-Stand — bewusst ohne Repo-Link.</p>
-          <p class="project__tech"><span class="chip">Unity</span></p>
+          <p data-de="Transparentes Desktop-Pet in Unity: Je länger du sitzt, desto krummer sitzt die Figur — bis du mit ihr eine kurze Übung machst. Prototyp, bewusst ohne Repo-Link."
+             data-en="A transparent desktop pet in Unity: the longer you sit, the more the character slouches — until you do a short exercise with it. Prototype, deliberately without a repo link.">Transparentes Desktop-Pet in Unity: Je länger du sitzt, desto krummer sitzt die Figur — bis du mit ihr eine kurze Übung machst. Prototyp, bewusst ohne Repo-Link.</p>
+          <p class="project__tech"><span class="chip">Unity</span><span class="chip">C#</span><span class="chip">Win32</span><span class="chip">Blender</span><span class="chip">Python</span></p>
           <p class="project__links">
             <a class="project__link" href="projekt-desk-buddy.html" data-de="Mehr dazu" data-en="More about it">Mehr dazu</a>
           </p>
@@ -185,5 +206,6 @@
   </footer>
 
   <script src="main.js"></script>
+  <script src="sea.js" defer></script>
 </body>
 </html>

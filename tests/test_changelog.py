@@ -18,8 +18,9 @@ def test_changelog_links_shared_assets():
 
 def test_flare_token_defined_and_member_scoped():
     assert "--flare: #FFB454" in CSS
-    # --flare bleibt auf Member-Block (Changelog, 2x) + WIP-Badge (Portfolio, color+border) begrenzt
-    assert CSS.count("var(--flare)") == 4
+    # --flare bleibt auf Member-Block (Changelog, 2x) + WIP-Badge (Portfolio, color+border)
+    # + Locklicht am Kontakt (Portfolio, 1x) begrenzt
+    assert CSS.count("var(--flare)") == 5
     assert ".badge--wip" in CSS
 
 

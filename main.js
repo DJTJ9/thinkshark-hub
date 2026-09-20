@@ -7,10 +7,12 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 // Sprache: data-de / data-en + localStorage
 const langNodes = document.querySelectorAll("[data-de][data-en]");
 const langBtns = document.querySelectorAll(".lang__btn");
+const langHrefs = document.querySelectorAll("[data-href-de][data-href-en]");
 
 function applyLang(lang) {
   document.documentElement.lang = lang;
   langNodes.forEach((el) => { el.textContent = el.dataset[lang]; });
+  langHrefs.forEach((el) => { el.setAttribute("href", lang === "en" ? el.dataset.hrefEn : el.dataset.hrefDe); });
   langBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
   try { localStorage.setItem("lang", lang); } catch (e) { /* Private Mode */ }
 }
@@ -28,6 +30,23 @@ if (mail) {
   const address = mail.dataset.user + "@" + mail.dataset.domain;
   mail.href = "mailto:" + address;
   mail.textContent = address;
+}
+
+// Scrolltiefe -> --depth (0..1): treibt den Hintergrundverlauf und sea.js
+if (document.body.classList.contains("portfolio")) {
+  const root = document.documentElement;
+  let depthQueued = false;
+  const setDepth = () => {
+    const max = root.scrollHeight - window.innerHeight;
+    const depth = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    root.style.setProperty("--depth", depth.toFixed(3));
+    depthQueued = false;
+  };
+  window.addEventListener("scroll", () => {
+    if (!depthQueued) { depthQueued = true; requestAnimationFrame(setDepth); }
+  }, { passive: true });
+  window.addEventListener("resize", setDepth);
+  setDepth();
 }
 
 // Rail-Marker: Tiefe der sichtbaren Sektion -> Marker-Position
@@ -60,6 +79,35 @@ if (marker && sections.length) {
     { rootMargin: "-40% 0px -50% 0px" }
   );
   sections.forEach((s) => observer.observe(s));
+}
+
+// Fund-Ping: genau ein Sonar-Ping pro Projektbild, beim ersten Reinscrollen
+const shots = document.querySelectorAll(".project__shot");
+if (shots.length && !reduce) {
+  const foundObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("is-found");
+      foundObserver.unobserve(e.target);
+    });
+  }, { threshold: 0.5 });
+  shots.forEach((s) => foundObserver.observe(s));
+}
+
+// Izzy-Clips: nur im Viewport abspielen; reduced motion -> Controls statt Autoplay
+const clips = document.querySelectorAll(".clip video");
+if (clips.length) {
+  if (reduce) {
+    clips.forEach((v) => { v.controls = true; });
+  } else {
+    const clipObserver = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.play().catch(() => {});
+        else e.target.pause();
+      });
+    }, { threshold: 0.4 });
+    clips.forEach((v) => clipObserver.observe(v));
+  }
 }
 
 // Sonar-Ping auf Karten-Hover — nur auf hub.html vorhanden
