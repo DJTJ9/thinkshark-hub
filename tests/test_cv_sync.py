@@ -65,6 +65,15 @@ def test_skill_groups_and_chips_are_identical_in_both_places():
     assert page == cv, "Skill-Gruppen oder Chips laufen zwischen Seite und CV auseinander"
 
 
+def test_cv_skill_block_carries_the_same_chips_as_the_website_block():
+    # Entscheidung 2026-09-20: der CV gruppiert in skills_cv anders (3 Gruppen ohne Niveau),
+    # darf aber keinen Skill mehr oder weniger behaupten als die Seite.
+    data = _master()
+    site = sorted(c for g in data["skills"] for c in g["chips"])
+    cv = sorted(c for g in data["skills_cv"] for c in g["chips"])
+    assert cv == site, "skills_cv und skills tragen unterschiedliche Chips"
+
+
 def test_every_project_on_the_page_is_in_the_cv():
     data = _master()
     cv_titles = {_norm(p["titel"]) for p in data["projekte"]}

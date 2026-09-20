@@ -195,6 +195,18 @@ def test_role_is_folded_into_the_summary():
         assert len(paras) >= 3, f"{name}: Rolle ist nicht in „Worum es geht\" angekommen"
 
 
+def test_bob_opens_with_the_idea_and_closes_with_the_roadmap():
+    html = _html("projekt-bob.html")
+    order = [html.index(s) for s in (
+        'class="detail__intro"', 'data-de="Die Idee"', 'data-de="Worum es geht"',
+        'data-de="Woran ich hängen geblieben bin"', 'data-de="Roadmap"', '<p><a class="project__link"')]
+    assert order == sorted(order), "Bob: Abschnitts-Reihenfolge stimmt nicht"
+    assert 'data-en="The idea"' in html and 'data-en="Roadmap"' in html
+    # Entscheidung 2026-09-20: keine Embedding-Suche im Code, also auch nicht im Text.
+    assert "semantisch" not in html.lower() and "semantic" not in html.lower()
+    assert "invite" not in html.lower() and "einladungscode" not in html.lower()
+
+
 def test_izzy_shows_the_three_games_as_open_blocks():
     html = _html("projekt-izzy.html")
     elements = parse_elements(html)
