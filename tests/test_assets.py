@@ -152,3 +152,12 @@ def test_clips_are_web_sized_silent_h264():
              "-of", "csv=p=0", str(ROOT / "assets" / "clips" / f"{n}.mp4")],
             capture_output=True, text=True, check=True).stdout.split()
         assert out == ["h264,video,1280,720"], f"{n}.mp4: unerwartete Streams {out}"
+
+
+def test_og_image_is_a_1200_by_630_jpeg():
+    p = ROOT / "assets" / "og.jpg"
+    assert p.exists(), "assets/og.jpg fehlt"
+    data = p.read_bytes()
+    assert data[:3] == b"\xff\xd8\xff"
+    assert jpeg_size(data) == (1200, 630)
+    assert len(data) < 400 * 1024, "og.jpg zu groß für Link-Vorschauen"
