@@ -7,7 +7,6 @@ ROOT = Path(__file__).resolve().parent.parent
 HTML = (ROOT / "changelog.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
 JS = (ROOT / "changelog.js").read_text(encoding="utf-8")
-INDEX = (ROOT / "index.html").read_text(encoding="utf-8")
 
 
 def test_changelog_links_shared_assets():
@@ -44,10 +43,6 @@ def test_patches_json_valid_and_shaped():
     data = json.loads((ROOT / "patches.json").read_text(encoding="utf-8"))
     assert "generated" in data
     assert isinstance(data["patches"], list)
-
-
-def test_index_links_changelog():
-    assert 'href="changelog.html"' in INDEX
 
 
 def test_js_escapes_content_and_fetches_relative():

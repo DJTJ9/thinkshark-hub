@@ -19,7 +19,8 @@ def test_hero_says_games_programmer():
 def test_tool_subdomains_no_longer_on_apex():
     for sub in ["app", "code", "job-scanner", "organizer"]:
         assert f"https://{sub}.thinkshark.de" not in HTML
-    assert 'href="hub.html"' in HTML
+    assert 'href="hub.html"' not in HTML
+    assert 'href="changelog.html"' not in HTML
 
 
 def test_all_sections_present_with_depth():
