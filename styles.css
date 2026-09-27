@@ -484,6 +484,14 @@ a:focus-visible, button:focus-visible {
   margin-top: 24px; margin-bottom: 8px;
 }
 .detail .game h3:first-child { margin-top: 0; }
+.detail main h3 {
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1.25rem;
+  margin-top: 28px; margin-bottom: 8px;
+}
+.detail main h4 {
+  font-family: "Space Grotesk", sans-serif; font-weight: 500; font-size: 1rem;
+  margin-top: 16px; margin-bottom: 6px;
+}
 .detail .detail__next {
   display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
   margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--current);

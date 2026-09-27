@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import pytest
 from html_utils import fragment, has_class, parse_css_rules, parse_elements, rules_for_selector, text_by_class
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -91,47 +92,81 @@ def test_clip_video_keeps_a_16_by_9_box():
     assert rules and "aspect-ratio: 16 / 9" in rules[0]["body"] and "height: auto" in rules[0]["body"]
 
 
+# Gate 2026-09-27: jede Detailseite erzählt Idee → Worum es geht → Highlights & Herausforderungen.
 LONGTEXT_HEADINGS = [
-    ('data-de="Worum es geht"', 'data-en="What it is"'),
-    ('data-de="Worauf ich stolz bin"', 'data-en="What I am proud of"'),
-    ('data-de="Woran ich hängen geblieben bin"', 'data-en="Where I got stuck"'),
+    ("Die Idee", "The idea"),
+    ("Worum es geht", "What it is"),
+    ("Highlights & Herausforderungen", "Highlights & challenges"),
 ]
+RETIRED_HEADINGS = ["Worauf ich stolz bin", "What I am proud of", "Woran ich hängen geblieben bin", "Where I got stuck"]
 
 
-def test_every_detail_page_carries_the_three_longtext_blocks():
-    for name in DETAIL_PAGES:
-        html = _html(name)
-        for de_attr, en_attr in LONGTEXT_HEADINGS:
-            assert de_attr in html and en_attr in html, f"{name}: Block {de_attr} fehlt"
-        assert "Text folgt." not in html and "Text coming." not in html, \
-            f"{name}: Platzhaltertext steht noch drin"
+def _headings(html, *tags):
+    """(tag, data-de, data-en) aller übersetzten Überschriften in Dokumentreihenfolge."""
+    return [(t, a.get("data-de"), a.get("data-en")) for t, a in parse_elements(html)
+            if t in tags and "data-de" in a]
+
+
+@pytest.mark.parametrize("name", DETAIL_PAGES)
+def test_every_detail_page_carries_the_three_longtext_blocks(name):
+    html = _html(name)
+    heads = [(de, en) for _, de, en in _headings(html, "h2", "h3")]
+    for pair in LONGTEXT_HEADINGS:
+        assert pair in heads, f"{name}: Überschriftenpaar {pair} fehlt"
+    for old in RETIRED_HEADINGS:
+        assert old not in html, f"{name}: alte Überschrift „{old}“ steht noch drin"
+    assert "Text folgt." not in html and "Text coming." not in html, \
+        f"{name}: Platzhaltertext steht noch drin"
+
+
+@pytest.mark.parametrize("name", DETAIL_PAGES)
+def test_the_idea_opens_every_detail_page(name):
+    heads = _headings(_html(name), "h2", "h3", "h4")
+    assert heads[0] == ("h2", "Die Idee", "The idea"), f"{name}: erste Überschrift ist {heads[0]}"
+    if name == "projekt-izzy.html":
+        return
+    order = [(t, de) for t, de, _ in heads if de in {p[0] for p in LONGTEXT_HEADINGS}]
+    assert order == [("h2", de) for de, _ in LONGTEXT_HEADINGS], f"{name}: Abschnittsfolge {order}"
+    after = [t for t, _, _ in heads[heads.index(("h2", "Highlights & Herausforderungen", "Highlights & challenges")) + 1:]]
+    assert after and after[0] == "h3", f"{name}: Highlights ohne h3-Unterabschnitte"
+
+
+def test_izzy_games_follow_the_same_scheme_one_level_deeper():
+    html = _html("projekt-izzy.html")
+    for chunk in html.split('<article class="game')[1:]:
+        heads = _headings(chunk[:chunk.index("</article>")], "h3", "h4")
+        h3 = [(de, en) for t, de, en in heads if t == "h3"]
+        assert h3 == LONGTEXT_HEADINGS[1:], f"Spielblock-h3 sind {h3}"
+        tail = heads[[de for _, de, _ in heads].index("Highlights & Herausforderungen") + 1:]
+        assert tail and all(t == "h4" for t, _, _ in tail), "Highlights im Spielblock ohne h4-Unterabschnitte"
 
 
 def _longtext(name):
     html = _html(name)
-    body = html[html.index('data-de="Worum es geht"'):]
+    body = html[html.index('data-de="Die Idee"'):]
     # der nachgestellte Repo-Link steht in einem eigenen, unuebersetzten <p>
     if '<p><a class="project__link"' in body:
         body = body[:body.index('<p><a class="project__link"')]
     return body
 
 
-def test_longtexts_are_substantial_and_bilingual():
-    for name in DETAIL_PAGES:
-        paras = [a for t, a in parse_elements(_longtext(name)) if t == "p"]
-        assert len(paras) >= 6, f"{name}: nur {len(paras)} Langtext-Absätze"
-        for attrs in paras:
-            de, en = attrs.get("data-de"), attrs.get("data-en")
-            assert de and en, f"{name}: Langtext-Absatz ohne Sprachpaar"
-            assert len(de) > 120, f"{name}: Langtext-Absatz zu kurz ({len(de)} Zeichen)"
+@pytest.mark.parametrize("name", DETAIL_PAGES)
+def test_longtexts_are_substantial_and_bilingual(name):
+    paras = [a for t, a in parse_elements(_longtext(name)) if t == "p"]
+    assert len(paras) >= 6, f"{name}: nur {len(paras)} Langtext-Absätze"
+    for attrs in paras:
+        de, en = attrs.get("data-de"), attrs.get("data-en")
+        assert de and en, f"{name}: Langtext-Absatz ohne Sprachpaar"
+        assert len(de) > 120, f"{name}: Langtext-Absatz zu kurz ({len(de)} Zeichen)"
 
 
-def test_the_ai_share_is_named_on_every_project():
+@pytest.mark.parametrize("name", DETAIL_PAGES)
+def test_the_ai_share_is_named_on_every_project(name):
     # Entscheidung 2026-09-16: Izzy ist ohne KI entstanden, die drei anderen mit.
-    izzy = _longtext("projekt-izzy.html")
-    assert "ohne Coding-Agents" in izzy, "Izzy benennt die Eigenarbeit ohne KI nicht"
-    for name in ("projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html"):
-        body = _longtext(name)
+    body = _longtext(name)
+    if name == "projekt-izzy.html":
+        assert "ohne Coding-Agents" in body, "Izzy benennt die Eigenarbeit ohne KI nicht"
+    else:
         assert "Coding Agent" in body or "mit KI" in body or "Die KI" in body, \
             f"{name}: der KI-Anteil wird nicht benannt"
 
@@ -145,6 +180,11 @@ def test_longtext_paragraphs_and_headings_keep_their_spacing():
     assert heads and "margin-top" in heads[0]["body"], "Abschnittsüberschriften ohne Abstand nach oben"
     sub = rules_for_selector(CSS, ".detail .game h3")
     assert sub and "margin-top" in sub[0]["body"], "Spiel-Zwischenüberschriften ohne Abstand"
+    # Gate 2026-09-27: Highlight-Unterabschnitte als h3 (Seite) bzw. h4 (Izzy-Spielblock)
+    for sel in (".detail main h3", ".detail main h4"):
+        rules = rules_for_selector(CSS, sel)
+        assert rules and "margin-top" in rules[0]["body"] and "font-family" in rules[0]["body"], \
+            f"{sel} ungestylt"
 
 
 NEXT_PROJECT = {
@@ -185,21 +225,24 @@ def test_izzy_clips_are_lazy_muted_loops():
     assert ".clip video" in js and ".play()" in js and ".pause()" in js and "controls = true" in js
 
 
-def test_role_is_folded_into_the_summary():
-    for name in DETAIL_PAGES:
-        html = _html(name)
-        assert "Meine Rolle" not in html and "My role" not in html, f"{name}: eigener Rollen-Abschnitt steht noch"
-        summary = html[html.index('data-de="Worum es geht"'):]
-        summary = summary[:summary.index("<h2", 10)]
-        paras = [a for t, a in parse_elements(summary) if t == "p"]
-        assert len(paras) >= 3, f"{name}: Rolle ist nicht in „Worum es geht\" angekommen"
+@pytest.mark.parametrize("name", DETAIL_PAGES)
+def test_role_is_folded_into_the_summary(name):
+    # Gate 2026-09-27: die Rolle steht im Überblick — bei Izzy in „Die Idee“
+    # (Aufteilung im Team), sonst in „Worum es geht“.
+    html = _html(name)
+    assert "Meine Rolle" not in html and "My role" not in html, f"{name}: eigener Rollen-Abschnitt steht noch"
+    heading = "Die Idee" if name == "projekt-izzy.html" else "Worum es geht"
+    summary = html[html.index(f'data-de="{heading}"'):]
+    summary = summary[:summary.index("<h2", 10)]
+    paras = [a for t, a in parse_elements(summary) if t == "p"]
+    assert len(paras) >= 3, f"{name}: Rolle ist nicht in „{heading}\" angekommen"
 
 
 def test_bob_opens_with_the_idea_and_closes_with_the_roadmap():
     html = _html("projekt-bob.html")
     order = [html.index(s) for s in (
         'class="detail__intro"', 'data-de="Die Idee"', 'data-de="Worum es geht"',
-        'data-de="Woran ich hängen geblieben bin"', 'data-de="Roadmap"', '<p><a class="project__link"')]
+        'data-de="Highlights &amp; Herausforderungen"', 'data-de="Roadmap"', '<p><a class="project__link"')]
     assert order == sorted(order), "Bob: Abschnitts-Reihenfolge stimmt nicht"
     assert 'data-en="The idea"' in html and 'data-en="Roadmap"' in html
     # Entscheidung 2026-09-20: keine Embedding-Suche im Code, also auch nicht im Text.
