@@ -5,11 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from html_utils import elements_by_tag, jpeg_size
+from html_utils import elements_by_tag, jpeg_size, webp_size
 
 ROOT = Path(__file__).resolve().parent.parent
 SHOTS = ROOT / "assets" / "projects"
-NAMES = ["izzy.png", "bullseyeq.png", "bob.png", "desk-buddy.png"]
+NAMES = ["izzy.png", "bob.png", "desk-buddy.png"]
 PAGES = [
     "index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html",
     "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html",
@@ -176,3 +176,19 @@ def test_og_image_is_a_1200_by_630_jpeg():
     assert data[:3] == b"\xff\xd8\xff"
     assert jpeg_size(data) == (1200, 630)
     assert len(data) < 400 * 1024, "og.jpg zu groß für Link-Vorschauen"
+
+
+def test_bullseyeq_card_is_a_16_by_10_webp():
+    data = (SHOTS / "bullseyeq.webp").read_bytes()
+    assert webp_size(data) == (800, 500)
+    assert len(data) < 150 * 1024, f"bullseyeq.webp ist {len(data) // 1024} KB"
+    assert not (SHOTS / "bullseyeq.png").exists(), "Platzhalter bullseyeq.png liegt noch da"
+
+
+def test_bullseyeq_detail_shots_are_720p_webps():
+    shots = sorted(SHOTS.glob("bullseyeq-*.webp"))
+    assert 4 <= len(shots) <= 5, f"{len(shots)} BullseyeQ-Shots statt 4–5"
+    for p in shots:
+        data = p.read_bytes()
+        assert webp_size(data) == (1280, 720), f"{p.name}: {webp_size(data)}"
+        assert len(data) < 300 * 1024, f"{p.name} ist {len(data) // 1024} KB"
