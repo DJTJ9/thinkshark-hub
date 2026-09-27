@@ -127,7 +127,11 @@ def main():
             page.click(f'{nav_sel} a[href="#kontakt"]')
             page.wait_for_timeout(600)
             top = page.evaluate("document.getElementById('kontakt').getBoundingClientRect().top")
-            if top > 200:
+            # Kurze Seite: #kontakt kann nicht höher rutschen, wenn das Seitenende erreicht ist.
+            at_end = page.evaluate(
+                "window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2"
+            )
+            if top > 200 and not at_end:
                 fails.append(f"{label}: Sprung auf #kontakt landet nicht oben (top={top:.0f})")
             current = page.evaluate(
                 f"""document.querySelector('{nav_sel} a[aria-current="true"]')?.getAttribute('href')"""
@@ -196,6 +200,7 @@ def main():
                 page.evaluate(f"window.scrollTo(0, {y})")
                 page.wait_for_timeout(120)
             page.wait_for_load_state("networkidle")
+            page.evaluate("window.scrollTo(0, 0)")
             page.screenshot(path=str(OUT / f"bullseyeq-{tag}.png"), full_page=True)
             broken = page.evaluate(
                 "[...document.querySelectorAll('main img')]"
