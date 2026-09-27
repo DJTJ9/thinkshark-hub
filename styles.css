@@ -467,6 +467,10 @@ a:focus-visible, button:focus-visible {
   width: 100%; height: auto; aspect-ratio: 16 / 9; display: block;
   background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
 }
+.detail .clip img {
+  width: 100%; height: auto; aspect-ratio: 16 / 9; display: block;
+  background: var(--deep); border: 1px solid var(--current); border-radius: 10px;
+}
 .detail .clip figcaption { margin-top: 8px; color: var(--mist); font-size: 0.85rem; }
 .detail .game {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

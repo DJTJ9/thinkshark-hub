@@ -8,11 +8,13 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 const langNodes = document.querySelectorAll("[data-de][data-en]");
 const langBtns = document.querySelectorAll(".lang__btn");
 const langHrefs = document.querySelectorAll("[data-href-de][data-href-en]");
+const langAlts = document.querySelectorAll("[data-alt-de][data-alt-en]");
 
 function applyLang(lang) {
   document.documentElement.lang = lang;
   langNodes.forEach((el) => { el.textContent = el.dataset[lang]; });
   langHrefs.forEach((el) => { el.setAttribute("href", lang === "en" ? el.dataset.hrefEn : el.dataset.hrefDe); });
+  langAlts.forEach((el) => { el.alt = lang === "en" ? el.dataset.altEn : el.dataset.altDe; });
   langBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
   try { localStorage.setItem("lang", lang); } catch (e) { /* Private Mode */ }
 }

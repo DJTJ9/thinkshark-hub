@@ -155,11 +155,11 @@ NEXT_PROJECT = {
 }
 
 
-def test_only_izzy_carries_clip_slots():
+def test_only_izzy_carries_video_clips():
     for name in DETAIL_PAGES:
-        figs = [a for t, a in parse_elements(_html(name)) if t == "figure" and has_class(a, "clip")]
+        videos = [a for t, a in parse_elements(_html(name)) if t == "video"]
         expected = 3 if name == "projekt-izzy.html" else 0
-        assert len(figs) == expected, f"{name}: {len(figs)} Clip-Slots statt {expected}"
+        assert len(videos) == expected, f"{name}: {len(videos)} Videos statt {expected}"
 
 
 CLIPS = ["minigolf", "swaggy", "bowling"]
@@ -234,3 +234,35 @@ def test_every_detail_page_ends_with_next_project_and_contact():
         assert links[0].get("data-de") == f"Nächstes Projekt: {label}"
         assert links[0].get("data-en") == f"Next project: {label}"
         assert (links[1].get("data-de"), links[1].get("data-en")) == ("Kontakt", "Contact")
+
+
+def test_bullseyeq_shows_four_to_five_captioned_screenshots():
+    elements = parse_elements(_html("projekt-bullseyeq.html"))
+    imgs = [a for t, a in elements if t == "img"]
+    assert 4 <= len(imgs) <= 5, f"{len(imgs)} Screenshots statt 4–5"
+    for a in imgs:
+        src = a.get("src") or ""
+        assert src.startswith("assets/projects/bullseyeq-") and src.endswith(".webp"), src
+        assert (ROOT / src).exists(), f"fehlt: {src}"
+        assert a.get("alt") and a.get("data-alt-de") and a.get("data-alt-en"), f"{src}: Alt-Paar fehlt"
+        assert a.get("alt") == a.get("data-alt-de")
+        assert a.get("loading") == "lazy" and (a.get("width"), a.get("height")) == ("1280", "720")
+    captions = [a for t, a in elements if t == "figcaption"]
+    assert len(captions) == len(imgs), "jeder Shot braucht eine figcaption"
+    assert all(c.get("data-de") and c.get("data-en") for c in captions)
+
+
+def test_bullseyeq_credits_the_ui_asset_pack():
+    body = _longtext("projekt-bullseyeq.html")
+    assert "Layer Lab" in body, "Asset-Credit fehlt"
+
+
+def test_clip_images_keep_their_ratio():
+    rules = rules_for_selector(CSS, ".detail .clip img")
+    assert rules and "height: auto" in rules[0]["body"], ".clip img ohne height: auto"
+
+
+def test_image_alt_follows_the_language_switch():
+    js = (ROOT / "main.js").read_text(encoding="utf-8")
+    assert "[data-alt-de][data-alt-en]" in js
+    assert "el.alt =" in js
