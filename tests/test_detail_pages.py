@@ -300,6 +300,20 @@ def test_bullseyeq_credits_the_ui_asset_pack():
     assert "Layer Lab" in body, "Asset-Credit fehlt"
 
 
+def test_highlight_blocks_with_an_image_match_the_plain_subsections():
+    # 2026-09-27: BullseyeQ mischt h3-Unterabschnitte mit Bild (div.game) und ohne.
+    # Beide tragen dieselbe Schriftgröße und denselben Abstand; der erste Block
+    # klebt nicht 56px unter der Abschnittsüberschrift.
+    first = rules_for_selector(CSS, ".detail main h2 + .game")
+    assert first and "margin-top: 24px" in first[0]["body"], "erster Bildblock zu weit unter dem h2"
+    size = rules_for_selector(CSS, ".detail div.game h3")
+    plain = rules_for_selector(CSS, ".detail main h3")
+    assert size and "font-size: 1.25rem" in size[0]["body"] and "font-size: 1.25rem" in plain[0]["body"], \
+        "h3 mit und ohne Bild sind unterschiedlich groß"
+    after = rules_for_selector(CSS, ".detail main .game + h3")
+    assert after and "margin-top: 56px" in after[0]["body"], "h3 nach einem Bildblock ohne Blockabstand"
+
+
 def test_clip_images_keep_their_ratio():
     rules = rules_for_selector(CSS, ".detail .clip img")
     assert rules and "height: auto" in rules[0]["body"], ".clip img ohne height: auto"
