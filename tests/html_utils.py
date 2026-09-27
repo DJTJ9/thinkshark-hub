@@ -115,6 +115,21 @@ def jpeg_size(data):
     raise ValueError("kein SOF-Marker gefunden")
 
 
+def webp_size(data):
+    """(width, height) einer WebP-Datei (VP8, VP8L, VP8X) — stdlib only."""
+    if data[:4] != b"RIFF" or data[8:12] != b"WEBP":
+        raise ValueError("keine WebP-Datei")
+    chunk = data[12:16]
+    if chunk == b"VP8X":
+        return 1 + int.from_bytes(data[24:27], "little"), 1 + int.from_bytes(data[27:30], "little")
+    if chunk == b"VP8L":
+        bits = int.from_bytes(data[21:25], "little")
+        return (bits & 0x3FFF) + 1, ((bits >> 14) & 0x3FFF) + 1
+    if chunk == b"VP8 ":
+        return int.from_bytes(data[26:28], "little") & 0x3FFF, int.from_bytes(data[28:30], "little") & 0x3FFF
+    raise ValueError(f"unbekannter WebP-Chunk {chunk!r}")
+
+
 class _TextCollector(HTMLParser):
     """Sammelt den Textinhalt aller <tag class="cls">-Elemente (ohne Verschachtelung derselben Klasse)."""
 

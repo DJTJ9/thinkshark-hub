@@ -127,7 +127,11 @@ def main():
             page.click(f'{nav_sel} a[href="#kontakt"]')
             page.wait_for_timeout(600)
             top = page.evaluate("document.getElementById('kontakt').getBoundingClientRect().top")
-            if top > 200:
+            # Kurze Seite: #kontakt kann nicht höher rutschen, wenn das Seitenende erreicht ist.
+            at_end = page.evaluate(
+                "window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2"
+            )
+            if top > 200 and not at_end:
                 fails.append(f"{label}: Sprung auf #kontakt landet nicht oben (top={top:.0f})")
             current = page.evaluate(
                 f"""document.querySelector('{nav_sel} a[aria-current="true"]')?.getAttribute('href')"""
@@ -188,6 +192,25 @@ def main():
         if "projekt-bullseyeq" not in page.url:
             fails.append(f"detail mobile: Fußnav führt nicht zu BullseyeQ ({page.url})")
         page.close()
+
+        for vw, vh, tag in [(1280, 800, "desktop"), (390, 844, "mobile")]:
+            page = browser.new_page(viewport={"width": vw, "height": vh})
+            page.goto(BASE.rstrip("/") + "/projekt-bullseyeq.html", wait_until="networkidle")
+            for y in range(0, page.evaluate("document.documentElement.scrollHeight"), vh // 2):
+                page.evaluate(f"window.scrollTo(0, {y})")
+                page.wait_for_timeout(120)
+            page.wait_for_load_state("networkidle")
+            page.evaluate("window.scrollTo(0, 0)")
+            page.screenshot(path=str(OUT / f"bullseyeq-{tag}.png"), full_page=True)
+            broken = page.evaluate(
+                "[...document.querySelectorAll('main img')]"
+                ".filter(i => !i.complete || i.naturalWidth === 0).map(i => i.src)"
+            )
+            if broken:
+                fails.append(f"bullseyeq {tag}: Bilder laden nicht {broken}")
+            if page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth"):
+                fails.append(f"bullseyeq {tag}: horizontales Scrollen")
+            page.close()
 
         page = browser.new_page(viewport={"width": 1280, "height": 800})
         page.goto(HUB, wait_until="networkidle")

@@ -41,7 +41,7 @@ Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 - `main.js` — DE/EN-Sprachumschalter mit localStorage, Depth-Rail-Marker, Scrolltiefe als `--depth` (0..1, nur `.portfolio`), Mail-Deobfuskation, Footer-Jahr; Sonar-Ping-Hover nur auf hub.html (respektiert reduced-motion), null-safe, auf jeder Seite eingebunden
 - `sea.js` — „Lebendiges Meer": Boids-Schwarm + Hai + Partikel auf einem fixen Canvas (erzeugt es selbst), liest `--depth` und den Pointer; reiner Simulationskern per node getestet (`tests/test_sea.py`); Detailseiten nur Partikel; reduced-motion = Standbild
 - `fonts.css`, `fonts/*.woff2` — Schriften, von allen Seiten geteilt
-- `assets/projects/*.png` — Projektbilder (izzy, bullseyeq, bob, desk-buddy)
+- `assets/projects/` — Projektbilder: `izzy.png`, `bob.png`, `desk-buddy.png`, `bullseyeq.webp` (Karte 800×500) und `bullseyeq-*.webp` (Detail-Shots 1280×720, aus der DartApp im Play Mode mit Demo-Daten)
 - `assets/cv/cv-de.pdf`, `assets/cv/cv-en.pdf` — öffentliche CV-Downloads (ohne Telefonnummer)
 - `assets/clips/{minigolf,swaggy,bowling}.{mp4,jpg}` — drei Izzy-Loops (720p30, H.264, ohne Ton, < 10 MB) plus Poster; das Rohmaterial bleibt in `/root/uploads/portfolio-videos/` und gehört nicht ins Git
 - `assets/og.jpg` — Link-Vorschau (1200×630), von allen Portfolio-Seiten per `og:image` referenziert; gerendert aus dem Hero mit `python3 scripts/make_og.py` (Playwright, braucht einen lokalen Server)
