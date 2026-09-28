@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Rendert assets/og.jpg (1200x630) aus dem Hero der lokal servierten Seite.
 
-    python3 -m http.server 8000 &   # im Repo-Root
+    python3 build.py && python3 -m http.server 8000 -d dist &
     python3 scripts/make_og.py
 """
 import os
