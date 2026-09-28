@@ -392,6 +392,7 @@ SKILL_GROUPS = {
     "Game AI · Uni-Projekte": ["Pathfinding", "State Machines", "Behaviour Trees", "GOAP",
                                "Wave Function Collapse"],
     "Werkzeuge · täglich": ["Git", "LLM-Workflows", "MCP"],
+    "Grafik · Spieleprojekte": ["Photoshop", "Illustrator"],
     "Grundlagen · angefangen": ["Unreal Engine", "C++"],
     "Mit KI gebaut · läuft produktiv": ["Python", "SQLite", "HTML/CSS", "JavaScript"],
 }
@@ -402,9 +403,9 @@ def _skill_items():
     return [chunk for chunk in re.split(r"<li>", skills)[1:]]
 
 
-def test_skills_are_five_groups_with_the_level_in_the_label():
+def test_skills_are_six_groups_with_the_level_in_the_label():
     items = _skill_items()
-    assert len(items) == 5, f"{len(items)} Skill-Gruppen statt 5"
+    assert len(items) == 6, f"{len(items)} Skill-Gruppen statt 6"
     seen = {}
     for chunk in items:
         labels = [a for t, a in parse_elements(chunk) if t == "span" and has_class(a, "skills__group")]
@@ -412,6 +413,7 @@ def test_skills_are_five_groups_with_the_level_in_the_label():
         assert labels[0].get("data-de") and labels[0].get("data-en"), "Gruppenlabel nicht zweisprachig"
         seen[labels[0]["data-de"]] = text_by_class(chunk, "span", "chip")
     assert seen == SKILL_GROUPS
+    assert list(seen) == list(SKILL_GROUPS), "Skill-Gruppen in falscher Reihenfolge"
 
 
 def test_skills_read_as_a_ladder_and_stack_on_small_screens():
