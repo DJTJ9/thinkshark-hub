@@ -37,7 +37,7 @@ Kontakt
 Projekte ansehen
 
 ## home.start.2
-CV laden
+Lebenslauf herunterladen
 
 ## home.start.2.href
 assets/cv/cv-de.pdf
