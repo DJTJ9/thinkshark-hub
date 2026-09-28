@@ -1,11 +1,8 @@
-from pathlib import Path
+from html_utils import DIST, elements_by_tag
 
-from html_utils import elements_by_tag
-
-ROOT = Path(__file__).resolve().parent.parent
-IMP = ROOT / "impressum.html"
-DAT = ROOT / "datenschutz.html"
-CHANGELOG = (ROOT / "changelog.html").read_text(encoding="utf-8")
+IMP = DIST / "impressum.html"
+DAT = DIST / "datenschutz.html"
+CHANGELOG = (DIST / "changelog.html").read_text(encoding="utf-8")
 
 
 def test_impressum_has_ddg_fields():
@@ -36,7 +33,7 @@ def test_all_pages_link_legal_pages():
         "index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html",
         "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html",
     ]:
-        html = (ROOT / name).read_text(encoding="utf-8")
+        html = (DIST / name).read_text(encoding="utf-8")
         hrefs = {a.get("href") for a in elements_by_tag(html, "a")}
         assert "impressum.html" in hrefs, f"{name}: kein <a href=\"impressum.html\">"
         assert "datenschutz.html" in hrefs, f"{name}: kein <a href=\"datenschutz.html\">"

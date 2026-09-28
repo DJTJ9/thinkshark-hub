@@ -1,10 +1,10 @@
 import json
 from pathlib import Path
 
-from html_utils import elements_by_tag, rules_for_selector
+from html_utils import DIST, elements_by_tag, rules_for_selector
 
 ROOT = Path(__file__).resolve().parent.parent
-HTML = (ROOT / "changelog.html").read_text(encoding="utf-8")
+HTML = (DIST / "changelog.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
 JS = (ROOT / "changelog.js").read_text(encoding="utf-8")
 

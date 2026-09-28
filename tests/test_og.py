@@ -1,8 +1,5 @@
-from pathlib import Path
+from html_utils import DIST, parse_elements
 
-from html_utils import parse_elements
-
-ROOT = Path(__file__).resolve().parent.parent
 OG_PAGES = {
     "index.html": "https://thinkshark.de/",
     "projekt-izzy.html": "https://thinkshark.de/projekt-izzy.html",
@@ -14,7 +11,7 @@ OG_PAGES = {
 
 def test_every_portfolio_page_carries_a_link_preview():
     for name, url in OG_PAGES.items():
-        metas = [a for t, a in parse_elements((ROOT / name).read_text(encoding="utf-8")) if t == "meta"]
+        metas = [a for t, a in parse_elements((DIST / name).read_text(encoding="utf-8")) if t == "meta"]
         prop = {a["property"]: a.get("content") for a in metas if a.get("property")}
         named = {a["name"]: a.get("content") for a in metas if a.get("name")}
         assert prop.get("og:url") == url, f"{name}: og:url"

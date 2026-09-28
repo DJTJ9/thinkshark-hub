@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from html_utils import elements_by_tag, jpeg_size, webp_size
+from html_utils import DIST, elements_by_tag, jpeg_size, webp_size
 
 ROOT = Path(__file__).resolve().parent.parent
 SHOTS = ROOT / "assets" / "projects"
@@ -66,7 +66,7 @@ def test_favicon_is_local_svg_without_external_refs():
 
 def test_all_pages_link_favicon():
     for name in PAGES:
-        html = (ROOT / name).read_text(encoding="utf-8")
+        html = (DIST / name).read_text(encoding="utf-8")
         links = elements_by_tag(html, "link")
         icons = [l for l in links if l.get("rel") == "icon" and l.get("href") == "favicon.svg"]
         assert icons, f"{name} verlinkt favicon.svg nicht als icon"
@@ -99,12 +99,6 @@ def test_portrait_placeholder_is_a_square_jpeg():
     assert data[:3] == b"\xff\xd8\xff", "assets/me.jpg ist kein JPEG"
     width, height = jpeg_size(data)
     assert width == height, f"me.jpg ist nicht 1:1: {width}x{height}"
-
-
-def test_readme_deploy_copies_every_page():
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for page in sorted(p.name for p in ROOT.glob("*.html")):
-        assert page in readme, f"{page} fehlt im Redeploy-cp in README.md"
 
 
 def test_cv_pdfs_are_single_page_and_current():

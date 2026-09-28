@@ -3,11 +3,14 @@
 Statische Portfolio-Seite für `thinkshark.de` — Hero, About, vier Projekt-Cards, CV-Downloads und Kontakt, zweisprachig DE/EN. Die alten Hub-Buttons zu den Subdomains leben jetzt unter `hub.thinkshark.de`.
 
 ## Lokal ansehen
-Beliebigen statischen Server im Repo-Root starten, z. B.:
+    python build.py
+    python -m http.server 8000 -d dist
 
-    python3 -m http.server 8000
+Dann `http://localhost:8000` öffnen. (Server: `python3`.)
 
-Dann `http://localhost:8000` öffnen.
+## Texte bearbeiten
+Die Texte der fünf zweisprachigen Seiten stehen in `content/<seite>.de.md` und `content/<seite>.en.md`, nicht im HTML. Jeder Block beginnt mit `## schlüssel`, darunter der Text (Plain Text, Zeilenumbrüche werden zu Leerzeichen). Titel und Beschreibung der Seite stehen im Front-Matter der `.de.md`. Die Vorlagen in `templates/` tragen nur die Schlüssel (`data-t`, `data-t-alt`, `data-t-href`). `build.py` bricht hart ab, wenn ein Schlüssel in einer Sprache fehlt, doppelt oder verwaist ist.
+Neuer Text: Element mit `data-t="seite.abschnitt.n"` in die Vorlage, Block mit demselben Schlüssel in beide `.md`-Dateien.
 
 ## Deploy (Hetzner + Caddy)
 Live unter https://thinkshark.de. DNS (`thinkshark.de` + `www` + `*.thinkshark.de`) zeigt auf den Hetzner-Server `195.201.121.96`, dort serviert Caddy die Seite als statischen file_server.
@@ -19,21 +22,17 @@ Live unter https://thinkshark.de. DNS (`thinkshark.de` + `www` + `*.thinkshark.d
   - `hub.thinkshark.de` (gleicher Webroot, `rewrite / /hub.html`) — die alten Tool-Cards. DNS und Cloudflare-Origin-Cert decken die Wildcard bereits ab, kein zusätzlicher DNS- oder Zertifikats-Schritt nötig.
   - TLS via Cloudflare-Origin-Cert.
 
-**Redeploy nach Änderung** (kein Git-Auto-Deploy):
-
-    cd /root/projekte/website
-    cp index.html hub.html impressum.html datenschutz.html changelog.html \
-       projekt-izzy.html projekt-bullseyeq.html projekt-bob.html projekt-desk-buddy.html \
-       styles.css main.js sea.js changelog.js fonts.css patches.json /var/www/thinkshark-hub/
-    cp fonts/*.woff2 /var/www/thinkshark-hub/fonts/
-    cp -r assets /var/www/thinkshark-hub/
+**Deploy = `git push` auf `main`.** Die GitHub Action `deploy` ruft per ssh `scripts/deploy.sh` auf dem Server auf. Das Script setzt den Build-Clone `/opt/thinkshark-build` auf `origin/main`, baut `dist/`, lässt die Tests laufen und spiegelt `dist/` bei Grün per `rsync --delete` nach `/var/www/thinkshark-hub`. Rote Tests = Action rot, die Live-Seite bleibt unverändert. Der Deploy-Key ist in `authorized_keys` per `command=` auf genau dieses Script beschränkt. Status und Logs: Actions-Tab im Repo.
 
 Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 
 ## Struktur
-- `index.html` — Portfolio: Hero (Sonar-Ringe + Foto), „Über mich" mit immer sichtbarem Block „Was mich antreibt", zwei Hero-CTAs (Projekte / CV in Seitensprache), Rail mit Gruppenmarker „Projekte", fünf Skill-Gruppen mit dem Niveau im Label, vier Projekt-Cards mit „Mehr dazu", CV-Downloads, Kontakt; DE/EN via `data-de`/`data-en` + `localStorage`; Sprungnavigation: Depth-Rail ≥900px, sticky Kapitelleiste <900px
-- **CV-Sync-Regel:** Kurzprofil, Rolle und die Skill-Gruppen stehen zusätzlich in `/root/projekte/bewerbung/profil/master.md`, aus dem `assets/cv/*.pdf` gerendert wird. Der Kurzprofil-Absatz IST `profil.de` (bzw. `data-en` = `profil.en`), Wort für Wort. `tests/test_cv_sync.py` macht jede Abweichung rot; ohne das Bewerbungs-Repo überspringt sich der Test. Wer eine der beiden Seiten ändert, ändert beide und rendert die PDFs neu (`render.py cv --lang de|en --web`).
-- `projekt-izzy.html`, `projekt-bullseyeq.html`, `projekt-bob.html`, `projekt-desk-buddy.html` — Projekt-Detailseiten (Rolle in „Worum es geht", Fußnavigation „Nächstes Projekt"/„Kontakt"; nur Izzy trägt Clips — ein offener Block pro Minispiel)
+- `build.py` — füllt die Schlüssel der Vorlagen aus `content/` und kopiert die statischen Dateien (Whitelist `STATIC`) nach `dist/` (nicht im Git)
+- `content/*.de.md`, `content/*.en.md` — alle Texte der fünf zweisprachigen Seiten
+- `scripts/deploy.sh`, `.github/workflows/deploy.yml` — Auto-Deploy bei Push auf `main`
+- `templates/index.html` — Portfolio: Hero (Sonar-Ringe + Foto), „Über mich" mit immer sichtbarem Block „Was mich antreibt", zwei Hero-CTAs (Projekte / CV in Seitensprache), Rail mit Gruppenmarker „Projekte", fünf Skill-Gruppen mit dem Niveau im Label, vier Projekt-Cards mit „Mehr dazu", CV-Downloads, Kontakt; DE/EN via `data-de`/`data-en` + `localStorage`; Sprungnavigation: Depth-Rail ≥900px, sticky Kapitelleiste <900px
+- **CV-Sync-Regel:** Kurzprofil, Rolle und die Skill-Gruppen stehen zusätzlich in `/root/projekte/bewerbung/profil/master.md`, aus dem `assets/cv/*.pdf` gerendert wird. Der Kurzprofil-Absatz IST `profil.de` (bzw. `data-en` = `profil.en`), Wort für Wort. Er steht in `content/index.de.md` bzw. `content/index.en.md`. `tests/test_cv_sync.py` macht jede Abweichung rot; ohne das Bewerbungs-Repo überspringt sich der Test. Wer eine der beiden Seiten ändert, ändert beide und rendert die PDFs neu (`render.py cv --lang de|en --web`).
+- `templates/projekt-*.html` — Projekt-Detailseiten (Rolle in „Worum es geht", Fußnavigation „Nächstes Projekt"/„Kontakt"; nur Izzy trägt Clips — ein offener Block pro Minispiel)
 - `hub.html` — die vier Tool-Cards, ehemals auf der Apex
 - `impressum.html`, `datenschutz.html` — rechtliche Seiten, nur Deutsch
 - `changelog.html`, `changelog.js`, `patches.json` — Changelog, unverändert im Inhalt
@@ -51,5 +50,7 @@ Caddy-Reload nur bei Config-Änderung nötig: `systemctl reload caddy`.
 
 ## Tests
     python3 -m pytest tests/ -q
+
+Der Testlauf baut `dist/` vorher selbst (`tests/conftest.py`).
 
 `tests/test_sea.py` braucht `node`, die Clip-Prüfungen in `tests/test_assets.py` brauchen `ffprobe` — beide überspringen sich, wenn das Werkzeug nicht im `PATH` liegt (auf dem Server: `PATH=/root/.nvm/versions/node/v24.16.0/bin:$PATH`).
