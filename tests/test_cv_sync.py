@@ -9,18 +9,17 @@ from pathlib import Path
 
 import pytest
 
-from html_utils import fragment, has_class, parse_elements, text_by_class
+from html_utils import DIST, fragment, has_class, parse_elements, text_by_class
 
 yaml = pytest.importorskip("yaml", reason="PyYAML nicht installiert — CV-Abgleich übersprungen")
 
-ROOT = Path(__file__).resolve().parent.parent
 MASTER = Path("/root/projekte/bewerbung/profil/master.md")
 
 pytestmark = pytest.mark.skipif(
     not MASTER.exists(), reason=f"{MASTER} nicht vorhanden — CV-Abgleich übersprungen"
 )
 
-HTML = (ROOT / "index.html").read_text(encoding="utf-8")
+HTML = (DIST / "index.html").read_text(encoding="utf-8")
 
 
 def _master():

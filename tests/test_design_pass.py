@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 
-from html_utils import parse_elements, rules_for_selector
+from html_utils import DIST, parse_elements, rules_for_selector
 
 ROOT = Path(__file__).resolve().parent.parent
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
@@ -68,7 +68,7 @@ NO_SEA_PAGES = ["hub.html", "impressum.html", "datenschutz.html", "changelog.htm
 
 
 def _scripts(name):
-    html = (ROOT / name).read_text(encoding="utf-8")
+    html = (DIST / name).read_text(encoding="utf-8")
     return [a for t, a in parse_elements(html) if t == "script"]
 
 
@@ -103,13 +103,7 @@ def test_sea_guard_rails():
     assert "window.innerWidth < 900 ? 14 : 36" in SEA
 
 
-def test_readme_deploys_the_sea():
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    assert "sea.js" in readme[readme.index("Redeploy"):readme.index("Caddy-Reload")], \
-        "sea.js fehlt im Redeploy-cp"
-
-
-INDEX = (ROOT / "index.html").read_text(encoding="utf-8")
+INDEX = (DIST / "index.html").read_text(encoding="utf-8")
 
 
 def test_project_shots_are_framed_as_finds():

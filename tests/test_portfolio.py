@@ -1,11 +1,11 @@
 import re
 from pathlib import Path
 
-from html_utils import (element_ids, fragment, has_class, parse_css_rules, parse_elements,
+from html_utils import (DIST, element_ids, fragment, has_class, parse_css_rules, parse_elements,
                         rules_for_selector, text_by_class)
 
 ROOT = Path(__file__).resolve().parent.parent
-HTML = (ROOT / "index.html").read_text(encoding="utf-8")
+HTML = (DIST / "index.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
 JS = (ROOT / "main.js").read_text(encoding="utf-8")
 

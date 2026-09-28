@@ -3,12 +3,10 @@
 Deckt eine Lücke, die die übrige Suite (reines String-Matching) nicht sieht:
 ein kaputter relativer Link/Pfad faellt sonst nirgends auf.
 """
-from pathlib import Path
 from urllib.parse import urlsplit
 
-from html_utils import parse_elements
+from html_utils import DIST, parse_elements
 
-ROOT = Path(__file__).resolve().parent.parent
 PAGES = [
     "index.html", "hub.html", "impressum.html", "datenschutz.html", "changelog.html",
     "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html",
@@ -38,8 +36,8 @@ def _local_targets(html_text):
 def test_all_local_links_resolve_to_existing_files():
     missing = []
     for name in PAGES:
-        html = (ROOT / name).read_text(encoding="utf-8")
+        html = (DIST / name).read_text(encoding="utf-8")
         for target in _local_targets(html):
-            if not (ROOT / target).exists():
+            if not (DIST / target).exists():
                 missing.append(f"{name}: {target}")
     assert not missing, "kaputte lokale Links/Referenzen: " + ", ".join(missing)

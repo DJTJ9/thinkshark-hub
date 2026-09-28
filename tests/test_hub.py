@@ -1,10 +1,10 @@
 import re
 from pathlib import Path
 
-from html_utils import elements_by_tag
+from html_utils import DIST, elements_by_tag
 
 ROOT = Path(__file__).resolve().parent.parent
-HTML = (ROOT / "hub.html").read_text(encoding="utf-8")
+HTML = (DIST / "hub.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
 
 SUBS = ["app", "code", "job-scanner", "organizer"]

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from html_utils import fragment, has_class, parse_css_rules, parse_elements, rules_for_selector, text_by_class
+from html_utils import DIST, fragment, has_class, parse_css_rules, parse_elements, rules_for_selector, text_by_class
 
 ROOT = Path(__file__).resolve().parent.parent
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
@@ -14,12 +14,12 @@ DETAIL_PAGES = [
 
 
 def _html(name):
-    return (ROOT / name).read_text(encoding="utf-8")
+    return (DIST / name).read_text(encoding="utf-8")
 
 
 def test_all_four_detail_pages_exist():
     for name in DETAIL_PAGES:
-        assert (ROOT / name).exists(), f"{name} fehlt"
+        assert (DIST / name).exists(), f"{name} fehlt"
 
 
 def test_every_detail_page_shares_the_shell():

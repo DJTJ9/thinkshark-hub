@@ -195,3 +195,22 @@ def test_failed_build_keeps_old_dist(tmp_path):
     with pytest.raises(build.BuildError):
         build.build(root, root / "dist", static=())
     assert (root / "dist" / "live.html").exists()
+
+
+PAGES = ["index.html", "projekt-izzy.html", "projekt-bullseyeq.html", "projekt-bob.html", "projekt-desk-buddy.html"]
+
+
+def test_real_site_builds(tmp_path):
+    root = Path(build.__file__).resolve().parent
+    assert build.build(root, tmp_path / "dist") == sorted(PAGES)
+    for name in PAGES:
+        page = (tmp_path / "dist" / name).read_text(encoding="utf-8")
+        assert "data-t" not in page and "data-de=" in page
+    for item in build.STATIC:
+        assert (tmp_path / "dist" / item).exists(), item
+
+
+def test_pages_live_only_as_templates():
+    root = Path(build.__file__).resolve().parent
+    for name in PAGES:
+        assert not (root / name).exists(), f"{name} liegt noch im Root, gehört nach templates/"

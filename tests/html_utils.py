@@ -4,9 +4,12 @@ Nutzt nur die Python-Stdlib (html.parser), damit das No-Dependencies-Prinzip
 des Repos erhalten bleibt.
 """
 import re
+from pathlib import Path
 from html.parser import HTMLParser
 
 _COMMENT_RE = re.compile(r"/\*.*?\*/", re.S)
+ROOT = Path(__file__).resolve().parent.parent
+DIST = ROOT / "dist"  # gebautes HTML: alle Seiten-Tests lesen hier, Quellen (CSS/JS/Assets) bleiben auf ROOT
 
 
 class _ElementCollector(HTMLParser):

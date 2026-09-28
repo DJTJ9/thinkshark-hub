@@ -1,12 +1,10 @@
 """Stilregel (Tjark, 2026-09-27): keine Gedankenstriche, Bis-Striche und Semikolons in Seitentexten."""
 from html.parser import HTMLParser
-from pathlib import Path
 
 import pytest
-from html_utils import parse_elements
+from html_utils import DIST, parse_elements
 
-ROOT = Path(__file__).resolve().parent.parent
-PAGES = sorted(p.name for p in ROOT.glob("*.html"))
+PAGES = sorted(p.name for p in DIST.glob("*.html"))
 ATTRS = ("data-de", "data-en", "alt", "data-alt-de", "data-alt-en", "aria-label", "title", "content")
 FORBIDDEN = {"—": "Gedankenstrich", "–": "Bis-Strich", ";": "Semikolon"}
 
@@ -45,7 +43,7 @@ def test_all_pages_are_checked():
 
 @pytest.mark.parametrize("name", PAGES)
 def test_no_dashes_or_semicolons(name):
-    html = (ROOT / name).read_text(encoding="utf-8")
+    html = (DIST / name).read_text(encoding="utf-8")
     hits = [f"{FORBIDDEN[c]} in {where}: {text[:90]}"
             for where, text in _texts(html) for c in FORBIDDEN if c in text]
     assert not hits, f"{name}:\n" + "\n".join(hits)
@@ -53,6 +51,6 @@ def test_no_dashes_or_semicolons(name):
 
 @pytest.mark.parametrize("name", PAGES)
 def test_no_control_characters(name):
-    html = (ROOT / name).read_text(encoding="utf-8")
+    html = (DIST / name).read_text(encoding="utf-8")
     bad = sorted({hex(ord(c)) for c in html if ord(c) < 32 and c not in "\n\r\t"})
     assert not bad, f"{name}: Steuerzeichen {bad}"
