@@ -54,6 +54,10 @@ komplexe Zusammenhänge und trockene Inhalte so erlebbar machen, dass sie leicht
 verstanden werden. Kombiniert mit einem motivierenden Spielerlebnis entsteht daraus in meinen Augen
 eine optimale Lernumgebung. Meine Schwerpunkte liegen dabei auf komplexen Systemen, Datenanalyse,
 Engine-Tools, Workflow-Optimierung und spielspezifischer KI.
+Seit einigen Monaten schule ich meine Programmierfähigkeiten gezielt im Zusammenspiel mit
+KI-Modellen, gestützt auf ein über Monate aufgebautes und stetig verbessertes eigenes Harness. Die KI
+bleibt dabei ein Multiplikator meiner Fähigkeiten, eröffnet mir aber die Chance, Software-Architektur
+auf einer höheren Ebene zu denken.
 
 ## home.ueber.3
 Was mich antreibt

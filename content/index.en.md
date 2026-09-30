@@ -48,6 +48,10 @@ amplify that potential. No other medium can make complex relationships and dry m
 tangible, so that they are understood more easily and stay understood. Combined with a motivating
 play experience, that is what I consider an ideal learning environment. My focus areas are complex
 systems, data analysis, engine tools, workflow optimisation and game-specific AI.
+For the past few months I have been deliberately training my programming skills in combination with
+AI models, backed by a harness of my own that I have built and steadily refined over many months. The
+AI remains a multiplier of my own abilities, but it gives me the chance to think about software
+architecture at a higher level.
 
 ## home.ueber.3
 What drives me
