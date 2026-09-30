@@ -135,6 +135,9 @@ weiß, was ich abgeben kann.
 ## bullseyeq.main.32
 Code ansehen
 
+## bullseyeq.main.33
+Im Browser testen
+
 ## bullseyeq.detail-next.1
 Nächstes Projekt: Bob der Job-Bot
 

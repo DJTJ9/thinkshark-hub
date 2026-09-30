@@ -20,6 +20,7 @@ Live unter https://thinkshark.de. DNS (`thinkshark.de` + `www` + `*.thinkshark.d
   - `thinkshark.de` (file_server) — die Portfolio-Seite (`index.html`)
   - `www.thinkshark.de` (301 → apex)
   - `hub.thinkshark.de` (gleicher Webroot, `rewrite / /hub.html`) — die alten Tool-Cards. DNS und Cloudflare-Origin-Cert decken die Wildcard bereits ab, kein zusätzlicher DNS- oder Zertifikats-Schritt nötig.
+  - `darts.thinkshark.de` (Webroot `/var/www/bullseyeq`): BullseyeQ als Unity-Web-Build. `.br`-Dateien bekommen `Content-Encoding: br` und ihren Content-Type, `index.html` `no-cache`, `/Build/*` `immutable`. Deploy aus dem BullseyeQ-Repo per `./deploy-web.sh`, nicht über dieses Repo.
   - TLS via Cloudflare-Origin-Cert.
 
 **Deploy = `git push` auf `main`.** Die GitHub Action `deploy` ruft per ssh `scripts/deploy.sh` auf dem Server auf. Das Script setzt den Build-Clone `/opt/thinkshark-build` auf `origin/main`, baut `dist/`, lässt die Tests laufen und spiegelt `dist/` bei Grün per `rsync --delete` nach `/var/www/thinkshark-hub`. Rote Tests = Action rot, die Live-Seite bleibt unverändert. Der Deploy-Key ist in `authorized_keys` per `command=` auf genau dieses Script beschränkt. Status und Logs: Actions-Tab im Repo.
