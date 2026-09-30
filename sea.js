@@ -74,8 +74,26 @@
     s.x += s.vx * dt; s.y += s.vy * dt;
   }
 
+  // Blasenschwall beim Tauchgang: Bildschirm-Koordinaten, steigt schnell auf und verblasst.
+  function makeBurst(rand, w, h, n) {
+    return Array.from({ length: n }, () => ({
+      x: w * (0.2 + rand() * 0.6), y: h * (0.6 + rand() * 0.6),
+      r: 1.5 + rand() * 3, v: 2 + rand() * 4, sway: rand() * Math.PI * 2, life: 1,
+    }));
+  }
+
+  function stepBurst(burst, dt) {
+    for (const p of burst) {
+      p.y -= p.v * dt;
+      p.sway += 0.08 * dt;
+      p.x += Math.sin(p.sway) * 0.6 * dt;
+      p.life -= 0.012 * dt;
+    }
+    return burst.filter((p) => p.life > 0 && p.y > -10);
+  }
+
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { CFG, makeBoid, stepBoids, stepShark };
+    module.exports = { CFG, makeBoid, stepBoids, stepShark, makeBurst, stepBurst };
     return;
   }
 
@@ -91,7 +109,7 @@
   document.body.prepend(canvas);
   const ctx = canvas.getContext("2d");
 
-  let w = 0, h = 0, pointer = null, raf = 0, last = 0;
+  let w = 0, h = 0, pointer = null, raf = 0, last = 0, burst = [];
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
   const depth = () => parseFloat(root.style.getPropertyValue("--depth")) || 0;
 
@@ -131,6 +149,7 @@
     const pTop = camY * PARALLAX;
     for (const p of bubbles) { p.y -= p.v * dt; if (p.y < pTop - 10) { p.y = pTop + h + 10; p.x = Math.random() * w; } }
     for (const p of snow) { p.y += p.v * dt; if (p.y > pTop + h + 10) { p.y = pTop - 10; p.x = Math.random() * w; } }
+    if (burst.length) burst = stepBurst(burst, dt);
   }
 
   function drawFish(b, alpha) {
@@ -189,6 +208,13 @@
       }
     }
     ctx.restore();
+    if (burst.length) {
+      ctx.strokeStyle = "#E8EEF2"; ctx.lineWidth = 1;
+      for (const p of burst) {
+        ctx.globalAlpha = 0.45 * p.life;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.stroke();
+      }
+    }
     ctx.globalAlpha = 1;
   }
 
@@ -209,6 +235,10 @@
   function stop() { cancelAnimationFrame(raf); raf = 0; }
 
   window.addEventListener("resize", resize);
+  // main.js meldet einen Tauchgang: abwärts ein voller Schwall, aufwärts nur ein paar Blasen.
+  window.addEventListener("sea:dive", (e) => {
+    burst = burst.concat(makeBurst(Math.random, w, h, e.detail.down ? (small ? 14 : 28) : 8));
+  });
   window.addEventListener("pointermove", (e) => {
     // clientY ist Viewport-, die Boids rechnen in Welt-Koordinaten.
     pointer = { x: e.clientX, y: e.clientY + window.scrollY, radius: CFG.pointerRadius };

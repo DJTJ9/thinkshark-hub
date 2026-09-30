@@ -537,6 +537,8 @@ a:focus-visible, button:focus-visible {
 .portfolio .projects__head { padding-top: clamp(40px, 7vw, 72px); }
 /* Sprungziel ist die H2 selbst, nicht eine Sektion mit Padding: Abstand zur sticky Kapitelleiste. */
 .portfolio #projekte { scroll-margin-top: 72px; }
+/* Tauchgang-Ziel bekommt Fokus (main.js), aber keinen Rahmen */
+.portfolio [tabindex="-1"]:focus { outline: none; }
 .portfolio .projects__intro { color: var(--mist); }
 .portfolio .hero__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
 .portfolio .cta {

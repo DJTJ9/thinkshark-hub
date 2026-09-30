@@ -140,3 +140,11 @@ def test_portrait_sits_inside_the_sonar_rings():
     assert any("border-radius: 50%" in r["body"] for r in photo), "Porträt ist nicht rund"
     assert rules_for_selector(CSS, ".portfolio .hero__ping", media="min-width: 1000px"), \
         "Ringe sind auf dem Desktop nicht auf das Porträt zentriert"
+
+
+def test_in_page_anchors_dive_instead_of_jumping():
+    assert 'a[href^="#"]' in JS and "preventDefault" in JS
+    assert "sea:dive" in JS, "Meer bekommt den Tauchgang nicht mit"
+    assert "pushState" in JS, "Hash landet nicht in der Adresszeile"
+    assert '"wheel"' in JS and '"touchstart"' in JS, "Nutzer kann den Tauchgang nicht abbrechen"
+    assert "if (reduce) return" in JS, "reduced motion springt nicht mehr sofort"

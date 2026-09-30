@@ -108,3 +108,17 @@ def test_top_zero_reproduces_the_viewport_only_behaviour():
       console.log(JSON.stringify({same: JSON.stringify(a) === JSON.stringify(b)}));
     """)
     assert out["same"], "top = 0 weicht vom bisherigen Verhalten ab"
+
+
+def test_a_dive_burst_rises_and_dies_out():
+    out = _run("""
+      let burst = s.makeBurst(rand, 800, 600, 30);
+      const n0 = burst.length, y0 = burst.reduce((a, p) => a + p.y, 0) / n0;
+      burst = s.stepBurst(burst, 10);
+      const y1 = burst.reduce((a, p) => a + p.y, 0) / burst.length;
+      for (let i = 0; i < 400; i++) burst = s.stepBurst(burst, 1);
+      console.log(JSON.stringify({n0, rose: y1 < y0, left: burst.length}));
+    """)
+    assert out["n0"] == 30
+    assert out["rose"], "Blasen steigen nicht auf"
+    assert out["left"] == 0, "Blasenschwall verschwindet nicht"

@@ -51,6 +51,43 @@ if (document.body.classList.contains("portfolio")) {
   setDepth();
 }
 
+// Tauchgang: Anker-Links fahren mit eigener Kurve in die Tiefe statt zu springen
+if (document.body.classList.contains("portfolio")) {
+  let dive = 0;
+  const cancelDive = () => { cancelAnimationFrame(dive); dive = 0; };
+  ["wheel", "touchstart", "keydown"].forEach((ev) => window.addEventListener(ev, cancelDive, { passive: true }));
+  // Langsam unter die Oberfläche kippen, Fahrt aufnehmen, weich aufsetzen
+  const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const target = document.getElementById(a.getAttribute("href").slice(1));
+      if (!target) return;
+      if (reduce) return;
+      e.preventDefault();
+      cancelDive();
+      const from = window.scrollY;
+      const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const dist = Math.min(max, Math.max(0, target.getBoundingClientRect().top + from - margin)) - from;
+      history.pushState(null, "", "#" + target.id);
+      if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+      const land = () => { dive = 0; target.focus({ preventScroll: true }); };
+      if (Math.abs(dist) < 2) { land(); return; }
+      const duration = Math.min(1700, 800 + Math.abs(dist) * 0.3);
+      window.dispatchEvent(new CustomEvent("sea:dive", { detail: { down: dist > 0 } }));
+      const t0 = performance.now();
+      const step = (now) => {
+        const t = Math.min(1, (now - t0) / duration);
+        window.scrollTo(0, from + dist * ease(t));
+        if (t < 1) dive = requestAnimationFrame(step);
+        else land();
+      };
+      dive = requestAnimationFrame(step);
+    });
+  });
+}
+
 // Rail-Marker: Tiefe der sichtbaren Sektion -> Marker-Position
 const marker = document.querySelector(".rail__marker");
 const sections = document.querySelectorAll("section[data-depth]");
