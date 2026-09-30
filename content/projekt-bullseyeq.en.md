@@ -128,6 +128,9 @@ better what I have to think through myself first. And I know what I can hand ove
 ## bullseyeq.main.32
 View code
 
+## bullseyeq.main.33
+Try it in the browser
+
 ## bullseyeq.detail-next.1
 Next project: Bob der Job-Bot
 

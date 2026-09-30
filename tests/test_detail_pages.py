@@ -323,3 +323,14 @@ def test_image_alt_follows_the_language_switch():
     js = (ROOT / "main.js").read_text(encoding="utf-8")
     assert "[data-alt-de][data-alt-en]" in js
     assert "el.alt =" in js
+
+
+def test_bullseyeq_detail_links_the_browser_build():
+    links = [a for t, a in parse_elements(_html("projekt-bullseyeq.html"))
+             if t == "a" and a.get("href") == "https://darts.thinkshark.de"]
+    assert len(links) == 1, "Link auf darts.thinkshark.de fehlt"
+    link = links[0]
+    assert has_class(link, "project__link")
+    assert link.get("target") == "_blank" and link.get("rel") == "noopener"
+    assert link.get("data-de") == "Im Browser testen"
+    assert link.get("data-en") == "Try it in the browser"

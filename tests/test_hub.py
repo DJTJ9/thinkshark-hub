@@ -7,9 +7,9 @@ ROOT = Path(__file__).resolve().parent.parent
 HTML = (DIST / "hub.html").read_text(encoding="utf-8")
 CSS = (ROOT / "styles.css").read_text(encoding="utf-8")
 
-SUBS = ["app", "code", "job-scanner", "organizer"]
+SUBS = ["app", "code", "job-scanner", "organizer", "darts"]
 
-def test_all_four_subdomain_links_present():
+def test_all_subdomain_links_present():
     for sub in SUBS:
         assert f'https://{sub}.thinkshark.de' in HTML, f"missing link for {sub}"
 
@@ -18,7 +18,7 @@ def test_sync_subdomain_absent():
 
 def test_external_links_are_safe():
     anchors = re.findall(r'<a\b[^>]*https://[a-z-]+\.thinkshark\.de[^>]*>', HTML)
-    assert len(anchors) == 4
+    assert len(anchors) == len(SUBS)
     for a in anchors:
         assert 'target="_blank"' in a
         assert 'rel="noopener"' in a
